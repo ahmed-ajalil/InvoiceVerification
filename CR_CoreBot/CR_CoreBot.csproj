@@ -1,0 +1,138 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Ecommerce\**" />
+    <Compile Remove="CognitiveModels\**" />
+    <Content Remove="Areas\Ecommerce\**" />
+    <Content Remove="CognitiveModels\**" />
+    <EmbeddedResource Remove="Areas\Ecommerce\**" />
+    <EmbeddedResource Remove="CognitiveModels\**" />
+    <None Remove="Areas\Ecommerce\**" />
+    <None Remove="CognitiveModels\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Cards\welcomeCard.json" />
+    <Content Remove="Views\HRadmin\BlobConnection.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Cards\welcomeCard.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Admin\CustomerInfo.cshtml" />
+    <None Include="Views\Admin\userAdmin.cshtml" />
+    <None Include="Views\HRadmin\CustomerInfo.cshtml" />
+    <None Include="Views\HRadmin\CustomerModel.cshtml" />
+    <None Include="Views\HRadmin\ModelFineTuneModel.cshtml" />
+    <None Include="Views\ModelDetails\Create.cshtml" />
+    <None Include="Views\ModelDetails\Index.cshtml" />
+    <None Include="Views\ModelDetails\SuggestedQuestionInfo.cshtml" />
+    <None Include="Views\ModelDetails\SuggestedQuestionInfoList.cshtml" />
+    <None Include="Views\ModelDetails\SystemInstructionInfo.cshtml" />
+    <None Include="Views\ModelDetails\SystemInstructionInfoList.cshtml" />
+    <None Include="Views\ModelDetails\TrainModelInfo.cshtml" />
+    <None Include="Views\ModelDetails\TrainModelInfoList.cshtml" />
+    <None Include="Views\UploadFile\syncFileData.cshtml" />
+    <None Include="wwwroot\Content\assets\images\bank_ai.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\average-power-app-score-wh.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\azurehyperscale.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\azureserverless.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\azuresqlmi.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\azuresqlvcore.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\azuresqlvm.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\cm_database_Instance.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\cm_total_db.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\cm_total_server.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\maria-db.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\migration_efforts.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\mongo-db.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\mysql.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\mysqli.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\oracle.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\postgresql.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\sql-server.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\total-applications-wh.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\total-components-wh.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\total-lines-of-code-wh.svg" />
+    <None Include="wwwroot\Content\assets\images\icons\total_cost.svg" />
+    <None Include="wwwroot\Content\assets\images\logo-sm.svg" />
+    <None Include="wwwroot\Content\assets\images\uc-logo-new.svg" />
+    <None Include="wwwroot\Content\assets\images\undraw-calendar.svg" />
+    <None Include="wwwroot\Content\assets\images\users\rep_user.svg" />
+    <None Include="wwwroot\CRAIScripts\CallCenter.js" />
+    <None Include="wwwroot\CRAIScripts\CRChatBot.js" />
+    <None Include="wwwroot\CRAIScripts\DashBoard.js" />
+    <None Include="wwwroot\CRAIScripts\DataConverter.js" />
+    <None Include="wwwroot\CRAIScripts\HealthCare.js" />
+    <None Include="wwwroot\Script\sweetalert.min2.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreHero.ToastNotification" Version="1.1.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.105.1" />
+    <PackageReference Include="Azure.Search.Documents" Version="11.7.0-beta.2" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.23.0" />
+    <PackageReference Include="ClosedXML" Version="0.102.1" />
+    <PackageReference Include="HighCharts" Version="1.0.0" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+    <PackageReference Include="LibGit2Sharp" Version="0.30.0" />
+    <PackageReference Include="MailKit" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="6.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="7.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.5" />
+    <PackageReference Include="Microsoft.Azure.CognitiveServices.Language.TextAnalytics" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.18.1" />
+    <PackageReference Include="Microsoft.Bot.Builder.Dialogs" Version="4.18.1" />
+    <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.18.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.13.2" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.13.2" />
+    <PackageReference Include="Microsoft.Recognizers.Text.DataTypes.TimexExpression" Version="1.4.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.12" />
+    <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NLog" Version="5.2.7" />
+    <PackageReference Include="NLog.Extensions.AzureBlobStorage" Version="4.3.1" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.7" />
+    <PackageReference Include="Octokit" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CR_CoreBot_DataAccess\CR_CoreBot_DataAccess.csproj" />
+    <ProjectReference Include="..\CR_CoreBot_DTO\CR_CoreBot_DTO.csproj" />
+    <ProjectReference Include="..\CR_CoreBot_Service\CR_CoreBot_Service.csproj" />
+    <ProjectReference Include="..\CR_HRPortalAI_DataAcess\CR_HRPortalAI_DataAcess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Downloads\" />
+    <Folder Include="wwwroot\ImageFiles\" />
+    <Folder Include="wwwroot\Logo\" />
+  </ItemGroup>
+
+</Project>

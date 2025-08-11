@@ -1,0 +1,206 @@
+﻿body {
+    /*background-color:#3b2e58;*/
+    /*color:#141414;*/
+    background:url(../images/login/openai-login-bg.jpg) no-repeat center center;
+    background-size:cover;
+    /*position:relative;*/
+}
+body::before{
+    /*content:'';*/
+    background-color:#f8f8f8a1;
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+}
+.LoginLogo img{
+    max-height:45px;
+}
+.LoginBox{
+    /*height: 540px;*/
+    position: relative;
+    border-radius: 5px;
+    /*padding: 40px;*/
+        background-color: #f7f8fa;
+            overflow: hidden;
+
+            box-shadow: 0px 0px 7px #aaaaaa;
+}
+    .LoginBox::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 45%;
+        background-color: #fff;
+        border-left: 2px solid #eeeeee;
+    }
+.logSctn{
+        /*margin-top: 30px;*/
+}
+.form-check-input{
+    margin-left:0;
+}
+.btn, .fc .fc-button, .swal2-modal .swal2-actions button, .wizard > .actions a, .wizard > .actions a:hover, .wizard > .actions .disabled a{
+    line-height:initial !important;
+}
+.loginTtle{
+        border-bottom: 2px solid #f0f0f0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+.loginTtle h4{
+    font-size: 20px;
+}
+.form-control, select, .email-compose-fields .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-search__field, .typeahead, .tt-query, .tt-hint{
+    border: 1px solid #c3c3c3 !important;
+}
+/*.form-control, select, .email-compose-fields .select2-container--default .select2-selection--multiple, .select2-container--default .select2-selection--single, .select2-container--default .select2-selection--single .select2-search__field, .typeahead, .tt-query, .tt-hint{
+        background-color: #f7f8fa !important;
+}*/
+#loginLoader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000000b5;
+    z-index: 999;
+}
+    #loginLoader > div {
+        width: 115px;
+        height: 120px;
+        /*background-color: #fff;*/
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        margin: auto;
+        text-align: center;
+        border-radius: 10px;
+        overflow: hidden;
+        /*padding-top: 9px;*/
+    }
+        #loginLoader > div span{
+            display:block;
+            font-weight:600;
+        }
+        .TimeSheetLogo{
+            font-size: 20px;
+            display: inline-block;
+            border-left: 1px solid #c8c8c8;
+            margin-left: 10px;
+            padding-left: 10px;
+        }
+.mainBgRow{
+    height: 85vh;
+}
+.mpCTM img{
+    max-width:100%;
+    max-height:85px;
+}
+@media(max-width:768px) {
+    .LoginLogo img{
+                max-height:35px;
+            }
+            .mpCTM img{
+                max-height:initial;
+            }
+            .LoginBox2 {
+                margin-right: 0 !important;
+            }
+            .LoginSctn {
+                text-align: center;
+            }
+            .Log1{
+                display:none;
+            }
+            .Log2{
+                display:block !important;
+                    margin-top: 50px;
+            }
+            .LoginBox::before{
+                /*height: 43%;*/
+                left: 0;
+                right: 0;
+                width: auto;
+                border-left:none !important;
+            }
+            body{
+                background-image: none;
+                background-color: #eaeaea;
+            }
+        }
+/* Login Page award */
+.awd-list {
+}
+
+    .awd-list ul {
+        list-style: none;
+        margin: 20px 0 0 0;
+        padding: 0;
+        text-align: center;
+    }
+
+        .awd-list ul li {
+            display: inline-block;
+            position: relative;
+            border: 1px solid #cecece;
+            padding: 18px 10px 10px 10px;
+            border-radius: 5px;
+            margin: 2px;
+            background-color: gainsboro;
+            margin-bottom: 20px;
+        }
+
+            .awd-list ul li h6 {
+                margin: 0;
+                padding: 0;
+            }
+
+            .awd-list ul li span {
+                position: absolute;
+                top: -10px;
+                display: inline-block;
+                background-color: #236b84;
+                left: 5px;
+                right: 5px;
+                border-radius: 5px;
+                color: #fff;
+            }
+
+/* ...... */
+.loginwith {
+    border-top: 1px solid #d2d2d2;
+    position: relative;
+    text-align: center;
+    margin: 25px 0;
+}
+
+    .loginwith span {
+        display: inline-block;
+        position: absolute;
+        top: 1px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        background-color: #fff;
+        width: 100px;
+        height: 25px;
+    }
+.owl-carousel .owl-item img {
+    display: block;
+    /* width: 250px; */
+    width: 40% !important;
+    margin: auto;
+}
+.LoginBox2{
+    margin-right:60px;
+}
+.w-40{
+    width:40% !important;
+}

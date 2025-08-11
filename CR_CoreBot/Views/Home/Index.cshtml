@@ -1,0 +1,356 @@
+﻿ @model CR_CoreBot_DTO.DataNewDTO
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@{
+    List<string> listItems = ViewBag.listmodel;
+}
+@{
+    var categoryValue = ViewBag.Category;
+    var roleId = ViewBag.Role;
+}
+
+<style>
+    .chatbotBtn {
+        width: 100% !important;
+    }
+    .card-ctm {
+        animation: fadeInLeft 1s ease-in-out;
+    }
+
+    .page-content {
+        padding: 75px 10px 15px 10px !important;
+        background-color: #f9f9f9;
+        height: auto !important;
+    }
+
+    .cic-img {
+        position: absolute;
+        right: 0px;
+        top: 10px;
+        background-color: #fff;
+        padding: 8px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+    }
+
+        .cic-img img {
+            width: 2rem;
+        }
+
+    .min-55 {
+        min-height: 55px;
+    }
+
+    .w-70 {
+        width: 85% !important;
+        min-height: 160px;
+    }
+
+    .border {
+        border: 1px solid #ddd !important;
+    }
+
+    .card-ctm::before {
+        content: '';
+        width: 11px;
+        height: 1px;
+        border-color: #000;
+        position: absolute;
+        left: -12px;
+        border: 1px solid #236b84;
+        z-index: 1;
+        top: 90px;
+    }
+
+    .isDisabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+        .isDisabled > a {
+            color: white;
+            display: inline-block; /* For IE11/ MS Edge bug */
+            pointer-events: none;
+            pointer-events: none;
+            text-decoration: none;
+        }
+
+    .litext {
+        list-style: none;
+        min-height: 160px;
+        text-align: justify;
+    }
+
+    .roi_btn {
+        width: 100%;
+        margin: 5px 0 0 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    #divLargerImage .tile_img {
+        max-height: inherit !important;
+    }
+
+    .tile_img {
+        max-height: 103px;
+        width: 100%;
+    }
+
+    #divLargerImage {
+        display: none;
+        width: 500px;
+        height: auto;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        z-index: 99;
+    }
+
+    #divOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #000;
+        opacity: 0.8;
+        width: 100%;
+        height: 100%;
+        z-index: 98;
+    }
+
+    #industrydiv .card-body {
+        height: calc(100vh - 230px);
+        overflow: auto;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="card shadow-sm mb-2">
+            <div class="card-header bg-info">
+                <h5 class="mb-0 h6 text-white">Capability Filter</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="form-check ms-2 py-2 border-bottom">
+                    <input class="form-check-input" type="checkbox" value="True" id="knowledgemining" checked onchange="getcapabilityvalue('knowledgemining')">
+                    <label class="form-check-label" for="knowledgemining">
+                        Knowledge Mining
+                    </label>
+                </div>
+                <div class="form-check ms-2 py-2 border-bottom">
+                    <input class="form-check-input" type="checkbox" value="True" id="sentimentanalysis" checked onchange="getcapabilityvalue('sentimentanalysis')">
+                    <label class="form-check-label" for="sentimentanalysis">
+                        Sentiment Analysis
+                    </label>
+                </div>
+                <div class="form-check ms-2 py-2 border-bottom">
+                    <input class="form-check-input" type="checkbox" value="True" id="entityextraction" checked onchange="getcapabilityvalue('entityextraction')">
+                    <label class="form-check-label" for="entityextraction">
+                        Entity Extraction
+                    </label>
+                </div>
+                <div class="form-check ms-2 py-2 border-bottom">
+                    <input class="form-check-input" type="checkbox" value="True" id="docprocessing" checked onchange="getcapabilityvalue('docprocessing')">
+                    <label class="form-check-label" for="docprocessing">
+                        Doc Processing
+                    </label>
+                </div>
+                <div class="form-check ms-2 py-2">
+                    <input class="form-check-input" type="checkbox" value="True" id="agentchatbot" checked onchange="getcapabilityvalue('agentchatbot')">
+                    <label class="form-check-label" for="agentchatbot">
+                        Agent Chatbot
+                    </label>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div id="industrydiv" class="col-md-2 p-0" style="width: 25%;">
+        <div class="card mt-5 card-ctm">
+            <div class="card-header bg-light" style="background-color: #288e98 !important;color: #fff !important;">
+                <h5 class="mb-0 h6 text-white">Industry</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="form-check ms-2 py-2 border-bottom" style="display:none;">
+                    <input class="form-check-input" type="radio" name="ind_radio" value="BankingModel" id="banking" onchange="getradiobuttonvalue()">
+                    <label class="form-check-label" for="banking">
+                        Banking
+                    </label>
+                </div>
+                <div class="form-check ms-2 py-2 border-bottom">
+                    <input class="form-check-input" type="radio" name="ind_radio" value="AiAssistantModel" id="AiAssistant" onchange="getradiobuttonvalue()" checked>
+                    <label class="form-check-label" for="AiAssistant">
+                        AiAssistant
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="col-md-8" id="Banking" style="width: 58%;">
+        <div class="row">
+            <h5><img src="~/content/assets/images/icons/menu.png" />&nbsp;&nbsp;Capabilities</h5>
+        </div>
+        <div class="row">
+            <div class="col-md-4" id="agentchat">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary">
+                        <h5 class="mb-0 mt-2 text-white h6">Virtual Financial Advisor</h5>
+                        <div class="cic-img">
+                            <img src="~/content/assets/images/icons/agentchatbot.png" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="p-0">
+                            <li class="litext">A conversational AI interface that offers personalized and real-time assistance to users, answering queries, providing medical guidance, and engaging in natural dialogues to enhance user experience and accessibility.</li>
+                        </ul>
+                        <img src="~/content/assets/images/screen/bank_bot.png" class="img-fluid mb-2 shadow-sm border tile_img" alt="" />
+                        <div style="display:flex; justify-content:space-between;">
+                            <a id="chatbotloader" class="w-50 btn btn-info" style="margin-right:5px;">Get Started&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                            <a href="@Url.Action("BankingCase","CaseStudy",new { Area = "Banking" })" target="_blank" class="w-50 btn btn-info">Case Study&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                        </div>
+                        <a id="chatbotloaderroi" class="btn btn-success roi_btn"><i data-feather="bar-chart-2" width="16" height="16"></i>&nbsp;View ROI</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4" id="callTranscript">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary">
+                        <h5 class="mb-0 mt-2 text-white h6">Contact Centers plus Sentimental Analysis</h5>
+                        <div class="cic-img">
+                            <img src="~/content/assets/images/icons/knowledgemining.png" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class=" p-0">
+                            <li class="litext">
+                                Certainly! Analyzing a call transcript typically involves reviewing the conversation between individuals during a phone call or any other communication medium, extracting key information, identifying patterns, sentiment analysis, and drawing insights from the dialogue.
+                            </li>
+
+                        </ul>
+                        <img src="~/content/assets/images/screen/callTranscript.png" class="img-fluid mb-2 shadow-sm border tile_img" alt="" />
+                        <div style="display:flex; justify-content:space-between;">
+                            <a id="bankingcalltranscript" class="w-50 btn btn-info" style="margin-right:5px;">Get Started&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                            <a href="@Url.Action("ContactCenter","CaseStudy",new { Area = "Banking" })" target="_blank" class="w-50 btn btn-info">Case Study&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                        </div>
+                        <a id="bankingcalltranscriptroi" class="btn btn-success roi_btn"><i data-feather="bar-chart-2" width="16" height="16"></i>&nbsp;View ROI</a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4" id="personalizedCustInt">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary">
+                        <h5 class="mb-0 mt-2 text-white h6">Personalized Customer Interaction</h5>
+                        <div class="cic-img">
+                            <img src="~/content/assets/images/icons/agentchatbot.png" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="p-0">
+                            <li class="litext">
+                                This use case involves understanding individual customer preferences, behaviors, and needs to provide tailored banking services. The goal is to enhance customer experience, increase engagement, and improve satisfaction.
+                            </li>
+                        </ul>
+                        <img src="~/content/assets/images/screen/CustomerIntractionDasboard.png" class="img-fluid mb-2 shadow-sm border tile_img" alt="" />
+                        <div style="display:flex; justify-content:space-between;">
+                            <a id="_customerInteraction" class="w-50 btn btn-info" style="margin-right:5px;">Get Started&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                            <a href="@Url.Action("BankingCase","CaseStudy",new { Area = "Banking" })" target="_blank" class="w-50 btn btn-info">Case Study&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                        </div>
+                        <a id="_customerInteractionroi" class="btn btn-success roi_btn"><i data-feather="bar-chart-2" width="16" height="16"></i>&nbsp;View ROI</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row isDisabled">
+            <div class="col-md-4" id="knwldmine">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary">
+                        <h5 class="mb-0 mt-2 text-white h6">Personalized offers for cross sell and upsell</h5>
+                        <div class="cic-img">
+                            <img src="~/content/assets/images/icons/knowledgemining.png" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    <div class="card-body isDisabled">
+                        <ul class="p-0">
+                            <li class="litext">
+                                Cross-selling and upselling are two powerful tactics to boost your revenue, upgrade existing customer experience, and provide value for first-time visitors of your website. Read on to find out how these strategies work topped up with cross-selling and upselling examples from various companies..
+                            </li>
+
+                        </ul>
+                        <img src="~/content/assets/images/screen/1_1.png" class="img-fluid mb-2 shadow-sm border tile_img" alt="" />
+                        <div style="display:flex; justify-content:space-between;">
+      @*                       <a href="~/Home/CapabilityRedirect" onclick="location.href=this.href+'?capability=Cross Upselling&industry='+getradiobuttonvalue()+'&ModelType='+getTofindModelType(); return false;" class="w-50 btn btn-info" style="margin-right:5px;">Get Started&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a *@>
+
+                            <a href='@Url.Action("CapabilityRedirect","Home")' onclick="location.href=this.href+'?capability=Cross Upselling&industry='+getradiobuttonvalue()+'&ModelType='+getTofindModelType(); return false;" class="w-50 btn btn-info" style="margin-right:5px;">Get Started&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                            <a href="@Url.Action("BankingCase","CaseStudy",new { Area = "Banking" })" target="_blank" class="w-50 btn btn-info">Case Study&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8" id="Ai" style="width: 58%;display:none;">
+        <div class="row">
+            <h5><img src="~/content/assets/images/icons/menu.png" />&nbsp;&nbsp;Capabilities</h5>
+        </div>
+        <div class="row">
+            <div class="col-md-4" id="agentchat">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary">
+                        <h5 class="mb-0 mt-2 text-white h6">Virtual AI Assistant</h5>
+                        <div class="cic-img">
+                            <img src="~/content/assets/images/icons/agentchatbot.png" class="img-fluid" alt="" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <ul class="p-0">
+                            <li class="litext">A conversational AI interface that offers personalized and real-time assistance to users, answering queries, providing guidance, and engaging in natural dialogues to enhance user experience and accessibility.</li>
+                        </ul>
+                        <img src="~/content/assets/images/screen/ErgoKindlustuse_Bot.png" class="img-fluid mb-2 shadow-sm border tile_img" alt="" />
+                        <div style="display:flex; justify-content:space-between;">
+                            <a id="AiAssistantChatbotLoader" class="w-50 btn btn-info chatbotBtn" style="margin-right:5px;">Get Started&nbsp;<i data-feather="chevron-right" width="16" height="16"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loader" class="divWaiting" style="visibility: hidden;">
+    <div class="load-inner">
+        <div class="text-center">
+            <div class="d-flex justify-content-center p-2">
+                <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <span class="text-white fw-normal">Please wait...</span>
+        </div>
+    </div>
+</div>
+
+<div id="divLargerImage"></div>
+
+<div id="divOverlay"></div>
+
+@section JSForThisPage
+{
+    
+
+    <script src="~/js/homeindex.js"></script>
+     
+}
+<script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+<script src="~/script/chatbotscript.js"></script>

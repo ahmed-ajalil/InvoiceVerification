@@ -1,0 +1,182 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.BlobConnectedListDTO>
+
+@{
+    ViewData["Title"] = "ProcessedDocument";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage{
+    <!-- DataTables -->
+
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+    
+        .bg-card-img {
+            background-image: url(../content/assets/images/bg-img.png);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: top;
+        }
+    
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18"><i data-feather="trello" style="max-height:18px;"></i>&nbsp;HRadmin/ProcessedDocument</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body bg-card-img">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5 class="text-info">Limit</h5>
+                        <h2 id="totalLimit"></h2>
+                    </div>
+                    <div class="col-sm-6 text-end">
+                        <img src="~/content/assets/images/total-limit.png" class="img-fluid" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body bg-card-img">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5 class="text-info">Processed</h5>
+                        <h2 id="totaldoc"></h2>
+                    </div>
+                    <div class="col-sm-6 text-end">
+                        <img src="~/content/assets/images/total-doc.png" class="img-fluid" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm">
+            <div class="card-body bg-card-img">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <h5 class="text-info">Credits</h5>
+                        <h2 id="remainingDocument"></h2>
+                    </div>
+                    <div class="col-sm-4 text-end">
+                        <img src="~/content/assets/images/document-limit.png" class="img-fluid" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18"><i data-feather="trello" style="max-height:18px;"></i>&nbsp;List Of Document</h4>
+        </div>
+    </div>
+</div>
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body p-2">
+                @if(Model != null)
+                {
+                    <table id="tblResponse" class="table table-bordered table-striped display" style="width:100%;">
+                        <thead>
+                            <tr class="ctm-table">
+                                <th>Id</th>
+                                <th>Document Name</th>
+                                <th>Status</th>
+                                @*<th>Created Date</th>*@
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.Filename</td>
+                                    <td>@item.IsProcessed</td>
+                                    <td>
+                                        @if(ViewBag.AdLoginCaseDeletePdffromblobcontainer == "AdLoginCase")
+                                        {
+                                            <button class="btn btn-sm custom_btn_padding btn-danger" onclick="DeleteBlobDocument('@item.Filename','AdLoginCase')">
+                                                <i data-feather="trash-2" style="max-height:14px;"></i>&nbsp;Delete
+                                            </button>
+                                        }
+                                        else{
+                                        <button class="btn btn-sm custom_btn_padding btn-danger" onclick="DeleteBlobDocument('@item.Filename','NormalLoginCase')">
+                                            <i data-feather="trash-2" style="max-height:14px;"></i>&nbsp;Delete
+                                        </button>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JSForThisPage {
+
+    @*<script src="~/content/assets/libs/jquery/jquery.min.js"></script>*@
+    @*<script src="~/script/sweetalert.min2.js"></script>*@
+    @*<script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>*@
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+  
+
+    <script src="~/js/hradminprocesseddocument.js"></script>
+
+    
+        }
+
+

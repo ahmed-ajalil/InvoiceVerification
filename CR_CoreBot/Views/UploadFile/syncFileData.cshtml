@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "syncFileData";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+@section CssForThisPage{
+<link href="~/content/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">File Upload</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <form action="#" class="dropzone">
+                        <div class="fallback">
+                            <input name="file" type="file" multiple="multiple">
+                        </div>
+                        <div class="dz-message needsclick">
+                            <div class="mb-3">
+                                <i class="display-4 text-muted bx bx-cloud-upload"></i>
+                            </div>
+                            <h5>Drop files here or click to upload.</h5>
+                        </div>
+                    </form>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="button" class="btn btn-primary waves-effect waves-light" onclick="fnClickbtn()">
+                        Send
+                        Files
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+@section JSForThisPage {
+    <script src="~/content/assets/libs/dropzone/min/dropzone.min.js"></script>
+    <script src="~/js/uploadfilesyncfiledata.js"></script>
+    @* <script>
+        function fnClickbtn()
+        {
+            show_loader();
+            setTimeout(
+                function () {
+                   hide_loader();
+                }, 4000);
+        }
+    </script> *@
+}

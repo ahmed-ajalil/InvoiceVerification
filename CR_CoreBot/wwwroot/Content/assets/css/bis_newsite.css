@@ -1,0 +1,325 @@
+﻿
+body {
+    background-color: #fff;
+}
+
+.spinner-grow {
+    width: 0.5rem;
+    height: 0.5rem;
+    vertical-align: -0.125em;
+    animation-speed: 1s !important;
+    animation-name: spinner-grow;
+    background-color: currentcolor;
+    opacity: 0;
+}
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+
+.slidecontainer {
+    width: 100%;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 25px;
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        background: #04AA6D;
+        cursor: pointer;
+    }
+
+.dropzone {
+    /* min-height: 270px; */
+    border: 2px dashed #ced4da;
+    background: #fff;
+    border-radius: 6px;
+}
+
+    .dropzone .dz-message {
+        text-align: center;
+        /*margin: 3em 0;*/
+    }
+/*
+											ol li {
+												list-style-type: none;
+											}
+
+											div li {
+												list-style-type: none;
+											}*/
+
+.back_bg1 {
+    background: url(Images/back_bg1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    /*z-index: 1;*/ /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: none;
+    /*  width: 30%;
+																																																		margin-top: 250px;*/
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    display: none;
+    border-left: 0.3em solid transparent;
+}
+
+.box_shad {
+    box-shadow: 0 3px 7px 0 #a8a8a8 !important;
+}
+
+.docx {
+    width: 100% !important;
+}
+
+#UploadedLoader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    background-color: rgb(0 0 0 / 94%);
+    z-index: 99999;
+    overflow: auto;
+}
+.loaderclass img {
+    position: absolute !important;
+    left: 35% !important;
+    top: 25% !important;
+    opacity: 0.4 !important;
+    width: 25% !important;
+    height: 53% !important;
+    border-radius: 50% !important;
+    border: 3px solid #99ffff !important;
+}
+
+input {
+    width: 100%;
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: black
+}
+
+    input:focus {
+        border-color: black;
+        outline: 1px dotted #000
+    }
+
+.main-content {
+    margin-left: 0 !important;
+    overflow: scroll !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #5156be;
+    border-radius: 20px 20px 0 0;
+    border: 1px solid #5156be;
+}
+
+.nav-pills .nav-link {
+    border: 1px solid #5156be24;
+    border-radius: 20px 20px 0 0;
+    border-bottom: 0;
+    background-color: #fff;
+    padding: 5px 10px;
+}
+
+.chat-conversation {
+    height: calc(100vh - 320px) !important;
+}
+
+
+.tooltip123 {
+    display: block;
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    z-index: 9999;
+}
+
+.chat-link-ctm {
+    border: 1px solid #4eb7e5 !important;
+    background: #ffffff !important;
+    color: #5d5d5d;
+    font-size: 13px;
+}
+
+    .chat-link-ctm:hover {
+        border: 1px solid #4eb7e5 !important;
+        background: #dff1ff !important;
+        color: #3d3d3d;
+        font-size: 13px;
+    }
+
+.full-text {
+    display: none;
+}
+
+.show-full-text .full-text {
+    display: block;
+}
+
+.border-ctm {
+    border: 1px solid #c3c3c3 !important;
+}
+
+.icon-lg {
+    height: 17px;
+    width: 17px;
+}
+
+.hide {
+    display: none;
+}
+
+.myDIV {
+    position: relative;
+    padding-right: 50px;
+}
+
+.feedback_thumbs {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: none;
+}
+
+.myDIV:hover .feedback_thumbs {
+    display: block;
+    color: red;
+}
+
+.ms1 {
+    margin-right: 10px;
+}
+
+.thub {
+    z-index: 99;
+    margin: 0 auto;
+    padding: 0;
+}
+
+#chatBotDIV {
+    overflow-x: hidden;
+    overflow-y: visible;
+    height: 350px;
+}
+
+.le-sug {
+    display: flex;
+    flex-direction: column;
+}
+
+    .le-sug a {
+        background-color: #2296f057;
+        color: #414141;
+        border-radius: 25px;
+        padding: 0 10px;
+        font-weight: 400;
+        margin-left: 10px;
+        display: inline-block;
+    }
+
+        .le-sug a:hover {
+            background-color: #2296f057;
+            color: #414141;
+            border-radius: 25px;
+            padding: 0 10px;
+            font-weight: 400;
+            margin-left: 10px;
+            text-decoration: underline !important;
+        }
+
+.ChatBotmsg-text {
+    padding: 10px 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.chat-conversation .conversation-list .ctext-wrap-content {
+    padding: initial;
+    border-radius: 8px !important;
+}
+
+    .chat-conversation .conversation-list .ctext-wrap-content p {
+        padding: 10px 20px;
+    }
+
+.Usermsg-text {
+    padding: 10px 20px;
+}

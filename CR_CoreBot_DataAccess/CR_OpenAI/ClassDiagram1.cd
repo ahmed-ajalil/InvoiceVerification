@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.AutoSuggestions">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAgA=</HashCode>
+      <FileName>CR_OpenAI\AutoSuggestions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.AzureCognitiveServicesAppliedAi">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAAAgAAgAAAAAAAAAAAAQAAAABAAQAAgAAAAAgA=</HashCode>
+      <FileName>CR_OpenAI\AzureCognitiveServicesAppliedAi.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.AzureMlCompute">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAAAkAAgAAAAAAAAAAAAQAAAABAAQAAgAAAAAgA=</HashCode>
+      <FileName>CR_OpenAI\AzureMlCompute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.BlobConnection">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAACABAAQAAAAAQAAAAAAAAAAAAAABQAASQAAQAAAAA=</HashCode>
+      <FileName>CR_OpenAI\BlobConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.BlobFileDatum">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAABAAAAAAAAAAAAAAAAAAABAAAAAAAABAAAA=</HashCode>
+      <FileName>CR_OpenAI\BlobFileDatum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.BotConfiguration">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAQAAAAAAAAAAAAAAAAAgAABQAAAAIAAAEAAA=</HashCode>
+      <FileName>CR_OpenAI\BotConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.ChatBotKeyConfiguration">
+    <Position X="3" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAQAAAAAAAgAAAAAAAAAQAAAAAAAAABAA=</HashCode>
+      <FileName>CR_OpenAI\ChatBotKeyConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.CropenAiContext">
+    <Position X="4.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AECABAAIAUiQAAAggAACAAAEGAAAgEAgAwEYAQAAAAA=</HashCode>
+      <FileName>CR_OpenAI\CropenAiContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.CustomerConfiguration">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQCAAAAQAgIAAAQAAAABAACAAAAAAAAAA=</HashCode>
+      <FileName>CR_OpenAI\CustomerConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.CustomerInformation">
+    <Position X="8.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAJIAAIAAAAAAAAAAAAQAAAAAABQCAQQIAAABGAA=</HashCode>
+      <FileName>CR_OpenAI\CustomerInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.CustomerModel">
+    <Position X="10" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgSAAAAAAAAAAAAAAAAgAAAAAAAABAAAAAAAAgABAA=</HashCode>
+      <FileName>CR_OpenAI\CustomerModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.CustomerOffer">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAJAAAAAAAAAAAAAAAAAAAAABACAAAAAAA=</HashCode>
+      <FileName>CR_OpenAI\CustomerOffer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.EntityExtractrion">
+    <Position X="3" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAgAAAAAAAAAAAAACAAAAAAAAAgAAAAJIAAA=</HashCode>
+      <FileName>CR_OpenAI\EntityExtractrion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.Feedback">
+    <Position X="4.75" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABBAAAAAAICEgAAAAAABAAAAAQAAAAAAA=</HashCode>
+      <FileName>CR_OpenAI\Feedback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.MicrosoftAzureEstimate">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAKAAAAkAAgAAAAAAAAAAAAQAAAAAAAAAAgAAAAAgA=</HashCode>
+      <FileName>CR_OpenAI\MicrosoftAzureEstimate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.PerformanceMatrixChecker">
+    <Position X="8.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAMAAAAAAAAAEQgEIDACAAIAAAAEgAAAAIAEAAA=</HashCode>
+      <FileName>CR_OpenAI\PerformanceMatrixChecker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.PersonalDetail">
+    <Position X="10" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQgAAAAACAAAAAICAAAAAAARQIAAACBIAACBAAAAAE=</HashCode>
+      <FileName>CR_OpenAI\PersonalDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.RoleMaster">
+    <Position X="11.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>CR_OpenAI\RoleMaster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.SaveMedicalDatum">
+    <Position X="3" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAEgAAAAAAAAAAQAIAAAAAADEAACAAAAAAI=</HashCode>
+      <FileName>CR_OpenAI\SaveMedicalDatum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.Streaming">
+    <Position X="11.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAUAAAAAAAAAAAABCAAAAAAAAAgAAAAAAAAAgA=</HashCode>
+      <FileName>CR_OpenAI\Streaming.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.TblCustomerFileDetail">
+    <Position X="6.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAABAAAAEAAAAAgAAAAAAAAAAgBAAABAAAA=</HashCode>
+      <FileName>CR_OpenAI\TblCustomerFileDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.TblExceptionDetail">
+    <Position X="8.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAACCAAAAAAIAAAAAAAQAAAEAAAAAAA=</HashCode>
+      <FileName>CR_OpenAI\TblExceptionDetail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.TblModelConfiguration">
+    <Position X="10" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>CR_OpenAI\TblModelConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.TblSummaryExtractrion">
+    <Position X="11.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAJAAAA=</HashCode>
+      <FileName>CR_OpenAI\TblSummaryExtractrion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.TblUserInformationMapping">
+    <Position X="3" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAAAAAAAAAAIAgAAAAAABACAwAAAAAAAAg=</HashCode>
+      <FileName>CR_OpenAI\TblUserInformationMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.Transaction">
+    <Position X="6.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAACAAAAAAAAAAAAEBAAACAIAAAAA=</HashCode>
+      <FileName>CR_OpenAI\Transaction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DataAccess.CR_OpenAI.UserSessionTracker">
+    <Position X="10" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAIIAAAAAAAAAAwAAAAAAAAAIAIAAAAAAEAAABAA=</HashCode>
+      <FileName>CR_OpenAI\UserSessionTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

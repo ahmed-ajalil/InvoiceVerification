@@ -1,0 +1,174 @@
+﻿@model CR_CoreBot_DTO.CustomerInformationDTO
+
+@{
+    ViewData["Title"] = "CustomerInfo";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+@section CssForThisPage {
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Customer Information</h4>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="BlobConnection">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div>
+                                <div class="form-group mb-3">
+                                    <label for="example-text-input" class="form-label">UserName</label>
+                                    <input asp-for="UserName" id="username" class="form-control" />
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="example-text-input" class="form-label">Name</label>
+                                    <input asp-for="Name" id="customername" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                @*         <div class="form-group mb-3">
+                                <label for="DatabaseName" class="form-label">Database Name</label>
+                                <input asp-for="DatabaseName" id="databasename" class="form-control" />
+                                <span asp-validation-for="DatabaseName" class="text-danger"></span>
+                                </div>
+                                *@
+                                <div class="form-group mb-3">
+                                    <label for="RoleType" class="form-label">Role</label>
+
+                                    <select id="RoleType" class="form-control">
+                                        <option value=1>Admin</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3" style="display:none">
+                                    <label for="example-text-input" class="form-label">Account Name</label>
+                                    <input id="AccountName" class="form-control" />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="select-images" class="form-label">Select Image file(.img,.jpg,.jpeg,.png) :</label>
+                                    <input class="form-control" type="file" accept=".img,.jpg,.jpeg,.png" id="imgfile" onchange="previewImg()" />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <p class="form-label mb-2">Preview</p>
+                                    <img id="imagePreview" src="#" alt="Preview Image" class="image-preview img-fluid" style="width: 12rem;display:none;" />
+                                    <img id="imageShow" src="#" alt="Show Image" class="image-preview img-fluid" style="width: 12rem;display:none;" />
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="mt-3 mt-lg-0">
+                                <div class="form-group mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input asp-for="Password" id="password" class="form-control" type="password" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="OrganizationName" class="form-label">Organization Name</label>
+                                    <input asp-for="OrganizationName" id="organizationname" class="form-control" />
+                                    <span asp-validation-for="OrganizationName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group mb-3" style="display:none;">
+                                    <label for="example-text-input" class="form-label">Blob Container Name</label>
+                                    <input id="BlobContainerName" class="form-control" />
+                                    <span id="containerExist"></span>
+                                </div>
+
+                                <div class="form-group mb-3" style="display:none;">
+                                    <label for="example-text-input" class="form-label">Account Key</label>
+                                    <input id="AccountKey" class="form-control" />
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="Category" class="form-label">Category</label>
+                                    <select id="category" class="form-control">
+                                        <option value="HealthCareModel">HealthCare</option>
+                                        <option value="BankingModel">Banking</option>
+                                        <option value="HRModel">HR</option>
+                                        <option value="RetailModel">Retail</option>
+                                        @* change by reshav *@
+                                        <option value="EntertainmentModel">Entertainment</option>
+                                        <option value="ShipmentModel">Shipment Information</option>
+                                        <option value="TravelModel">Trip Planner</option>
+                                        <option value="ManufacturingModel">Manufacturing</option>
+                                        <option value="ConstructionConsultingModel">ConstructionConsulting</option>
+                                        <option value="CosmeticsModel">Cosmetics</option>
+                                        <option value="ITServicesModel">ITServices</option>
+                                        <option value="TelecomModel">Telecom</option>
+                                        <option value="PharmaceuticalModel">Pharmaceutical</option>
+                                        <option value="AutomotiveRepairAndMaintenanceModel">AutomotiveRepairAndMaintenance</option>
+                                        <option value="NGOModel">NGO</option>
+                                        <option value="SupplyChainManagementModel">SupplyChainManagement</option>
+                                        <option value="FinanceModel">Finance</option>
+                                        <option value="MediaModel">Media</option>
+                                        <option value="EcommerceModel">Ecommerce</option>
+                                        <option value="EducationModel">Education</option>
+                                        <option value="ConsumerGoodsModel">ConsumerGoods</option>
+                                        <option value="AiAssistantModel">AiAssistant</option>
+                                        <option value="EnergyModel">Energy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="Streaming" class="form-label">Streaming</label>
+                                    <div id="Streaming" class="form-control">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="streaming" id="streamingOn" value=1 checked>
+                                            <label class="form-check-label" for="streamingOn">
+                                                On
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="streaming" id="streamingOff" value=0>
+                                            <label class="form-check-label" for="streamingOff">
+                                                Off
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-end">
+                            <div class="card border-0 bg-transparent mb-0">
+                                <div class="card-body px-3 text-end position-bottom p-0 mb-0">
+                                    <div class="mb-0">
+                                        <button type="button" id="Insertbtn" class="btn btn-primary btn-sm px-5" onclick="SaveCustomerInfo('add')" style="float:right;">Save Customer Info</button>
+                                        <button type="button" id="Updatebtn" class="btn btn-info btn-sm px-5" onclick="SaveCustomerInfo('update')" style="float:right;display:none"><i data-feather="refresh-ccw" class="icon-sm"></i>&nbsp; Update Customer Info</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (@ViewBag.Customermsg != "" && @ViewBag.Customermsg == "succesfully")
+{
+    <script>
+        $(document).ready(function () {
+            swal("Successfully done !", " ", "success");
+        });
+    </script>
+}
+<script src="~/Content/assets/libs/jquery/jquery.min.js"></script>
+
+@section JSForThisPage {
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+ 
+
+    <script src="~/js/admincustomerinfo.js"></script>
+    
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

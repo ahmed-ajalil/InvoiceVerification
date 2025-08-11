@@ -1,0 +1,186 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.BlobConnectedListDTO>
+@{
+
+    ViewData["Title"] = "BlobConnectedFileList";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@*<head>*@
+
+@section CssForThisPage{
+    <!-- DataTables -->
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+}
+@if (Model != null && Model.Any(item => item?.Filename != null))
+{
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18"><i data-feather="grid" style="max-height:18px;"></i>&nbsp;Available Resources</h4>
+                <button type="button" value="Blob Connection Info" class="btn btn-success btn-sm" onclick="fnSelectSaveToBlob(TotalDocument,FilesAllowed,Remaininglimit)" style="float:right;">Process</button>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body p-2">
+            <table id="tblblobResponse" class="table table-bordered table-striped display" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th style="max-width:40px !important">
+                            @*                                    <input type="checkbox" name="check" class="form-check-input" id="checkAll">*@
+                            <label class="form-check-label" for="checkAll">Select</label>
+                        </th>
+                        <th style="max-width:500px">File Name</th>
+                        <th>File type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            @if (@item.IsProcessed == "Processed")
+                            {
+                                <td>
+                                    <div class="form-check">
+                                        <input id="@item.Filename" type="checkbox" onclick="fnselectFile('@item.DownloadUrl','@item.Filename')" class="form-check-input" disabled>
+                                        <label class="form-check-label"></label>
+                                    </div>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <div class="form-check">
+                                        <input id="@item.Filename" type="checkbox" onclick="fnselectFile('@item.DownloadUrl','@item.Filename')" class="form-check-input">
+                                        <label class="form-check-label"></label>
+                                    </div>
+                                </td>
+                            }
+                            <td><a href="javascript: void(0);" class="text-body fw-medium">@item.Filename</a> </td>
+                            @*
+                    <td><a class="fas fa-file" href='@item.DownloadUrl' target='_blank'> @item.Filename </a></td>
+                    *@
+                            <td>
+                                <i class="fas fa-file-pdf text-danger" style="margin-right:5px;"></i>
+                                <script>
+                                    (function () {
+                                        debugger
+                                        var ext = getFileExtension('@item.Filename');
+                                        document.write(ext);
+                                        function getFileExtension(fileName) {
+                                            // Split the file name by the dot (.)
+                                            const parts = fileName.split('.');
+
+                                            // Get the last part of the split
+                                            const extension = parts[parts.length - 1];
+                                            debugger
+                                            // Convert the extension to lowercase (optional)
+                                            return extension.toLowerCase();
+                                        }
+                                    })();
+                                </script>
+                            </td>
+                            @if (@item.IsProcessed == "Not Processed")
+                            {
+                                <td><span class="badge bg-danger p-2 rounded-pill">@item.IsProcessed</span></td>
+                            }
+                            else if (@item.IsProcessed == "Processed")
+                            {
+                                <td><span class="badge bg-success p-2 rounded-pill">@item.IsProcessed</span></td>
+                            }
+                            else if (@item.IsProcessed == "Not Uploaded")
+                            {
+                                <td><span class="badge bg-warning p-2 rounded-pill">@item.IsProcessed</span></td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18"><i data-feather="grid" style="max-height:18px;"></i>&nbsp;Upload Resources</h4>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body p-2">
+            <div class="simplebar-content" style="padding: 16px 8px 0px;">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card" style="height: calc(100vh - 200px); overflow-x:hidden;">
+                            <div class="card-header">
+                                <h5 class="mb-0 h6">Select Files</h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <img src="~/content/assets/images/file-upload.gif" style="width:10rem;">
+                                <div class="dropzone dz-clickable">
+                                    <input onchange="showSelectedFiles()" class="file-input-file form-control mt-5" id="customFile" type="file" multiple="multiple" name="files[]">
+                                    <button type="submit" class="btn btn-primary mt-4" onclick="fnUploadMultiplefiles()">Upload</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card" style="height: calc(100vh - 200px); overflow-x:hidden;">
+                            <div class="card-header">
+                                <h5 class="mb-0 h6">Selected Files List </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="wrap">
+                                    <div class="wrap">
+                                        <form action="#" name="form" method="get">
+                                            <div class="file-input" id="file-input">
+                                                <div class="file" id="selectedFilesDiv">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section JSForThisPage {
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+  
+
+    <script src="~/js/hradminblobconnectionfilelist.js"></script>
+
+        
+     
+
+}
+
+

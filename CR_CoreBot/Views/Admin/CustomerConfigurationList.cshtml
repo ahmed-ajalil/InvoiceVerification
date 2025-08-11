@@ -1,0 +1,137 @@
+﻿@model IEnumerable<CR_CoreBot_DataAccess.CR_OpenAI.CustomerConfiguration>
+
+    @{
+    ViewData["Title"] = "CustomerConfigurationList";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage{
+    <!-- DataTables -->
+    
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+    </style>
+}
+
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18"><i data-feather="trello" style="max-height:18px;"></i>&nbsp;Customer Configuration List</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="RptLytTpMenu">
+            <ul>
+                <li>
+                    @*<button class="btn btn-info btn-sm"><i data-feather="user" onclick="addnewuser()" class="icon-sm"></i> Add User</button>*@
+                    @*<a href="/Admin/CustomerConfiguration" class="btn btn-info btn-sm"><i data-feather="user" class="icon-sm"></i> Add Customer Configuration</a>*@
+                    
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body p-2">
+                @if(Model != null){
+                <table id="tblResponse" class="table table-bordered table-striped display" style="width:100%;">
+                    <thead>
+                        <tr class="ctm-table">
+                            <th>Username</th>
+                            <th>Users Allowed</th>
+                            <th>Files Allowed</th>
+                            @*<th>Created Date</th>*@
+                            <th>File Format Allowed</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Username</td>
+                                <td>@item.UsersAllowed</td>
+                                <td>@item.FilesAllowed</td>
+                                @*<td>@item.CreateDateTime.ToString("yyyy-MM-dd")</td>*@
+                                <td>@item.FileFormat</td>
+                                <td>
+                              <button class="btn btn-sm custom_btn_padding btn-info" onclick="EditCustomerConfiguration(@item.ConfigurationId)">
+                                  <i data-feather="edit" style="max-height:14px;"></i>&nbsp;Edit</button>
+
+                                   
+                                       
+                                       @*@if(ViewBag.Role == 2){
+                                       <button class="btn btn-sm custom_btn_padding btn-danger" onclick="DeleteCustomerConfiguration(@item.ConfigurationId)">
+                                <i data-feather="trash-2" style="max-height:14px;"></i>&nbsp;Delete
+                                    </button>
+                                }*@
+                                    
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                    </table>
+                }
+                else
+                {
+                    <h2>No record found</h2>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section JSForThisPage {
+
+    @*<script src="~/script/sweetalert.min2.js"></script>*@
+    @*<script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>*@
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+   
+    <script src="~/js/admincustomerconfigurationlist.js"></script>
+    
+        }
+
+

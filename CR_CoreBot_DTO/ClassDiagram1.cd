@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CR_CoreBot_DTO.AdLoginInfoDTO">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAVIAAIAAAIAAEAAAAAoAAAAAABACAQAABAABCAg=</HashCode>
+      <FileName>AdLoginInfoDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.AppSettingHelper">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AppSettingHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.AppSettingsDTO">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQBDEAAAAAACAAAAEAAAAAQAAgAAAA=</HashCode>
+      <FileName>AppSettingsDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.AzureDTO">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAIAAAAAAAAAgAAAgAAAAAMAAAEAAAAAAEAAA=</HashCode>
+      <FileName>AzureDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.BlobConnectedListDTO">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAARAAQAAAAAAgAAQAAAAAAAQAAAAQAAAAAAA=</HashCode>
+      <FileName>BlobConnectedListDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.BlobConnectionModel">
+    <Position X="4" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAACABAAQAAAAAQAAAAAAAAAAAAAABQAACQAAQAAAAA=</HashCode>
+      <FileName>BlobConnectionModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.ChatBotKeyConfigurationDTO">
+    <Position X="5.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAQAAAAAAAgAAAAAAAAAQAAAAAAAAABAA=</HashCode>
+      <FileName>ChatBotKeyConfigurationDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.ContentSafteyModal">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAQAAAAACIAAAAAAAAAACA=</HashCode>
+      <FileName>ContentSafteyModal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.CustomerInformationDTO">
+    <Position X="9.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAQAAAAAABQCAQAIAAABCAA=</HashCode>
+      <FileName>CustomerInformationDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.CustomerInformationHRDTO">
+    <Position X="11" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAQAAAAAABQCAQAIAAABCAA=</HashCode>
+      <FileName>CustomerInformationHRDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.CustomerModelDTO">
+    <Position X="4" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAgAAAA=</HashCode>
+      <FileName>CustomerModelDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.DataBotDTO">
+    <Position X="5.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CgAQEAABDBCAAgKIAAEQJAwhQBAhFABCQABACEBBCgA=</HashCode>
+      <FileName>DataBotDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.DataNewDTO">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CgQAAAUQBIWAAAAAAACECVADAAAAAAECggAAgIwGDAA=</HashCode>
+      <FileName>DataNewDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.HolEntityDTO">
+    <Position X="9.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>HolEntityDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.LoggedInCustomerDetailsDTO">
+    <Position X="11" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAQIAAIAAAIAAAAAAAAoAAAAAABAAAQAAAAABCAA=</HashCode>
+      <FileName>LoggedInCustomerDetailsDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.LoginInfoDTO">
+    <Position X="4" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECAdIAAIAAAIAAAAAAAAoAAAAAABACAQAQAAABCAg=</HashCode>
+      <FileName>LoginInfoDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.ModelFineTuneDataDTO">
+    <Position X="5.75" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAQgAAEAAQgAACgCAAAAABAACAAAAAhAAAA=</HashCode>
+      <FileName>ModelFineTuneDataDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.OpenAIIndexModel">
+    <Position X="9.25" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQABAAAAAAAgAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OpenAIIndexModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.PerformanceMatrixCheckerModel">
+    <Position X="9.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAQgEADACAAIAAAAEgAAAAIAEAAA=</HashCode>
+      <FileName>PerformanceMatrixCheckerModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.SessionTrackerModel">
+    <Position X="11" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAIIAAAAAAAAAAwAAAAAAAAAIAIAAAAAAEAAABAA=</HashCode>
+      <FileName>SessionTracker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.ShowCustomerInfoDTO">
+    <Position X="4" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIAAJIAAIAAAAAAAAAAAAQAAAAAABQCAQQIAAABCAA=</HashCode>
+      <FileName>ShowCustomerInfoDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.UserCredentialsDTO">
+    <Position X="9.25" Y="13.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAKAAEAAAEiAAAAAAAAAACAgAAAAAAIAAAAAAMAAA=</HashCode>
+      <FileName>UserCredentialsDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_CoreBot_DTO.UserInfoDTO">
+    <Position X="11" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAAAAAAAAAAAAgAQAAAABACAwAAAAAAAAk=</HashCode>
+      <FileName>UserInfoDTO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="14" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

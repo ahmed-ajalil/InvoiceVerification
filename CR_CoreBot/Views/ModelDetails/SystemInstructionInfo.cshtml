@@ -1,0 +1,83 @@
+﻿@model CR_HRPortalAI_DataAcess.CR_HRPortal.SystemInstructionsDTO
+
+@{
+    ViewData["Title"] = "SystemInstructionInfo";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage {
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">System Instruction Information</h4>
+       
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='@Url.Action("SystemInstructionInfoList","ModelDetails")';">
+                Back
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="width: 100%; height: 100vh;">
+    <div class="col-12">
+        <div class="">
+            <div class="">
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-warning">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+                <div style="max-height: 300px; width: 90%;">
+                    <form id="modelForm" method="post">
+                        @Html.AntiForgeryToken()
+                        <section class="pt-5">
+                            <div class="container-fluid">
+                                <div class="row gx-3 gy-4 justify-content-center">
+                                    <div class="col-md-10">
+                                        <div class="shadow bg-white px-3 py-4 rounded-3 border">
+                                            <div class="border-bottom pb-2">
+                                                <h4>System Instructions</h4>
+                                                <h6 class="text-dark text-opacity-75"><i>Guiding You Through the Setup and Use of Our Chatbot</i></h6>
+                                            </div>
+                                            <div class="pt-4">
+                                                <!-- Rules Field -->
+                                                <div class="form-group mb-3">
+                                                    <label asp-for="Rules" class="form-label">Rules</label>
+                                                    <textarea asp-for="Rules" class="form-control" id="Rules" style="height: 600px; width:100%" placeholder="Enter rules here"></textarea>
+                                                    <span asp-validation-for="Rules" class="text-danger"></span>
+                                                </div>
+
+                                                <!-- Industry Field -->
+                                                <div class="form-group mb-3">
+                                                    <label asp-for="Industry" class="form-label">Industry</label>
+                                                    <input asp-for="Industry" class="form-control" id="Industry" placeholder="Enter industry" />
+                                                    <span asp-validation-for="Industry" class="text-danger"></span>
+                                                </div>
+
+                                                <!-- Submit buttons -->
+                                                <div class="text-end">
+                                                    <button type="button" id="Insertbtn" class="btn btn-info px-5" onclick="SaveSystemInstructionInfo('add')">Save</button>
+                                                    <button type="button" id="Updatebtn" class="btn btn-info px-5" style="display:none;" onclick="SaveSystemInstructionInfo('update')">Update</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JSForThisPage {
+   
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/modeldetailssysteminstructioninfo.js"></script>
+}

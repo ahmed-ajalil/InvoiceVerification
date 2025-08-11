@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CR_HRPortalAI_DataAcess.CR_HRPortal.BlobFileDatum">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>CR_HRPortal\BlobFileDatum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_HRPortalAI_DataAcess.CR_HRPortal.HrportalAiContext">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkAQAgAUQwAIgIAAAAAQABkAQAAQAECAAIEICAAIA=</HashCode>
+      <FileName>CR_HRPortal\HrportalAiContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_HRPortalAI_DataAcess.CR_HRPortal.ModelFineTuneDatum">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAQgAAEAAQgAACgCAAAAABAACAAAAAhAAAA=</HashCode>
+      <FileName>CR_HRPortal\ModelFineTuneDatum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CR_HRPortalAI_DataAcess.CR_HRPortal.UserInformation">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEIAAAAAAAAAAAAAIAgAAAAAABACAwAAAAAAAAg=</HashCode>
+      <FileName>CR_HRPortal\UserInformation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="9" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

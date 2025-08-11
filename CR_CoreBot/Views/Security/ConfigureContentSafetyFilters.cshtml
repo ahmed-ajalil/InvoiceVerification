@@ -1,0 +1,518 @@
+﻿@{
+    ViewData["Title"] = "ConfigureContentSafetyFilters";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+@section JSForThisPage {
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/js/security.js"></script>
+
+
+ 
+
+    <script>
+        let editIndex = -1;
+
+        function toggleTableHeaders() {
+            const hasWords = $('#blocklistWords tr').length > 0;
+            if (hasWords) {
+                $('.blocklist-table').addClass('has-words');
+            } else {
+                $('.blocklist-table').removeClass('has-words');
+            }
+        }
+        function AddWord() {
+            const word = $('#blocklistInput').val().trim();
+            if (word) {
+                $('#blocklistWords').append(`
+                                                    <tr>
+                                                        <td>${word}</td>
+                                                        <td>
+                                                            <div class="blocklist-actions">
+
+                                                                <button class="deleteBtn">Delete</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                `);
+                $('#blocklistInput').val('');
+                //toggleTableHeaders();
+                $.ajax({
+                    // url: "../Security/ContentSafetyBlocklistAddItems",
+                    url: window.location.origin + '@Url.Action("ContentSafetyBlocklistAddItems", "Security")',
+                   
+                    data: { Text: word },
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    type: "Get",
+                    beforeSend: function () {
+                        $("#loader").show();
+                    },
+                    success: function (data) {
+                        alert('Blocklist updated successfully!');
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            }
+        }
+        //function ModifyBlockListItems(action){
+        //    $.ajax({
+        //        url: "../Security/SaveContentSafetyBlockList",
+        //        data: { violenceRejectionThreshold: violenceRejectionThreshold, hateRejectionThreshold: hateRejectionThreshold, sexualRejectionThreshold: sexualRejectionThreshold, selfHarmRejectionThreshold: selfHarmRejectionThreshold },
+        //        contentType: "application/json; charset=utf-8",
+        //        cache: false,
+        //        type: "Get",
+        //        beforeSend: function () {
+        //            $("#loader").show();
+        //        },
+        //        success: function (data) {
+        //            alert('Settings saved successfully!');
+        //        },
+        //        complete: function () {
+        //            $("#loader").hide();
+        //        },
+        //        error: function (data) {
+        //            console.log(data);
+        //        }
+        //    });
+        //}
+        $(document).ready(function () {
+            $('.tab').on('click', function () {
+                var target = $(this).data('target');
+                $('.tab').removeClass('active');
+                $(this).addClass('active');
+                $('.tab-pane').removeClass('active');
+                $(target).addClass('active');
+            });
+            $.ajax({
+                // url: "../Security/ContentSafetyBlocklistGetAllItems",
+                url: window.location.origin + '@Url.Action("ContentSafetyBlocklistGetAllItems", "Security")',
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                cache: false,
+                type: "Get",
+                beforeSend: function () {
+                    $("#loader").show();
+                },
+                success: function (data) {
+                    if (data.length > 0) {
+                        toggleTableHeaders();
+                        for (var j = 0; j < data.length; j++) {
+                            word = data[j].text;
+                            $('#blocklistWords').append(`
+                                                                <tr>
+                                                                    <td>${word}</td>
+                                                                    <td>
+                                                                        <div class="blocklist-actions">
+
+                                                                            <button class="deleteBtn">Delete</button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            `);
+                        }
+                    }
+                },
+                complete: function () {
+                    $("#loader").hide();
+                },
+                error: function (data) {
+                    console.log(data);
+                }
+            });
+            $('#addWordBtn').on('click', function () {
+                AddWord();
+            });
+
+            $('#blocklistWords').on('click', '.deleteBtn', function () {
+                const word = $(this).closest('tr').find('td:first').text().trim();
+                $(this).closest('tr').remove();
+                toggleTableHeaders();
+                $.ajax({
+                    // url: "../Security/ContentSafetyBlocklistDeleteItems",
+                    url: window.location.origin + '@Url.Action("ContentSafetyBlocklistDeleteItems", "Security")',
+                    data: { Text: word },
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    type: "Get",
+                    beforeSend: function () {
+                        $("#loader").show();
+                    },
+                    success: function (data) {
+                        alert('Blocklist updated successfully!');
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+
+            //$('#blocklistWords').on('click', '.editBtn', function () {
+            //    const word = $(this).closest('tr').find('td:first').text().trim();
+            //    $('#blocklistInput').val(word);
+            //    $('#addWordBtn').hide();
+            //    $('#updateWordBtn').show();
+            //    editIndex = $(this).closest('tr').index();
+            //});
+
+            //$('#updateWordBtn').on('click', function () {
+            //    const updatedWord = $('#blocklistInput').val().trim();
+            //    if (updatedWord && editIndex > -1) {
+            //        $('#blocklistWords tr').eq(editIndex).find('td:first').text(updatedWord);
+            //        $('#blocklistInput').val('');
+            //        $('#addWordBtn').show();
+            //        $('#updateWordBtn').hide();
+            //        editIndex = -1;
+            //        $.ajax({
+            //            url: "../Security/ContentSafetyBlocklistDeleteItems",
+            //            data: { Text: word },
+            //            contentType: "application/json; charset=utf-8",
+            //            cache: false,
+            //            type: "Get",
+            //            beforeSend: function () {
+            //                $("#loader").show();
+            //            },
+            //            success: function (data) {
+            //                alert('Blocklist updated successfully!');
+            //            },
+            //            complete: function () {
+            //                $("#loader").hide();
+            //            },
+            //            error: function (data) {
+            //                console.log(data);
+            //            }
+            //        });
+            //    }
+            //});
+            $('.range-slider').on('input', function () {
+                var value = $(this).val();
+                var text = '';
+
+                if (value == 6) {
+                    text = 'High';
+                } else if (value == 4) {
+                    text = 'Medium';
+                } else if (value == 2) {
+                    text = 'Low';
+                }
+
+                $(this).next('.range-value').text(text);
+            });
+            $('#saveBtn').on('click', function () {
+                //var settings = {};
+                var selfHarmRejectionThreshold;
+                var violenceRejectionThreshold;
+                var hateRejectionThreshold;
+                var sexualRejectionThreshold;
+                $('.category').each(function () {
+                    var category = $(this).find('.category-label').text().trim();
+                    var value = $(this).find('.range-slider').val();
+                    var severity = $(this).find('.range-value').text();
+                    if (category == "Violence") {
+                        violenceRejectionThreshold = Number(value);
+                    }
+                    else if (category == "Sexual") {
+                        sexualRejectionThreshold = Number(value);
+                    }
+                    else if (category == "Hate") {
+                        hateRejectionThreshold = Number(value);
+                    }
+                    else {
+                        selfHarmRejectionThreshold = Number(value);
+                    }
+                    //settings[category] = {
+                    //    value: value,
+                    //    severity: severity
+                    //};
+                });
+                
+              
+                $.ajax({
+                     
+                    // url: "../Security/SaveContentSafetySettings",
+                    url: window.location.origin + '@Url.Action("SaveContentSafetySettings", "Security")',
+                   
+                    data: { violenceRejectionThreshold: violenceRejectionThreshold, hateRejectionThreshold: hateRejectionThreshold, sexualRejectionThreshold: sexualRejectionThreshold, selfHarmRejectionThreshold: selfHarmRejectionThreshold },
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    type: "Get",
+                    beforeSend: function () {
+                        $("#loader").show();
+                    },
+                    success: function (data) {
+                        alert('Settings saved successfully!');
+                    },
+                    complete: function () {
+                        $("#loader").hide();
+                    },
+                    error: function (data) {
+                        console.log(data);
+                    }
+                });
+
+
+
+            });
+            toggleTableHeaders();
+        });
+    </script>
+}
+<style>
+
+    .container {
+        width: 400px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .category {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        border: 1px dashed #ddd;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .category-label {
+        font-size: 14px;
+        margin-right: 10px;
+    }
+
+    .slider-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    input[type="range"] {
+        margin-right: 10px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    .description {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .tabs {
+        display: flex;
+        margin-bottom: 20px;
+    }
+
+    .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px 5px 0 0;
+        margin-right: 10px;
+    }
+
+        .tab.active {
+            background-color: white;
+            color: #007bff;
+            border: 1px solid #ddd;
+            border-bottom: none;
+        }
+
+    .tab-pane {
+        display: none;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: white;
+        border-radius: 0 5px 5px 5px;
+    }
+
+        .tab-pane.active {
+            display: block;
+        }
+    /* Blocklist table styles */
+    .blocklist-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+        .blocklist-table th, .blocklist-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .blocklist-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+    .blocklist-actions button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 3px 8px;
+        cursor: pointer;
+    }
+
+        .blocklist-actions button:hover {
+            background-color: #0056b3;
+        }
+
+    .blocklist-table thead {
+        display: none;
+    }
+
+    .blocklist-table.has-words thead {
+        display: table-header-group;
+    }
+
+    .navct {
+        position: relative !important;
+        border-bottom: 1px solid #f5f5f5;
+        padding: 20px 5px 10px 10px;
+    }
+
+    .range-value {
+        min-width: 140px;
+        text-align: left;
+    }
+
+    .border-ct {
+        border: 1px solid #f5f5f5 !important;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #0d6efd;
+        background-color: #f8f9fa;
+        border-bottom: 3px solid #0075ff;
+        border-radius: 0;
+    }
+
+    .nav-link {
+        color: #000;
+    }
+</style>
+<div class="row mt-3">
+    <div class="col-md-5">
+        <div class="card shadow-sm border-ct">
+            <div class="card-body overflow-hidden p-0">
+                <ul class="nav bg-light navct nav-pills" role="tablist">
+                    <li class="nav-item waves-effect waves-light" role="presentation">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#configure-filters" role="tab" aria-selected="true">
+                            <span class="d-none d-sm-block">Configure Filters</span>
+                        </a>
+                    </li>
+                    <li class="nav-item waves-effect waves-light" role="presentation">
+                        <a class="nav-link" data-bs-toggle="tab" href="#blocklist" role="tab" aria-selected="false" tabindex="-1">
+                            <span class="d-none d-sm-block">Blocklist</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content p-3 text-muted">
+                    <div class="tab-pane border-ct active" id="configure-filters" role="tabpanel">
+                        <h2>Set the Severity thresholds for each category. Content with a severity level less than the threshold will be allowed.</h2>
+
+                        <div class="category">
+                            <div class="category-label">
+                                Violence
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="2" max="6" value="@ViewBag.violenceRejectionThreshold" step="2" class="range-slider">
+
+                                <span class="range-value">@(ViewBag.violenceRejectionThreshold == 2 ? "Low" : @ViewBag.violenceRejectionThreshold == 4 ? "Medium" : "High")</span>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-label">
+                                Self-harm
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="2" max="6" value="@ViewBag.selfHarmRejectionThreshold" step="2" class="range-slider">
+
+                                <span class="range-value">@(ViewBag.selfHarmRejectionThreshold == 2 ? "Low" : @ViewBag.selfHarmRejectionThreshold == 4 ? "Medium" : "High")</span>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-label">
+                                Sexual
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="2" max="6" value="@ViewBag.sexualRejectionThreshold" step="2" class="range-slider">
+
+                                <span class="range-value">@(ViewBag.sexualRejectionThreshold == 2 ? "Low" : @ViewBag.sexualRejectionThreshold == 4 ? "Medium" : "High")</span>
+                            </div>
+                        </div>
+
+                        <div class="category">
+                            <div class="category-label">
+                                Hate
+                            </div>
+                            <div class="slider-container">
+                                <input type="range" min="2" max="6" value="@ViewBag.hateRejectionThreshold" step="2" class="range-slider">
+
+                                <span class="range-value">@(ViewBag.hateRejectionThreshold == 2 ? "Low" : ViewBag.hateRejectionThreshold == 4 ? "Medium" : "High")</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-info" id="saveBtn">Save</button>
+                    </div>
+                    <div class="tab-pane border-ct" id="blocklist" role="tabpanel">
+                        <h2>Blocklist</h2>
+                        <p>Add words to block:</p>
+                        <div class="d-flex align-items-center">
+                            <input class="form-control w-75" type="text" id="blocklistInput" placeholder="Enter word">
+                            <button class="btn btn-info w-25" id="addWordBtn">Add Word</button>
+                        </div>
+                        @*<button id="updateWordBtn" style="display:none;">Update Word</button>*@
+
+                        <table class="blocklist-table">
+                            <thead>
+                                <tr>
+                                    <th>Word</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="blocklistWords"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,496 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Admin dashboard" name="description" />
+    <meta content="UnifyCloud" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/content/assets/images/UC.png">
+
+    <!-- preloader css -->
+    @*<link rel="stylesheet" href="~/content/assets/css/preloader.min.css" type="text/css" />*@
+
+    <!-- Bootstrap Css -->
+    <link href="~/content/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/content/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/content/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+    @RenderSection("CssForThisPage",required:false)
+    <style>
+        .navbar-brand-box {
+            background: #ffffff00 !important;
+        }
+
+        .main-content {
+            margin-left: 0 !important;
+           /*  overflow: hidden; */
+        }
+
+        .navbar-brand-box::before {
+            background: linear-gradient(to right,transparent,#fff) !important;
+        }
+
+        .footer {
+            bottom: 0;
+            padding: 12px calc(20px / 2);
+            position: fixed;
+            right: 0;
+            color: #74788d;
+            left: 0;
+            height: 40px;
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .page-content {
+            /* background-color: #F5F5F5; */
+            background-color: #fbfbfb;
+            padding-top: 60px !important;
+            padding-bottom: 20px !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        .bg-top {
+            background-image: url(https://img.freepik.com/free-vector/medical-background-poster-with-dna-helixes_603843-3719.jpg?w=740&t=st=1695900903~exp=1695901503~hmac=daf48352f64a8123bc18ff672ebd1cce054bbcfd339b629b8e3d5d56498e19da);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: top;
+        }
+    </style>
+    <style>
+        .topcstbtns {
+            /*padding: calc(30px / 2) 0;*/
+            position: relative;
+        }
+
+
+
+            .topcstbtns ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+
+
+                .topcstbtns ul li {
+                    display: inline-block;
+                    margin: 0;
+                    /*height: 60px;
+                border-right: 1px solid #e0e0e0;*/
+                    padding-left: 8px;
+                    padding-right: 10px;
+                }
+
+                    .topcstbtns ul li:after {
+                        border-right: 1px solid #ddd;
+                        top: 0;
+                        position: absolute;
+                        padding-left: 10px;
+                        content: "";
+                        width: 0;
+                        height: 60px;
+                    }
+
+                    .topcstbtns ul li a {
+                        display: inline-block;
+                        /* background-color: #e2e2e2; */
+                        /* padding-left: 8px; */
+                        /* color: #fff; */
+                        /* border-radius: 5px; */
+                        /* overflow: hidden; */
+                        /* background: #159957; */
+                        /*background: -webkit-linear-gradient(to right, #155799, #159957);*/
+                        /* background: linear-gradient(to right, #155799, #159957); */
+                        color: #555b6d;
+                        padding: 18px 0 0 0;
+                        font-size: 15px;
+                    }
+
+                    .topcstbtns ul li > span {
+                        display: inline-block;
+                        color: #555b6d;
+                        padding: 18px 0 0 0;
+                        font-size: 15px;
+                    }
+
+                    .topcstbtns ul li a:hover, .topcstbtns ul li a:focus {
+                        color: #236b84e3;
+                    }
+
+
+
+                    .topcstbtns ul li a i {
+                    }
+
+
+
+                    .topcstbtns ul li a span {
+                        /*border-left: 1px solid #a2a2a2;
+                    display: inline-block;
+                    margin-left: 5px;
+                    padding: 5px 10px 5px 5px;*/
+                        margin-left: 5px;
+                    }
+
+        .page-title-box {
+            padding-bottom: 0;
+            padding-top: 0px;
+        }
+
+        .page-content {
+            padding: 75px 10px 15px 10px !important;
+            background-color: #f9f9f9;
+            height: calc(100vh - 50px);
+        }
+
+        .navbar-brand-box {
+            padding: 0 1.01rem !important;
+            width: 250px !important;
+            background: #ebebeb00 !important;
+            border-right: none !important;
+            position: relative !important;
+            margin: auto !important;
+        }
+
+        .navbar-header {
+            height: 60px !important;
+        }
+
+        .header-item {
+            height: 60px !important;
+        }
+
+        .navbar-brand-box::before {
+            background: linear-gradient(to right,transparent,#aaa);
+            content: "";
+            height: 100%;
+            opacity: .2;
+            pointer-events: none;
+            position: absolute;
+            right: 0;
+            width:;
+            0.8rem z-index: 2;
+        }
+
+        .divWaiting {
+            background: #000;
+            position: fixed;
+            z-index: 2147483647 !important;
+            opacity: 0.9;
+            overflow: hidden;
+            text-align: center;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            padding-top: 20%;
+        }
+
+
+
+        .load-inner {
+            padding: 10px;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0,0,0,1);
+            border-radius: 8px;
+        @*background: #fff;*@
+        }
+
+        .custom_btn_padding {
+            padding: 5px 15px !important;
+        }
+
+        .page-title-box h4 {
+            padding: 10px 10px 10px;
+            border-left: 3px solid #5156be;
+        }
+
+        a.side-menu-active {
+            border-left: 5px solid #1f6fb3 !important;
+            color: #1f6fb3 !important;
+            position: relative;
+            background: #edf3f8;
+        }
+
+        .icon-sm-inner {
+            height: 20px;
+            width: 20px;
+        }
+        /*Admin CSS Start */
+        .logo_preview {
+            border: 1px dashed #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
+            .logo_preview p {
+                padding-right: 15px;
+                border-right: 1px solid #cfcfcf;
+                margin-right: 15px;
+                margin-bottom: 0px;
+                height: 50px;
+                line-height: 50px;
+            }
+
+        .image-preview {
+            max-height: 55px;
+            width: auto !important;
+        }
+
+        .details_edit_col h5 {
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+            margin: 0 0 15px 0;
+            font-size: 17px;
+            background: #d7dde057;
+            color: #0a0a0a;
+        }
+    </style>
+</head>
+<body>
+    <div id="layout-wrapper">
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box">
+                        <a href="#" class="logo logo-dark">
+                            <span class="logo-sm">
+                                <img src="~/content/assets/images/UC.png" alt="" height="24">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/content/assets/images/uc-logo-new.svg" alt="" height="24">
+                            </span>
+                        </a>
+
+                        <a href="#" class="logo logo-light">
+                            <span class="logo-sm">
+                                <img src="~/content/assets/images/UC.png" alt="" height="24">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/content/assets/images/uc-logo-new.svg" alt="" height="24">
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="d-flex">
+                    <div class="topcstbtns">
+                        <ul>
+                            <li>
+                                <a title="back to home" class="" href="@Url.Action("Index","Home")"><i data-feather="home" class="icon-sm"></i>&nbsp;&nbsp;Back to Home</a>
+                            </li>
+                        </ul>
+                    </div>
+                    @* <div style="display:none" class="dropdown d-inline-block">
+                    <form action="/Home/Index" method="post" name="dropframe" class="msger-inputareadrop mt-2">
+                    <select class="form-select border-0" name="Document" id="myselect" onchange="selectvalue()">
+                    <option value="HRModel">HRModel</option>
+                    </select>
+                    </form>
+                    </div>*@
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item topbar-light bg-light-subtle border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle header-profile-user me-2" src="~/Content/assets/images/customer.png" alt="Header Avatar"><span>@ViewBag.username</span>
+                            <span class="d-none d-xl-inline-block ms-1 fw-medium" id="adminuserid"></span>
+                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            <a class="dropdown-item" href="#"><i class="mdi mdi-face-man font-size-16 align-middle me-1"></i> Profile</a>
+                            @*  @if (ViewBag.LoginType != "AdLogin")
+                            {
+                            <a class="dropdown-item" href="/Login/ChangePassword"><i class="mdi mdi-face-man font-size-16 align-middle me-1"></i> Change Password</a>
+                            }
+                            <div class="dropdown-divider"></div>*@
+
+                            @if (ViewBag.LoginType == "AdLogin")
+                            {
+                                <button class="dropdown-item" onclick="LogoutandFeedback('logoutactionAd')"><i class="icofont-logout"></i> Log Out</button>
+                            }
+                            else
+                            {
+                                <button class="dropdown-item" onclick="LogoutandFeedback('logoutaction')"><i class="icofont-logout"></i> Log Out</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+            <div class="page-content">
+                @RenderBody()
+            </div>
+            <!-- End Page-content -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> ©. OpenAI <a asp-area="" asp-controller="Home" asp-action="PrivacyPolicy" target="_blank">Privacy</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                All Rights Reserved by <a href="#!" class="text-decoration-underline">UnifyCloud</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- Right Sidebar -->
+    <div class="right-bar">
+        <div data-simplebar class="h-100">
+            <div class="rightbar-title d-flex align-items-center p-3">
+                <h5 class="m-0 me-2">Theme Customizer</h5>
+                <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                    <i class="mdi mdi-close noti-icon"></i>
+                </a>
+            </div>
+            <!-- Settings -->
+            <hr class="m-0" />
+            <div class="p-4">
+                <h6 class="mb-3">Layout</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout"
+                           id="layout-vertical" value="vertical">
+                    <label class="form-check-label" for="layout-vertical">Vertical</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout"
+                           id="layout-horizontal" value="horizontal">
+                    <label class="form-check-label" for="layout-horizontal">Horizontal</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode"
+                           id="layout-mode-light" value="light">
+                    <label class="form-check-label" for="layout-mode-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode"
+                           id="layout-mode-dark" value="dark">
+                    <label class="form-check-label" for="layout-mode-dark">Dark</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width"
+                           id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+                    <label class="form-check-label" for="layout-width-fuild">Fluid</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width"
+                           id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+                    <label class="form-check-label" for="layout-width-boxed">Boxed</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position"
+                           id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+                    <label class="form-check-label" for="layout-position-fixed">Fixed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position"
+                           id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+                    <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color"
+                           id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+                    <label class="form-check-label" for="topbar-color-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color"
+                           id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+                    <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+                    <label class="form-check-label" for="sidebar-size-default">Default</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+                    <label class="form-check-label" for="sidebar-size-compact">Compact</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+                    <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+                    <label class="form-check-label" for="sidebar-color-light">Light</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+                    <label class="form-check-label" for="sidebar-color-dark">Dark</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+                    <label class="form-check-label" for="sidebar-color-brand">Brand</label>
+                </div>
+                <h6 class="mt-4 mb-3 pt-2">Direction</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction"
+                           id="layout-direction-ltr" value="ltr">
+                    <label class="form-check-label" for="layout-direction-ltr">LTR</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction"
+                           id="layout-direction-rtl" value="rtl">
+                    <label class="form-check-label" for="layout-direction-rtl">RTL</label>
+                </div>
+            </div>
+        </div>
+        <!-- end slimscroll-menu-->
+    </div>
+    <!-- /Right-bar -->
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+    <!-- JAVASCRIPT -->
+    <script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/content/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/content/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/content/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/content/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/content/assets/libs/feather-icons/feather.min.js"></script>
+    <script src="~/Content/assets/libs/glightbox/js/glightbox.min.js"></script>
+    <script src="~/Content/assets/js/pages/lightbox.init.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/jszip/dist/jszip.min.js"></script>
+    <script src="~/Content/assets/js/pages/docx-preview.js"></script>
+    <script src="~/Content/assets/owl/owl.carousel.js"></script>
+    <script src="~/craiscripts/healthcare.js?v1"></script>
+    <!-- pace js -->
+    <script src="~/content/assets/libs/pace-js/pace.min.js"></script>
+    @RenderSection("JSForThisPage", required: false)
+    <script src="~/content/assets/js/app.js"></script>
+</body>
+</html>

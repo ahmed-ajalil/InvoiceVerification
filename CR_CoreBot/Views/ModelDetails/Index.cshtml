@@ -1,0 +1,130 @@
+﻿@model IEnumerable<CR_HRPortalAI_DataAcess.CR_HRPortal.ModelDetails>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage {
+    <!-- DataTables -->
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Model Information Data</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="RptLytTpMenu">
+            <ul>
+
+                <li>
+                    <a class="btn btn-info btn-sm" asp-action="Create"><i data-feather="user" class="icon-sm"></i> Add Model</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body p-2">
+                @if (Model != null)
+                {
+                    <table id="tblResponse" class="table table-bordered table-striped" style="width:100%;">
+                        <thead class="ctm-table">
+                            <tr>
+                                <th style="min-width:50px">Model Activated</th>
+                                <th style="min-width:100px">EndPoint</th>
+                                <th style="min-width:100px">Api Key</th>
+                                <th style="min-width:100px">Deployment Name</th>
+                                <th style="min-width:100px">Api Version</th>
+                                <th style="min-width:50px">Model Name</th>
+                                <th style="min-width:50px">Size</th>
+                                <th style="min-width:80px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+
+                                var defaultModelId = Model.FirstOrDefault(m => m.DefaultType == 1)?.Id;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <label>
+                                            <input type="checkbox" name="ModelActivated" value="@item.Id" @(item.Status == 1 ? "checked" : "") onchange="setActivatedModels(this, @item.Status)" />
+                                            @if (item.Id == defaultModelId)
+                                            {
+                                                <span style="color: black; font-weight: bold; font-style: italic;">Default</span>
+                                            }
+
+                                        </label>
+                                    </td>
+                                    <td>@item.EndPoint</td>
+                                    <td>@item.ApiKey</td>
+                                    <td>@item.DeploymentName</td>
+                                    <td>@item.ApiVersion</td>
+                                    <td>@item.ModelName</td>
+                                    <td>@item.Size</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="Edit(@item.Id)">Edit</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="Delete(@item.Id)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+
+                    
+                    </table>
+                }
+                else
+                {
+                    <h2>No records found</h2>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section JSForThisPage {
+   
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/modeldetailsindex.js"></script>
+
+
+     
+}

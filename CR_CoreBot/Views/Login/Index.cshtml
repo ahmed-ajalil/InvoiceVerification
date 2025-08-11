@@ -1,0 +1,493 @@
+﻿
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Unifycloud</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Content/assets/images/UC.png">
+
+    <link href="~/Content/assets/owl/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Content/assets/owl/owl.theme.default.css" rel="stylesheet" />
+
+    <!-- preloader css -->
+    @* <link rel="stylesheet" href="Content/assets/css/preloader.min.css" type="text/css" />*@
+
+    <!-- Bootstrap Css -->
+    <link href="~/Content/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/Content/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/Content/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/css/login.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+    <style>
+        #gdprbx {
+            display: none;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            z-index: 9999;
+            left: 0;
+            right: 0;
+            background: #adc0ce;
+            box-shadow: 0 0 6px #a99e9e1c;
+            text-align: center;
+        }
+
+            #gdprbx .close {
+                background: #484647;
+                padding: 4px 0 6px;
+                color: #fff;
+                border-radius: 10px;
+                font-size: 12px;
+                display: block;
+                width: 77px;
+                margin: 6px auto 0 auto;
+                text-transform: uppercase;
+            }
+
+        .cookiebox {
+            padding: 1px 10px;
+            font-size: 15px;
+            line-height: 27px;
+            color: #777575;
+            max-width: 980px;
+            margin: 0 auto
+        }
+
+            .cookiebox a {
+                color: #b10f18;
+                font-weight: 700
+            }
+
+        .hidden {
+            display: none;
+        }
+
+        .lock_msg_cont {
+            border: 1px solid #ddd;
+            border-top: 3px solid #b91d19 !important;
+        }
+
+            .lock_msg_cont .lock_icon {
+                padding: 10px 0;
+                background: #ffeaea;
+                text-align: center;
+            }
+
+        .lock_icon img {
+            max-width: 60px;
+        }
+
+        p.error_msg {
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+            padding: 15px;
+            margin: 0px;
+        }
+
+        .lock_msg_cont h3 {
+            font-size: 18px;
+            text-align: center;
+            margin-top: 12px;
+            margin-bottom: 0px;
+            color: #b91d19;
+        }
+
+        .divWaiting {
+            background: #000;
+            position: fixed;
+            z-index: 2147483647 !important;
+            opacity: 0.8;
+            overflow: hidden;
+            text-align: center;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            padding-top: 20%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader" class="divWaiting" style="visibility: hidden;">
+        <div class="load-inner">
+            <div class="text-center">
+                <div class="d-flex justify-content-center p-2">
+                    <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <span class="text-white fw-normal">Please wait...</span>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row align-items-center g-0" style="height: 100vh;overflow-y: auto;">
+            <div class="">
+                <div class="my-4">
+                    <section class="LoginSctn mt-4">
+                        <div class="container">
+                            <div class="row d-flex align-items-center">
+                                <div class="col-md-5 offset-md-1 col-6">
+                                    <div class="LoginLogo">
+                                        <img src="~/content/assets/images/uc-logo-new.svg" alt="UnifyCloud AI" />
+                                    </div>
+                                </div>
+                                <div style="display:none" class="col-md-5 text-end col-6">
+                                    @* <a target="_self" href="/Login/Adlogin"> <button type="button" class="btn btn-info" id="azurebtnLogin">Log in With Azure</button></a> *@
+                                    <a target="_self" href='@Url.Action("Adlogin","Login")'> <button type="button" class="btn btn-info" id="azurebtnLogin">Log in With Azure</button></a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="logSctn mt-4">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <div class="LoginBox px-3 py-4">
+                                        <div class="row d-flex align-items-center">
+                                            <div class="col-md-5 order-md-2">
+                                                <div class="pe-md-2">
+
+                                                    <div class="loginTtle">
+                                                        <h4>User Login</h4>
+
+                                                    </div>
+                                                    <div class="" id="LoginForm">
+
+                                                        <div class="form-floating mb-3">
+                                                            <input type="email" class="form-control" id="Email" placeholder="Enter email" autocomplete="off" @*onblur="checkFirstTimeUser()*@">
+                                                            <label for="Email">Email address</label>
+                                                            <p class="text-danger hidden" id="email_valid">* Email is required</p>
+                                                            <p class="text-danger hidden" id="email_wrong">*User does not exist in database</p>
+                                                            <p class="text-danger hidden" id="logintypecheck">*Please try AD Login</p>
+                                                        </div>
+                                                        <div class="form-floating">
+                                                            <input type="password" class="form-control" id="Password" placeholder="Enter Password" autocomplete="off">
+                                                            <label for="Password">Password</label>
+                                                            <span ControlToValidate="Password" CssClass="text-danger" ErrorMessage="The password field is required." />
+                                                            <p class="text-danger hidden" id="pass_valid">* Password is required</p>
+                                                            <p class="text-danger hidden" id="pass_wrong">*Password is incorrect</p>
+                                                        </div>
+                                                        <div class="form-group form-check mt-3">
+                                                            <input type="checkbox" class="form-check-input" name="remember" id="RememberMe">
+                                                            <label class="form-check-label" for="RememberMe">Remember me?</label>
+                                                        </div>
+                                                        <div class="form-group form-check mb-3" id="checktermsnconditions" onclick="displayLogin()">
+                                                            <input type="checkbox" class="form-check-input" name="TermsnConditions" id="TermsnConditions"><label class="form-check-label fw-light"> I accept <a data-bs-toggle="modal" data-bs-target="#TermsModal" style="display:inline-block;" class="text-decoration-underline">Terms and Conditions</a> and <a data-bs-toggle="modal" data-bs-target="#PrivacyModal" style="display:inline-block;" class="text-decoration-underline">Privacy-Policy</a></label>
+
+
+
+                                                        </div>
+
+
+                                                        <div class="d-grid gap-2">
+                                                            <div class="row d-flex align-items-center">
+                                                                <div class="col-sm-5">
+                                                                    <button type="button" style="width:100%;" class="btn btn-info font-weight-bold disabled" id="btnLogin" onclick="Login();">Log in</button>
+                                                                </div>
+                                                                <div class="col-sm-7 text-end">
+                                                                    <a onclick="ForgotPassword()" class="text-dark text-decoration-underline">Forgot Password</a>
+                                                                </div>
+                                                            </div>
+
+
+
+
+                                                        </div>
+
+                                                    </div>
+                                                    <p id="passwordcounter"></p>
+                                                    <div class="form-group" id="UserAccount" style="margin-top:10px; display:none;">
+                                                        <div class="col-sm-12">
+                                                            <div class="lock_msg_cont">
+                                                                <div class="lock_icon">
+                                                                    <img src="~/img/lock.png" />
+                                                                </div>
+                                                                <h3>User Account Locked</h3>
+                                                                <p class="error_msg">Your account has been temporarily locked due to 5 failed login attempts.<br /><br />To unlock your account contact <a href="mailto:support@unifycloud.com">support@unifycloud.com</a></p>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7 order-md-1">
+                                                <div class="LoginBox2">
+                                                    <!-- Set up your HTML -->
+                                                    <div class="text-center">
+                                                        <img src="~/Content/assets/images/POTYA-MA-2022.png" class="w-40 img-fluid" />
+                                                    </div>
+                                                    <div class="awd-list">
+                                                        <ul>
+                                                            <li>
+                                                                <div>
+                                                                    <h6>Modernizing Applications</h6>
+                                                                    <span>2021 - Finalist</span>
+                                                                </div>
+                                                            </li>
+                                                            <li>
+                                                                <div>
+                                                                    <h6>Solution Assessment</h6>
+                                                                    <span>2020 - Winner</span>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="text-center mpCTM mt-3">
+                                                        <img src="~/Content/assets/images/mp.png" />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-10 text-end pt-2">
+                                    Version 1.1.0
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div id="loginLoader" style="display:none;">
+        <div>
+            <img src="~Content/assets/images/loader.gif" />
+            <span>Please wait...</span>
+        </div>
+    </div>-->
+    <div id="loginLoader" style="display:none;">
+        <div>
+            <div class="d-flex justify-content-center p-2">
+                <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <span class="text-white fw-normal">Please wait...</span>
+        </div>
+    </div>
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+    <div id="TermsModal" class="modal fade" tabindex="-1" aria-labelledby="TermsModal" aria-hidden="true" data-bs-scroll="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-info bg-gradient">
+                    <h5 class="modal-title text-white" id="TermsModal">Terms And Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to CloudAtlas. We&rsquo;re glad you&rsquo;re here, and we hope you enjoy everything we have to offer.<br />Please read these Terms carefully because they are a binding agreement between You and CloudAtlasInc.com, inc., (&ldquo;CloudAtlas&rdquo; or &ldquo;We&rdquo;).<br />These Terms govern your use of the websites that link to these Terms. In these Terms, the word &ldquo;Sites&rdquo; refers to each of these websites and the services offered on those Sites. You automatically agree to these Terms and to our Privacy Statement simply by using or logging into the Sites.<br />Please note that we offer many services. Your use of CloudAtlas products or services are provided by CloudAtlas pursuant to a separate manually or digitally-executed agreement. Those additional terms become part of your agreement with us, if you use the services or log into the Sites.</p>
+                    <p><strong>Your Accounts</strong><br />You may be required to create an account and specify a password in order to use certain services or features on the Sites. To create an account, you must be at least 18 years old and you must provide truthful and accurate information about yourself. Don&rsquo;t try to impersonate anyone else when you create your account. If your information changes at any time, please update your account to reflect those changes.<br />In some cases, an account may be assigned to you by an administrator, such as your employer or educational institution. If you are using or logging into an account assigned to you by an administrator, additional terms may apply to your use of the Sites. Moreover, your administrator may be able to access or disable your account without our involvement.<br />You may not share your account with anyone else. Please keep your password confidential, and try not to use it on other websites. If you believe that your account has been compromised at any time, please notify your system administrator.</p>
+                    <p><strong>Modifications and Termination</strong><br />We reserve the right to modify our Sites at any time, with or without notice to you. For example, we may add or remove functionality or features, and we may suspend or stop a particular feature altogether. We also reserve the right to charge a fee for any of our features at any time. If you don&rsquo;t like any changes, you can stop using our Sites at any time.</p>
+                    <p><strong>Content You Post</strong><br />We may provide opportunities for you to post text, photographs, videos, or other content (collectively, &ldquo;Content&rdquo;) on the Sites. You can only post Content if you own all the rights to that Content, or if another rights holder has given you permission.<br />You do not transfer ownership of your Content simply by posting it. However, by posting Content, you grant us, our agents, licensees, and assigns an irrevocable, perpetual (non-exclusive) right and permission to reproduce, encode, store, copy, transmit, publish, post, broadcast, display, publicly perform, adapt, modify, create derivative works of, exhibit, and otherwise use your Content. Without those rights, we couldn&rsquo;t offer our Services. Please note that this license continues even if you stop using our Sites.<br />You agree to indemnify, release, and hold us harmless from any all liability, claims, actions, loss, harm, damage, injury, cost or expense arising out of any Content you post.<br />Keep in mind that if you send us any information, ideas, suggestions, or other communications to us, those communications will not be confidential. Moreover, unless we tell you otherwise, we reserve the right to reproduce, use, disclose, and distribute such communications without any obligation to you.</p>
+                    <p><strong>Content Posted by Others</strong><br />We are not responsible for, and do not endorse, Content posted by any other person. Accordingly, we may not be held liable, directly or indirectly, for any loss or damage caused to you in connection with any Content posted by another member.</p>
+                    <p><strong>Your Use of the Sites</strong><br />Please do not use the Sites in a way that violates any laws, infringes on anyone&rsquo;s rights, is offensive, or interferes with the Sites or any features on the Sites (including any technological measures we employ to enforce these Terms).<br />It should be common sense, so we won&rsquo;t bore you with a list of things you shouldn&rsquo;t do. But if we (in our sole discretion) determine that you have acted inappropriately, we reserve the right to take down Content, terminate your account, prohibit you from using the Sites, and take appropriate legal actions.<br />Using our Site does not give you ownership of any intellectual property rights to the content you access. You may not use content from our Sites unless you obtain permission from us or its owner, or unless you are otherwise permitted by law.<br />When you use a Site or send communications to us through a Site, you are communicating with us electronically. You consent to receive electronically any communications related to your use of a Site. We may communicate with you by email or by posting notices on the Site. You agree that all agreements, notices, disclosures and other communications that are provided to you electronically satisfy any legal requirement that such communications be in writing. All notices from us intended for receipt by you shall be deemed delivered and effective when sent to the email address you provide to us. Please note that by submitting Content, creating a user account or otherwise providing us with your email address, postal address or phone number, you are agreeing that we or our agents may contact you at that address or number in a manner consistent with our Privacy Statement.</p>
+                    <p><strong>Intellectual Property</strong><br />If you believe any Content on the Services infringes your copyrights, you may request that remove the Content from the Services (or disable access to that Content) by contacting us at support@CloudAtlasInc.com</p>
+                    <p><strong>Social Networks</strong><br />The Service may include features that operate in conjunction with certain third party social networking websites that you visit such as Facebook, Instagram, YouTube, Vimeo, and Twitter (&ldquo;Social Network Features&rdquo;). While your use of the Social Network Features is governed by these Terms, your access and use of third party social networking sites and the services provided through the Services is governed by the terms of service and other agreements posted on these sites. You are responsible for ensuring that your use of those sites complies with any applicable terms of service or other agreements.</p>
+                    <p><strong>Our Warranties and Disclaimers</strong><br />We provide our Services using a commercially reasonable level of care and promise to do our best to make sure you enjoy the Services. But there are certain things that we don&rsquo;t promise about our Services.</p>
+                    <p>OTHER THAN AS EXPRESSLY SET OUT IN THESE TERMS OF SERVICE, NEITHER CLOUDATLASINC.COM, INC. NOR ITS AGENTS OR SERVICE PROVIDERS (THE &ldquo;SERVICES ENTITIES&rdquo;) MAKE ANY SPECIFIC PROMISES ABOUT THE SITES. FOR EXAMPLE, WE DON&rsquo;T MAKE ANY COMMITMENTS ABOUT THE CONTENT WITHIN THE SITES, THE SPECIFIC FUNCTION OF THE SITES, OR THEIR RELIABILITY, AVAILABILITY, OR ABILITY TO MEET YOUR NEEDS. WE PROVIDE THE SITES &ldquo;AS IS&rdquo;.<br />SOME JURISDICTIONS PROVIDE FOR CERTAIN WARRANTIES, LIKE THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. TO THE EXTENT PERMITTED BY LAW, WE EXCLUDE ALL WARRANTIES.</p>
+                    <p><strong>Liability for our Services</strong><br />EXCEPT WHERE PROHIBITED, THE SERVICES ENTITIES SHALL NOT BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES ARISING FROM YOUR USE OF THE SITES OR ANY THIRD PARTY&rsquo;S USE OF THE SITES. THESE EXCLUSIONS INCLUDE, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOST DATA, COMPUTER FAILURE, OR THE VIOLATION OF YOUR RIGHTS BY ANY THIRD PARTY, EVEN IF THE SERVICES ENTITIES HAVE BEEN ADVISED OF THE POSSIBILITY THEREOF AND REGARDLESS OF THE LEGAL OR EQUITABLE THEORY UPON WHICH THE CLAIM IS BASED.</p>
+                    <p><strong>Additional Details</strong><br />We may modify these Terms at any time so be sure to check back regularly. By continuing to use or log in to a Site after these Terms have changed, you indicate your agreement to the revised Terms. If you do not agree to the changes, you should stop using or logging in to the Sites.<br />The Sites may contain links to third-party websites. That doesn&rsquo;t mean that we control or endorse those websites, or any goods or services sold on those websites. Similarly, the Sites may contain ads from third-parties. We do not control or endorse any products being advertised.<br />If you do not comply with these Terms, and we don&rsquo;t take action right away, this doesn&rsquo;t mean we&rsquo;re OK with what you did, or we are giving up any rights that we may have (such as taking action in the future).<br />These Terms are governed by and construed in accordance with the laws of Washington, without regard to its conflict of laws rules. You expressly agree that the exclusive jurisdiction for any claim or dispute under these Terms and or your use of the Services resides in the courts located in Seattle, Washington, and you further expressly agree to submit to the personal jurisdiction of such courts for the purpose of litigating any such claim or action. If it turns out that a particular provision in these Terms is not enforceable, that will not affect any other provision.<br />CloudAtlas accepts and responds to any requests such as disclosure, correction, addition, or deletion and veto of use or provision of personal information (the &ldquo;Disclosure Requests&rdquo;) from the person who provided his/her personal information.</p>
+                    <p>Contact for inquiries regarding Personal Information Handling: support@CloudAtlasInc.com</p>
+                    <p>These terms were last updated on January 1st, 2018</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <div class="modal fade" id="PrivacyModal" tabindex="-1" role="dialog" aria-labelledby="PrivacyModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-info bg-gradient">
+                    <h5 class="modal-title text-white" id="PrivacyModal">Privacy Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This privacy policy has been compiled to better serve those who are concerned with how their &lsquo;Personally Identifiable Information&rsquo; (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
+                    <p><strong>What personal information do we collect from the people that visit our blog, website or app?</strong><br />We do not collect information from visitors of our site.<br />or other details to help you with your experience.</p>
+                    <p><strong>When do we collect information?</strong><br />We collect information from you when you register on our site, subscribe to a newsletter, Open a Support Ticket or enter information on our site.</p>
+                    <p><strong>How do we use your information?</strong><br />We may use the information we collect from you when you register, make a purchase, sign up for our newsletter, respond to a survey or marketing communication, surf the website, or use certain other site features in the following ways:<br />&bull; To personalize your experience and to allow us to deliver the type of content and product offerings in which you are most interested.<br />&bull; To improve our website in order to better serve you.<br />&bull; To allow us to better service you in responding to your customer service requests.<br />&bull; To administer a contest, promotion, survey or other site feature.<br />&bull; To quickly process your transactions.<br />&bull; To ask for ratings and reviews of services or products<br />&bull; To follow up with them after correspondence (live chat, email or phone inquiries)</p>
+                    <p><strong>How do we protect your information?</strong><br />Our website is scanned on a regular basis for security holes and known vulnerabilities in order to make your visit to our site as safe as possible.<br />We use regular Malware Scanning.<br />Your personal information is contained behind secured networks and is only accessible by a limited number of persons who have special access rights to such systems, and are required to keep the information confidential. In addition, all sensitive/credit information you supply is encrypted via Secure Socket Layer (SSL) technology.<br />We implement a variety of security measures when a user places an order enters, submits, or accesses their information to maintain the safety of your personal information.<br />All transactions are processed through a gateway provider and are not stored or processed on our servers.</p>
+                    <p><strong>Do we use &lsquo;cookies&rsquo;?</strong><br />Yes. Cookies are small files that a site or its service provider transfers to your computer&rsquo;s hard drive through your Web browser (if you allow) that enables the site&rsquo;s or service provider&rsquo;s systems to recognize your browser and capture and remember certain information. For instance, we use cookies to help us remember and process the items in your shopping cart. They are also used to help us understand your preferences based on previous or current site activity, which enables us to provide you with improved services. We also use cookies to help us compile aggregate data about site traffic and site interaction so that we can offer better site experiences and tools in the future.<br /><strong>We use cookies to:</strong><br />&bull; Help remember and process the items in the shopping cart.<br />&bull; Understand and save user&rsquo;s preferences for future visits.<br />&bull; Compile aggregate data about site traffic and site interactions in order to offer better site experiences and tools in the future. We may also use trusted third-party services that track this information on our behalf.<br />You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all cookies. You do this through your browser settings. Since browser is a little different, look at your browser&rsquo;s Help Menu to learn the correct way to modify your cookies.<br /><strong>If users disable cookies in their browser:</strong><br />If you turn cookies off, Some of the features that make your site experience more efficient may not function properly.Some of the features that make your site experience more efficient and may not function properly.</p>
+                    <p><strong>Third-party disclosure</strong><br />We do not sell, trade, or otherwise transfer to outside parties your Personally Identifiable Information unless we provide users with advance notice. This does not include website hosting partners and other parties who assist us in operating our website, conducting our business, or serving our users, so long as those parties agree to keep this information confidential. We may also release information when it&rsquo;s release is appropriate to comply with the law, enforce our site policies, or protect ours or others&rsquo; rights, property or safety.<br />However, non-personally identifiable visitor information may be provided to other parties for marketing, advertising, or other uses.</p>
+                    <p><br /><strong>Third-party links</strong><br />Occasionally, at our discretion, we may include or offer third-party products or services on our website. These third-party sites have separate and independent privacy policies. We therefore have no responsibility or liability for the content and activities of these linked sites. Nonetheless, we seek to protect the integrity of our site and welcome any feedback about these sites.</p>
+                    <p><strong>Google</strong><br />Google&rsquo;s advertising requirements can be summed up by Google&rsquo;s Advertising Principles. They are put in place to provide a positive experience for users. https://support.google.com/adwordspolicy/answer/1316548?hl=en<br />We use Google AdSense Advertising on our website.<br />Google, as a third-party vendor, uses cookies to serve ads on our site. Google&rsquo;s use of the DART cookie enables it to serve ads to our users based on previous visits to our site and other sites on the Internet. Users may opt-out of the use of the DART cookie by visiting the Google Ad and Content Network privacy policy.<br />We have implemented the following:<br />&bull; Remarketing with Google AdSense<br />&bull; Google Display Network Impression Reporting<br />&bull; Demographics and Interests Reporting<br />We, along with third-party vendors such as Google use first-party cookies (such as the Google Analytics cookies) and third-party cookies (such as the DoubleClick cookie) or other third-party identifiers together to compile data regarding user interactions with ad impressions and other ad service functions as they relate to our website.<br /><strong>Opting out:</strong><br />Users can set preferences for how Google advertises to you using the Google Ad Settings page. Alternatively, you can opt out by visiting the Network Advertising Initiative Opt Out page or by using the Google Analytics Opt Out Browser add on.</p>
+                    <p><strong>California Online Privacy Protection Act</strong><br />CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy. The law&rsquo;s reach stretches well beyond California to require any person or company in the United States (and conceivably the world) that operates websites collecting Personally Identifiable Information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals or companies with whom it is being shared. &ndash; See more at: http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf<br />According to CalOPPA, we agree to the following:<br />Users can visit our site anonymously.<br />Once this privacy policy is created, we will add a link to it on our home page or as a minimum, on the first significant page after entering our website.<br />Our Privacy Policy link includes the word &lsquo;Privacy&rsquo; and can easily be found on the page specified above.<br />You will be notified of any Privacy Policy changes:<br />&bull; On our Privacy Policy Page<br />Can change your personal information:<br />&bull; By logging in to your account<br />How does our site handle Do Not Track signals?<br />We honor Do Not Track signals and Do Not Track, plant cookies, or use advertising when a Do Not Track (DNT) browser mechanism is in place.<br />Does our site allow third-party behavioral tracking?<br />It&rsquo;s also important to note that we do not allow third-party behavioral tracking</p>
+                    <p><strong>COPPA (Children Online Privacy Protection Act)</strong><br />When it comes to the collection of personal information from children under the age of 13 years old, the Children&rsquo;s Online Privacy Protection Act (COPPA) puts parents in control. The Federal Trade Commission, United States&rsquo; consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect children&rsquo;s privacy and safety online.<br />We do not specifically market to children under the age of 13 years old.<br />Do we let third-parties, including ad networks or plug-ins collect PII from children under 13?</p>
+                    <p><strong>Fair Information Practices</strong><br />The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.<br />In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:<br />We will notify you via email<br />&bull; Within 7 business days<br />We will notify the users via in-site notification<br />&bull; Within 7 business days<br />We also agree to the Individual Redress Principle which requires that individuals have the right to legally pursue enforceable rights against data collectors and processors who fail to adhere to the law. This principle requires not only that individuals have enforceable rights against data users, but also that individuals have recourse to courts or government agencies to investigate and/or prosecute non-compliance by data processors.</p>
+                    <p><strong>CAN SPAM Act</strong><br />The CAN-SPAM Act is a law that sets the rules for commercial email, establishes requirements for commercial messages, gives recipients the right to have emails stopped from being sent to them, and spells out tough penalties for violations.<br />We collect your email address in order to:<br />&bull; Send information, respond to inquiries, and/or other requests or questions<br />&bull; Process orders and to send information and updates pertaining to orders.<br />&bull; Send you additional information related to your product and/or service<br />&bull; Market to our mailing list or continue to send emails to our clients after the original transaction has occurred.<br />To be in accordance with CANSPAM, we agree to the following:<br />&bull; Not use false or misleading subjects or email addresses.<br />&bull; Identify the message as an advertisement in some reasonable way.<br />&bull; Include the physical address of our business or site headquarters.<br />&bull; Monitor third-party email marketing services for compliance, if one is used.<br />&bull; Honor opt-out/unsubscribe requests quickly.<br />&bull; Allow users to unsubscribe by using the link at the bottom of each email.</p>
+                    <p>If at any time you would like to unsubscribe from receiving future emails, you can email us at<br />&bull; Follow the instructions at the bottom of each email.<br />and we will promptly remove you from ALL correspondence.</p>
+                    <p><strong>Contacting Us</strong><br />If there are any questions regarding this privacy policy, you may contact us using the information below.<br />www.cloudatlasinc.com<br />8201 164th Ave NE<br />Redmond,, WA 98052</p>
+                    <p>United States<br />support@cloudatlasinc.com<br />18005357443<br />Last Edited on 2018-01-03</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/Content/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/Content/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/Content/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/Content/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/Content/assets/libs/feather-icons/feather.min.js"></script>
+    <!-- pace js -->
+    <script src="~/Content/assets/libs/pace-js/pace.min.js"></script>
+
+    <script src="~/Content/assets/js/app.js"></script>
+    <script src="~/Content/assets/owl/owl.carousel.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+     
+    <div id="gdprbx">
+        <div class="cookiebox">
+            This website uses cookie or similar technologies, to enhance your browsing experience and provide personalised recommendations. By continuing to use our website, you agree to our <a href="/privacy-policy.html" target="_blank">Privacy Policy</a> and <a href="/cookie-policy.html" target="_blank">Cookie Policy</a>
+        </div>
+        <div>
+            <button id='close' onclick="closeCookiePopUp()">Close</button>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="TermsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Terms And Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Welcome to CloudAtlas. We&rsquo;re glad you&rsquo;re here, and we hope you enjoy everything we have to offer.<br />Please read these Terms carefully because they are a binding agreement between You and CloudAtlasInc.com, inc., (&ldquo;CloudAtlas&rdquo; or &ldquo;We&rdquo;).<br />These Terms govern your use of the websites that link to these Terms. In these Terms, the word &ldquo;Sites&rdquo; refers to each of these websites and the services offered on those Sites. You automatically agree to these Terms and to our Privacy Statement simply by using or logging into the Sites.<br />Please note that we offer many services. Your use of CloudAtlas products or services are provided by CloudAtlas pursuant to a separate manually or digitally-executed agreement. Those additional terms become part of your agreement with us, if you use the services or log into the Sites.</p>
+                    <p><strong>Your Accounts</strong><br />You may be required to create an account and specify a password in order to use certain services or features on the Sites. To create an account, you must be at least 18 years old and you must provide truthful and accurate information about yourself. Don&rsquo;t try to impersonate anyone else when you create your account. If your information changes at any time, please update your account to reflect those changes.<br />In some cases, an account may be assigned to you by an administrator, such as your employer or educational institution. If you are using or logging into an account assigned to you by an administrator, additional terms may apply to your use of the Sites. Moreover, your administrator may be able to access or disable your account without our involvement.<br />You may not share your account with anyone else. Please keep your password confidential, and try not to use it on other websites. If you believe that your account has been compromised at any time, please notify your system administrator.</p>
+                    <p><strong>Modifications and Termination</strong><br />We reserve the right to modify our Sites at any time, with or without notice to you. For example, we may add or remove functionality or features, and we may suspend or stop a particular feature altogether. We also reserve the right to charge a fee for any of our features at any time. If you don&rsquo;t like any changes, you can stop using our Sites at any time.</p>
+                    <p><strong>Content You Post</strong><br />We may provide opportunities for you to post text, photographs, videos, or other content (collectively, &ldquo;Content&rdquo;) on the Sites. You can only post Content if you own all the rights to that Content, or if another rights holder has given you permission.<br />You do not transfer ownership of your Content simply by posting it. However, by posting Content, you grant us, our agents, licensees, and assigns an irrevocable, perpetual (non-exclusive) right and permission to reproduce, encode, store, copy, transmit, publish, post, broadcast, display, publicly perform, adapt, modify, create derivative works of, exhibit, and otherwise use your Content. Without those rights, we couldn&rsquo;t offer our Services. Please note that this license continues even if you stop using our Sites.<br />You agree to indemnify, release, and hold us harmless from any all liability, claims, actions, loss, harm, damage, injury, cost or expense arising out of any Content you post.<br />Keep in mind that if you send us any information, ideas, suggestions, or other communications to us, those communications will not be confidential. Moreover, unless we tell you otherwise, we reserve the right to reproduce, use, disclose, and distribute such communications without any obligation to you.</p>
+                    <p><strong>Content Posted by Others</strong><br />We are not responsible for, and do not endorse, Content posted by any other person. Accordingly, we may not be held liable, directly or indirectly, for any loss or damage caused to you in connection with any Content posted by another member.</p>
+                    <p><strong>Your Use of the Sites</strong><br />Please do not use the Sites in a way that violates any laws, infringes on anyone&rsquo;s rights, is offensive, or interferes with the Sites or any features on the Sites (including any technological measures we employ to enforce these Terms).<br />It should be common sense, so we won&rsquo;t bore you with a list of things you shouldn&rsquo;t do. But if we (in our sole discretion) determine that you have acted inappropriately, we reserve the right to take down Content, terminate your account, prohibit you from using the Sites, and take appropriate legal actions.<br />Using our Site does not give you ownership of any intellectual property rights to the content you access. You may not use content from our Sites unless you obtain permission from us or its owner, or unless you are otherwise permitted by law.<br />When you use a Site or send communications to us through a Site, you are communicating with us electronically. You consent to receive electronically any communications related to your use of a Site. We may communicate with you by email or by posting notices on the Site. You agree that all agreements, notices, disclosures and other communications that are provided to you electronically satisfy any legal requirement that such communications be in writing. All notices from us intended for receipt by you shall be deemed delivered and effective when sent to the email address you provide to us. Please note that by submitting Content, creating a user account or otherwise providing us with your email address, postal address or phone number, you are agreeing that we or our agents may contact you at that address or number in a manner consistent with our Privacy Statement.</p>
+                    <p><strong>Intellectual Property</strong><br />If you believe any Content on the Services infringes your copyrights, you may request that remove the Content from the Services (or disable access to that Content) by contacting us at support@CloudAtlasInc.com</p>
+                    <p><strong>Social Networks</strong><br />The Service may include features that operate in conjunction with certain third party social networking websites that you visit such as Facebook, Instagram, YouTube, Vimeo, and Twitter (&ldquo;Social Network Features&rdquo;). While your use of the Social Network Features is governed by these Terms, your access and use of third party social networking sites and the services provided through the Services is governed by the terms of service and other agreements posted on these sites. You are responsible for ensuring that your use of those sites complies with any applicable terms of service or other agreements.</p>
+                    <p><strong>Our Warranties and Disclaimers</strong><br />We provide our Services using a commercially reasonable level of care and promise to do our best to make sure you enjoy the Services. But there are certain things that we don&rsquo;t promise about our Services.</p>
+                    <p>OTHER THAN AS EXPRESSLY SET OUT IN THESE TERMS OF SERVICE, NEITHER CLOUDATLASINC.COM, INC. NOR ITS AGENTS OR SERVICE PROVIDERS (THE &ldquo;SERVICES ENTITIES&rdquo;) MAKE ANY SPECIFIC PROMISES ABOUT THE SITES. FOR EXAMPLE, WE DON&rsquo;T MAKE ANY COMMITMENTS ABOUT THE CONTENT WITHIN THE SITES, THE SPECIFIC FUNCTION OF THE SITES, OR THEIR RELIABILITY, AVAILABILITY, OR ABILITY TO MEET YOUR NEEDS. WE PROVIDE THE SITES &ldquo;AS IS&rdquo;.<br />SOME JURISDICTIONS PROVIDE FOR CERTAIN WARRANTIES, LIKE THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. TO THE EXTENT PERMITTED BY LAW, WE EXCLUDE ALL WARRANTIES.</p>
+                    <p><strong>Liability for our Services</strong><br />EXCEPT WHERE PROHIBITED, THE SERVICES ENTITIES SHALL NOT BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES ARISING FROM YOUR USE OF THE SITES OR ANY THIRD PARTY&rsquo;S USE OF THE SITES. THESE EXCLUSIONS INCLUDE, WITHOUT LIMITATION, DAMAGES FOR LOST PROFITS, LOST DATA, COMPUTER FAILURE, OR THE VIOLATION OF YOUR RIGHTS BY ANY THIRD PARTY, EVEN IF THE SERVICES ENTITIES HAVE BEEN ADVISED OF THE POSSIBILITY THEREOF AND REGARDLESS OF THE LEGAL OR EQUITABLE THEORY UPON WHICH THE CLAIM IS BASED.</p>
+                    <p><strong>Additional Details</strong><br />We may modify these Terms at any time so be sure to check back regularly. By continuing to use or log in to a Site after these Terms have changed, you indicate your agreement to the revised Terms. If you do not agree to the changes, you should stop using or logging in to the Sites.<br />The Sites may contain links to third-party websites. That doesn&rsquo;t mean that we control or endorse those websites, or any goods or services sold on those websites. Similarly, the Sites may contain ads from third-parties. We do not control or endorse any products being advertised.<br />If you do not comply with these Terms, and we don&rsquo;t take action right away, this doesn&rsquo;t mean we&rsquo;re OK with what you did, or we are giving up any rights that we may have (such as taking action in the future).<br />These Terms are governed by and construed in accordance with the laws of Washington, without regard to its conflict of laws rules. You expressly agree that the exclusive jurisdiction for any claim or dispute under these Terms and or your use of the Services resides in the courts located in Seattle, Washington, and you further expressly agree to submit to the personal jurisdiction of such courts for the purpose of litigating any such claim or action. If it turns out that a particular provision in these Terms is not enforceable, that will not affect any other provision.<br />CloudAtlas accepts and responds to any requests such as disclosure, correction, addition, or deletion and veto of use or provision of personal information (the &ldquo;Disclosure Requests&rdquo;) from the person who provided his/her personal information.</p>
+                    <p>Contact for inquiries regarding Personal Information Handling: support@CloudAtlasInc.com</p>
+                    <p>These terms were last updated on January 1st, 2018</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="PrivacyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Privacy Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>This privacy policy has been compiled to better serve those who are concerned with how their &lsquo;Personally Identifiable Information&rsquo; (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.</p>
+                    <p><strong>What personal information do we collect from the people that visit our blog, website or app?</strong><br />We do not collect information from visitors of our site.<br />or other details to help you with your experience.</p>
+                    <p><strong>When do we collect information?</strong><br />We collect information from you when you register on our site, subscribe to a newsletter, Open a Support Ticket or enter information on our site.</p>
+                    <p><strong>How do we use your information?</strong><br />We may use the information we collect from you when you register, make a purchase, sign up for our newsletter, respond to a survey or marketing communication, surf the website, or use certain other site features in the following ways:<br />&bull; To personalize your experience and to allow us to deliver the type of content and product offerings in which you are most interested.<br />&bull; To improve our website in order to better serve you.<br />&bull; To allow us to better service you in responding to your customer service requests.<br />&bull; To administer a contest, promotion, survey or other site feature.<br />&bull; To quickly process your transactions.<br />&bull; To ask for ratings and reviews of services or products<br />&bull; To follow up with them after correspondence (live chat, email or phone inquiries)</p>
+                    <p><strong>How do we protect your information?</strong><br />Our website is scanned on a regular basis for security holes and known vulnerabilities in order to make your visit to our site as safe as possible.<br />We use regular Malware Scanning.<br />Your personal information is contained behind secured networks and is only accessible by a limited number of persons who have special access rights to such systems, and are required to keep the information confidential. In addition, all sensitive/credit information you supply is encrypted via Secure Socket Layer (SSL) technology.<br />We implement a variety of security measures when a user places an order enters, submits, or accesses their information to maintain the safety of your personal information.<br />All transactions are processed through a gateway provider and are not stored or processed on our servers.</p>
+                    <p><strong>Do we use &lsquo;cookies&rsquo;?</strong><br />Yes. Cookies are small files that a site or its service provider transfers to your computer&rsquo;s hard drive through your Web browser (if you allow) that enables the site&rsquo;s or service provider&rsquo;s systems to recognize your browser and capture and remember certain information. For instance, we use cookies to help us remember and process the items in your shopping cart. They are also used to help us understand your preferences based on previous or current site activity, which enables us to provide you with improved services. We also use cookies to help us compile aggregate data about site traffic and site interaction so that we can offer better site experiences and tools in the future.<br /><strong>We use cookies to:</strong><br />&bull; Help remember and process the items in the shopping cart.<br />&bull; Understand and save user&rsquo;s preferences for future visits.<br />&bull; Compile aggregate data about site traffic and site interactions in order to offer better site experiences and tools in the future. We may also use trusted third-party services that track this information on our behalf.<br />You can choose to have your computer warn you each time a cookie is being sent, or you can choose to turn off all cookies. You do this through your browser settings. Since browser is a little different, look at your browser&rsquo;s Help Menu to learn the correct way to modify your cookies.<br /><strong>If users disable cookies in their browser:</strong><br />If you turn cookies off, Some of the features that make your site experience more efficient may not function properly.Some of the features that make your site experience more efficient and may not function properly.</p>
+                    <p><strong>Third-party disclosure</strong><br />We do not sell, trade, or otherwise transfer to outside parties your Personally Identifiable Information unless we provide users with advance notice. This does not include website hosting partners and other parties who assist us in operating our website, conducting our business, or serving our users, so long as those parties agree to keep this information confidential. We may also release information when it&rsquo;s release is appropriate to comply with the law, enforce our site policies, or protect ours or others&rsquo; rights, property or safety.<br />However, non-personally identifiable visitor information may be provided to other parties for marketing, advertising, or other uses.</p>
+                    <p><br /><strong>Third-party links</strong><br />Occasionally, at our discretion, we may include or offer third-party products or services on our website. These third-party sites have separate and independent privacy policies. We therefore have no responsibility or liability for the content and activities of these linked sites. Nonetheless, we seek to protect the integrity of our site and welcome any feedback about these sites.</p>
+                    <p><strong>Google</strong><br />Google&rsquo;s advertising requirements can be summed up by Google&rsquo;s Advertising Principles. They are put in place to provide a positive experience for users. https://support.google.com/adwordspolicy/answer/1316548?hl=en<br />We use Google AdSense Advertising on our website.<br />Google, as a third-party vendor, uses cookies to serve ads on our site. Google&rsquo;s use of the DART cookie enables it to serve ads to our users based on previous visits to our site and other sites on the Internet. Users may opt-out of the use of the DART cookie by visiting the Google Ad and Content Network privacy policy.<br />We have implemented the following:<br />&bull; Remarketing with Google AdSense<br />&bull; Google Display Network Impression Reporting<br />&bull; Demographics and Interests Reporting<br />We, along with third-party vendors such as Google use first-party cookies (such as the Google Analytics cookies) and third-party cookies (such as the DoubleClick cookie) or other third-party identifiers together to compile data regarding user interactions with ad impressions and other ad service functions as they relate to our website.<br /><strong>Opting out:</strong><br />Users can set preferences for how Google advertises to you using the Google Ad Settings page. Alternatively, you can opt out by visiting the Network Advertising Initiative Opt Out page or by using the Google Analytics Opt Out Browser add on.</p>
+                    <p><strong>California Online Privacy Protection Act</strong><br />CalOPPA is the first state law in the nation to require commercial websites and online services to post a privacy policy. The law&rsquo;s reach stretches well beyond California to require any person or company in the United States (and conceivably the world) that operates websites collecting Personally Identifiable Information from California consumers to post a conspicuous privacy policy on its website stating exactly the information being collected and those individuals or companies with whom it is being shared. &ndash; See more at: http://consumercal.org/california-online-privacy-protection-act-caloppa/#sthash.0FdRbT51.dpuf<br />According to CalOPPA, we agree to the following:<br />Users can visit our site anonymously.<br />Once this privacy policy is created, we will add a link to it on our home page or as a minimum, on the first significant page after entering our website.<br />Our Privacy Policy link includes the word &lsquo;Privacy&rsquo; and can easily be found on the page specified above.<br />You will be notified of any Privacy Policy changes:<br />&bull; On our Privacy Policy Page<br />Can change your personal information:<br />&bull; By logging in to your account<br />How does our site handle Do Not Track signals?<br />We honor Do Not Track signals and Do Not Track, plant cookies, or use advertising when a Do Not Track (DNT) browser mechanism is in place.<br />Does our site allow third-party behavioral tracking?<br />It&rsquo;s also important to note that we do not allow third-party behavioral tracking</p>
+                    <p><strong>COPPA (Children Online Privacy Protection Act)</strong><br />When it comes to the collection of personal information from children under the age of 13 years old, the Children&rsquo;s Online Privacy Protection Act (COPPA) puts parents in control. The Federal Trade Commission, United States&rsquo; consumer protection agency, enforces the COPPA Rule, which spells out what operators of websites and online services must do to protect children&rsquo;s privacy and safety online.<br />We do not specifically market to children under the age of 13 years old.<br />Do we let third-parties, including ad networks or plug-ins collect PII from children under 13?</p>
+                    <p><strong>Fair Information Practices</strong><br />The Fair Information Practices Principles form the backbone of privacy law in the United States and the concepts they include have played a significant role in the development of data protection laws around the globe. Understanding the Fair Information Practice Principles and how they should be implemented is critical to comply with the various privacy laws that protect personal information.<br />In order to be in line with Fair Information Practices we will take the following responsive action, should a data breach occur:<br />We will notify you via email<br />&bull; Within 7 business days<br />We will notify the users via in-site notification<br />&bull; Within 7 business days<br />We also agree to the Individual Redress Principle which requires that individuals have the right to legally pursue enforceable rights against data collectors and processors who fail to adhere to the law. This principle requires not only that individuals have enforceable rights against data users, but also that individuals have recourse to courts or government agencies to investigate and/or prosecute non-compliance by data processors.</p>
+                    <p><strong>CAN SPAM Act</strong><br />The CAN-SPAM Act is a law that sets the rules for commercial email, establishes requirements for commercial messages, gives recipients the right to have emails stopped from being sent to them, and spells out tough penalties for violations.<br />We collect your email address in order to:<br />&bull; Send information, respond to inquiries, and/or other requests or questions<br />&bull; Process orders and to send information and updates pertaining to orders.<br />&bull; Send you additional information related to your product and/or service<br />&bull; Market to our mailing list or continue to send emails to our clients after the original transaction has occurred.<br />To be in accordance with CANSPAM, we agree to the following:<br />&bull; Not use false or misleading subjects or email addresses.<br />&bull; Identify the message as an advertisement in some reasonable way.<br />&bull; Include the physical address of our business or site headquarters.<br />&bull; Monitor third-party email marketing services for compliance, if one is used.<br />&bull; Honor opt-out/unsubscribe requests quickly.<br />&bull; Allow users to unsubscribe by using the link at the bottom of each email.</p>
+                    <p>If at any time you would like to unsubscribe from receiving future emails, you can email us at<br />&bull; Follow the instructions at the bottom of each email.<br />and we will promptly remove you from ALL correspondence.</p>
+                    <p><strong>Contacting Us</strong><br />If there are any questions regarding this privacy policy, you may contact us using the information below.<br />www.cloudatlasinc.com<br />8201 164th Ave NE<br />Redmond,, WA 98052</p>
+                    <p>United States<br />support@cloudatlasinc.com<br />18005357443<br />Last Edited on 2018-01-03</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @* modal *@
+    <div class="modal fade" id="modalCard" tabindex="-1" role="dialog" aria-labelledby="modalCardLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCardLabel">Modal Card Title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Modal content goes here -->
+                    <p>Custom Login is not supported for this Email.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     
+   
+    <script>
+        var actionurl = {
+            _Index: '@Url.Action("Index", "Home")',
+            _getCustomAuthentication: '@Url.Action("getCustomAuthentication", "Login")',  // Ensure this URL is correct
+            _aiassistantbot: '@Url.Action("bot", "aiassistantbot", new { area = "aiassistant" })',
+            _Hol_Index: '@Url.Action("Hol_Index", "HolAccounts")',
+            _admin_Dashboard: '@Url.Action("Dashboard", "Admin")',
+            _user_dashboard: '@Url.Action("UserDashboard", "Admin")',
+        };
+    </script>
+
+    <script src="~/js/loginindex.js"></script>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3.10.0/notyf.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/notyf@3.10.0/notyf.min.css" rel="stylesheet">
+    @await Component.InvokeAsync("Notyf")
+</body>
+</html>
+

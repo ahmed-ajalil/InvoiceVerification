@@ -1,0 +1,284 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model CR_CoreBot_DataAccess.Models.AiAssessmentModel
+@{
+    ViewData["Title"] = "";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+@section CssForThisPage{
+    <!-- DataTables -->
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<style>
+    .scoree {
+        width: 28px;
+        background: #ececec;
+        padding: 2px 4px;
+        border-radius: 3px;
+        margin-right: 3px;
+    }
+
+        .morecontent span {
+            display: none;
+        }
+
+        .morelink {
+            display: block;
+            cursor: pointer;
+            color: blue;
+        }
+
+
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+
+        table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thead > tr > td:not(.sorting_disabled) {
+            padding-right: 15px !important;
+        }
+
+
+    
+
+    #load {
+        display: block !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin: 8px
+    }
+
+    
+</style>
+<link rel="stylesheet" href="~/css/contentSafety.css">
+}
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="col-12">
+            <h4 class="mb-2 d-flex align-items-center">
+                AI Model Testing and Scanning Result
+            </h4>
+        </div>
+    </div>
+    <div class="col-12 ">
+        <div class="row">
+
+            <div class="col-6 d-flex justify-content-center">
+                <div class="card rounded-0 p-1 pb-2 pt-2 w-100 ">
+                    <h5 class="text-center font-size-15  border-bottom pb-2 border-info d-flex align-items-center justify-content-center color-b">
+                        <img class="scoree" src="~/content/assets/images/bg/score.png" />
+                        Hallucination Score
+                    </h5>
+                   
+                    <h4 id="totPromptInj" class="mb-0 font-size-18 fw-bold text-center p-2">@Model.aiAssessmentModel.Where(x => x.type == "Hallucination").Select(x => x.score).FirstOrDefault()</h4>
+
+                </div>
+                <div class="card rounded-0 p-1 pb-2 pt-2 w-100 ">
+                    <h5 class="color-b text-center font-size-15  border-bottom pb-2 border-info d-flex align-items-center justify-content-center">
+                        <img class="scoree" src="~/content/assets/images/bg/score.png" />
+                        Plagiarism Score
+                    </h5>
+                    <h4 id="totPromptInjPass" class="mb-0 font-size-18 fw-bold text-center p-2">@Model.aiAssessmentModel.Where(x => x.type == "Plagiarism").Select(x => x.score).FirstOrDefault()</h4>
+
+                </div>
+                <div class="card rounded-0 p-1 pb-2 pt-2 w-100 ">
+                    <h5 class="color-b text-center font-size-15  border-bottom pb-2 border-info d-flex align-items-center justify-content-center">
+                        <img class="scoree" src="~/content/assets/images/bg/score.png" />
+                        PromptInjection Score
+                    </h5>
+                    <h4 id="totPromptInjFail" class="mb-0 font-size-18 fw-bold text-center p-2">@Model.aiAssessmentModel.Where(x => x.type == "PromptInjection").Select(x => x.score).FirstOrDefault()</h4>
+
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card p-1 pb-2 pt-2">
+                    <h5 class="text-center font-size-15 color-b  border-bottom pb-2 border-info d-flex align-items-center justify-content-center">
+                        <img class="scoree" src="~/content/assets/images/bg/Toxicity.png" />
+                        Toxicity
+                    </h5>
+                    <section class="d-flex justify-content-between">
+                        <h5 class=" font-size-13 fw-bold  pb-0 mb-0  w-100 border-end me-2 text-center ">Hate Score <br /> <span id="totPromptInjScoreH" class="mb-0 font-size-20 fw-bold ">@Model.aiAssessmentModel.Where(x => x.type == "Hate").Select(x => x.score).FirstOrDefault()%</span></h5>
+                        <h5 class=" font-size-13 fw-bold  pb-0 mb-0  w-100 border-end me-2 text-center"> SelfHarm Score <br /> <span id="totPromptInjScoreH" class="mb-0 font-size-20 fw-bold ">@Model.aiAssessmentModel.Where(x => x.type == "SelfHarm").Select(x => x.score).FirstOrDefault()%</span></h5>
+                        <h5 class=" font-size-13 fw-bold  pb-0 mb-0  w-100 border-end me-2 text-center">Sexual Score <br /> <span id="totPromptInjScoreH" class="mb-0 font-size-20 fw-bold ">@Model.aiAssessmentModel.Where(x => x.type == "Sexual").Select(x => x.score).FirstOrDefault()%</span></h5>
+                        <h5 class=" font-size-13 fw-bold  pb-0  mb-0  w-100  text-center">Violence Score <br /> <span id="totPromptInjScoreH" class="mb-0 font-size-20 fw-bold ">@Model.aiAssessmentModel.Where(x => x.type == "Violence").Select(x => x.score).FirstOrDefault()%</span></h5>
+                    </section>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card p-2">
+            <div class="row">
+
+                <div class="col-2">
+                    <div class=" font-size-15 fw-bold border-bottom pb-1 mb-1 border-info ">Hallucination</div>
+                    <div class="options mt-1">
+
+
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)" checked> All</label><br />
+
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="HallucinationScore_10" onchange="handleRadioChange(event)"> Below 10</label><br />
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="HallucinationScore_25" onchange="handleRadioChange(event)"> Below 25</label><br />
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="HallucinationScore_50" onchange="handleRadioChange(event)"> Below 50</label><br />
+                        <label class="mb-0  pe-2  mb-1 ps-2"><input type="radio" name="option" value="Hallucination_true" onchange="handleRadioChange(event)"> Detected</label><br />
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="Hallucination_false" onchange="handleRadioChange(event)"> Not Detected</label><br />
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <div class=" font-size-15 fw-bold border-bottom pb-1 mb-1 border-info">Plagiarism</div>
+                    <div class="options mt-1">
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)"> All</label><br />
+
+                        <label class="mb-0 mb-1  pe-2  ps-2"><input type="radio" name="option" value="Plagiarism_true" onchange="handleRadioChange(event)"> Detected</label><br />
+                        <label class="mb-0 mb-1 pe-2  ps-2"><input type="radio" name="option" value="Plagiarism_false" onchange="handleRadioChange(event)"> Not Detected</label><br />
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class=" font-size-15 fw-bold border-bottom pb-1 mb-1 border-info">Prompt Injection</div>
+                    <div class="options mt-1">
+                        <label class="mb-0  pe-2 mb-1  ps-2"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)"> All</label><br />
+
+                        <label class="mb-0 mb-1  pe-2  ps-2"><input type="radio" name="option" value="PromptInjection_true" onchange="handleRadioChange(event)"> Detected</label><br />
+                        <label class="mb-0 mb-1  pe-2  ps-2"><input type="radio" name="option" value="PromptInjection_false" onchange="handleRadioChange(event)"> Not Detected</label><br />
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class=" font-size-15 fw-bold border-bottom pb-1 mb-1 border-info">Toxicity</div>
+                    <div class="options d-flex justify-content-between">
+                        <div class="border p-1 w-25 me-1">
+                            <div class=" font-size-13 fw-bold border-bottom pb-1 mb-1">Hate Speech</div>
+                            <label class="mb-0  pe-2 mb-1  ps-1"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)">All</label><br />
+
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="HateSeverity_6" onchange="handleRadioChange(event)"> High</label><br />
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="HateSeverity_4" onchange="handleRadioChange(event)"> Medium</label><br />
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="HateSeverity_2" onchange="handleRadioChange(event)"> Low</label><br />
+                            <label class="mb-0   pe-1  ps-1"><input type="radio" name="option" value="HateSeverity_0" onchange="handleRadioChange(event)"> Safe</label><br />
+
+                        </div>
+                        <div class="border p-1  w-25 me-1">
+                            <div class=" font-size-13 fw-bold border-bottom pb-1 mb-1">Self Harm</div>
+                            <label class="mb-0  pe-2 mb-1  ps-1"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)"> All</label><br />
+
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="SelfHarmSeverity_6" onchange="handleRadioChange(event)"> High</label><br />
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="SelfHarmSeverity_4" onchange="handleRadioChange(event)"> Medium</label><br />
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="SelfHarmSeverity_2" onchange="handleRadioChange(event)"> Low</label><br />
+                            <label class="mb-0   pe-1  ps-1"><input type="radio" name="option" value="SelfHarmSeverity_0" onchange="handleRadioChange(event)"> Safe</label><br />
+                        </div>
+                        <div class="border p-1  w-25 me-1">
+                            <div class=" font-size-13 fw-bold border-bottom pb-1 mb-1">Sexual</div>
+                            <label class="mb-0  pe-2 mb-1  ps-1"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)"> All</label><br />
+
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="SexualSeverity_6" onchange="handleRadioChange(event)"> High</label><br />
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="SexualSeverity_4" onchange="handleRadioChange(event)"> Medium</label><br />
+                            <label class="mb-0 mb-1  pe-1  ps-1"><input type="radio" name="option" value="SexualSeverity_2" onchange="handleRadioChange(event)"> Low</label><br />
+                            <label class="mb-0  pe-1  ps-1"><input type="radio" name="option" value="SexualSeverity_0" onchange="handleRadioChange(event)"> Safe</label><br />
+                        </div>
+                        <div class="border p-1  w-25 ">
+                            <div class=" font-size-13 fw-bold border-bottom pb-1 mb-1">Violence</div>
+                            <label class="mb-0  pe-2 mb-1  ps-1"><input type="radio" name="option" value="All_All" onchange="handleRadioChange(event)">All</label><br />
+
+                            <label class="mb-0  mb-1 pe-1  ps-1"><input type="radio" name="option" value="ViolenceSeverity_6" onchange="handleRadioChange(event)"> High</label><br />
+                            <label class="mb-0 mb-1 pe-1  ps-1"><input type="radio" name="option" value="ViolenceSeverity_4" onchange="handleRadioChange(event)"> Medium</label><br />
+                            <label class="mb-0 mb-1 pe-1 ps-1"><input type="radio" name="option" value="ViolenceSeverity_2" onchange="handleRadioChange(event)"> Low</label><br />
+                            <label class="mb-0   pe-1  ps-1"><input type="radio" name="option" value="ViolenceSeverity_0" onchange="handleRadioChange(event)"> Safe</label><br />
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+            <div class="col-3 ps-0 d-none">
+                <div class="card p-2 mb-2">
+                </div>
+            </div>
+            <div class="col-12 d-none">
+                <div class="card p-2 mb-0">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body p-2" >
+                <div id="aadusertable">
+                    <img src="~/content/assets/images/icons/loader.gif" id="load" alt="Chart will Render Here..." />
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModalRemStep" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="exampleModalLabel">Response</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="RemlistDiv" class="main_modal_cont">
+                </div>
+                @*<div id="SpanDiv" class="main_modal_cont">
+                </div>*@
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section JSForThisPage{
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+  
+    <script src="~/js/securityaiassessmentdashboard.js"></script>
+     
+}

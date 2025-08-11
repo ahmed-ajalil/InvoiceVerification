@@ -1,0 +1,105 @@
+﻿@model CR_HRPortalAI_DataAcess.CR_HRPortal.ModelDetails
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage {
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-15">Model Information</h4>
+            
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='@Url.Action("Index","ModelDetails")';">
+                Back
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <!-- Ensure you have validation summaries enabled -->
+                <form id="modelForm" method="post" action="@Url.Action("SaveModelInfo", "ModelDetails")">
+                    <div class="row">
+                        <!-- First row: EndPoint and ApiKey -->
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="EndPoint" class="form-label">EndPoint</label>
+                                <input asp-for="EndPoint" class="form-control" id="EndPoint" />
+                                <span asp-validation-for="EndPoint" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="ApiKey" class="form-label">ApiKey</label>
+                                <input asp-for="ApiKey" class="form-control" id="ApiKey" />
+                                <span asp-validation-for="ApiKey" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Second row: DeploymentName and ApiVersion -->
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="DeploymentName" class="form-label">Deployment Name</label>
+                                <input asp-for="DeploymentName" class="form-control" id="DeploymentName" />
+                                <span asp-validation-for="DeploymentName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="ApiVersion" class="form-label">Api Version</label>
+                                <input asp-for="ApiVersion" class="form-control" id="ApiVersion" />
+                                <span asp-validation-for="ApiVersion" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Third row: ModelName and Size -->
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="ModelName" class="form-label">Model Name</label>
+                                <select asp-for="ModelName" class="form-control" id="ModelName">
+                                    <option value="">--Select--</option>
+                                    @foreach (var modelName in ViewBag.ModelNames)
+                                    {
+                                        <option value="@modelName.Value">@modelName.Text</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ModelName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Size" class="form-label">Size</label>
+                                <select asp-for="Size" class="form-control" id="Size">
+                                    <option value="">--Select--</option>
+                                </select>
+                                <span asp-validation-for="Size" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Submit buttons -->
+                        <div class="col-lg-12 text-end">
+                            <button type="button" id="Insertbtn" class="btn btn-primary btn-sm px-5" onclick="SaveModelInfo('add')">Save Model Info</button>
+                            <button type="button" id="Updatebtn" class="btn btn-info btn-sm px-5" style="display:none;" onclick="SaveModelInfo('update')">Update Model Info</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JSForThisPage {
+
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/modeldetailscreate.js"></script>
+  
+   
+}

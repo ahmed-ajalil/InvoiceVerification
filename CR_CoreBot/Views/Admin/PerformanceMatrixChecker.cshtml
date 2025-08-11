@@ -1,0 +1,192 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.PerformanceMatrixCheckerModel>
+
+@{
+    ViewData["Title"] = "Performance Matrix Checker";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+
+@section CssForThisPage {
+    <!-- DataTables -->
+
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        .morecontent span {
+            display: none;
+        }
+
+        .morelink {
+            display: block;
+            cursor: pointer;
+            color: blue;
+        }
+
+
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+
+        table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thead > tr > td:not(.sorting_disabled) {
+            padding-right: 15px !important;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Performance Matrix Checker</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="RptLytTpMenu">
+            <ul>
+                <li>
+                    @*<a class="btn btn-info btn-sm" href="/Admin/CustomerInfo?CustomerId=0"><i data-feather="user" class="icon-sm"></i> Add Admin</a>*@
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body p-2">
+                @if (Model != null)
+                {
+                    <table id="tblResponse" class="display table-bordered table-striped p-3" style="width:100%;">
+                        <thead class="ctm-table">
+                            <tr>
+                                @*<th>CustomerId</th>*@
+
+                                <th>Username</th>
+                                <th>Prompt</th>
+                                <th>Completion</th>
+                                <th>Cost ($)</th>
+                                <th>Response Time (sec)</th>
+                                <th>Completion Token</th>
+                                <th>Prompt Token</th>
+
+                                <th>Total Tokens</th>
+
+                                <th>CreatedTime</th>
+
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr style="@(item.PublicInfo == Convert.ToBoolean(1)? "background-color: #5ac3e8;" : "background-color: white;")"
+                                @*<tr style="@(item.PublicInfo == "true" ?'background-color: yellow;' : 'background-color: white;')" @(item.PublicInfo == "true"?'data-toggle="tooltip" title="Hooray!"':'')>*@
+                                @if (item.PublicInfo == Convert.ToBoolean(1))
+                                {
+                                    <text>data-toggle="tooltip" title="Information from Public Source"</text>
+                                }>
+                                    @*<td>@item.CustomerId</td>*@
+
+                                                    <td class="p-1">@item.Username</td>
+                                                    <td class="p-1">@item.Prompt</td>
+                                                    <td class="p-1 long-text">@item.Completion</td>
+                                                    <td class="p-1">@item.Cost</td>
+                                                    <td class="p-1" align="center">@item.ResponseTime</td>
+                                                    <td class="p-1">@item.CompletionTokens</td>
+                                                    <td class="p-1">@item.PromptTokens</td>
+                                                    <td class="p-1">@item.TotalTokens</td>
+
+                                                    <td class="p-1">@item.CurrentDateTime</td>
+                                                    <td class="p-1">
+                                        @if (item.IsValid == "False")
+                                        {
+                                                                    <i data-feather="thumbs-down" style="max-height:18px;color:crimson;"></i>
+                                        }
+                                        else if (item.IsValid == "True")
+                                        {
+                                                                    <i data-feather="thumbs-up" style="max-height:18px;color:green;"></i>
+                                        }
+                                        else if (item.IsValid == null || item.IsValid == "")
+                                        {
+
+                                        }
+                                        @*@if (item.IsValid == "False")
+                                        {
+                                            <i data-feather="thumbs-down" style="max-height:18px;color:crimson;"></i>
+                                        }
+                                        else if(item.IsValid == "True")
+                                        {
+                                            <i data-feather="thumbs-up" style="max-height:18px;color:crimson;"></i>
+                                        }
+                                        else
+                                        {
+
+                                        }
+                                        *@
+                                        @*@item.IsValid*@
+                                                        </td>
+                                    @*<td class="text-center">
+                                        <button class="badge bg-info px-2 border-0" onclick="CustomerInfo(@item.PeformanceId)"><i data-feather="edit" class="icon-sm"></i></button>
+                                        <button class="badge bg-danger px-2 border-0" onclick="DeleteCustomerInfo(@item.PeformanceId)"><i data-feather="trash-2" class="icon-sm"></i></button>
+                                    </td>*@
+                                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <h2>No records found</h2>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/content/assets/libs/jquery/jquery.min.js"></script>*@
+@*<script src="~/script/sweetalert.min2.js"></script>*@
+
+@section JSForThisPage {
+
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+ 
+
+    <script src="~/js/adminperformancematrixchecker.js"></script>
+    
+
+}

@@ -1,0 +1,1089 @@
+﻿@model CR_CoreBot_DTO.DataNewDTO
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@{
+    List<string> listItems = ViewBag.listmodel;
+}
+<link href="/content/assets/css/bot.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+<style>
+    .toggle-switch {
+        position: relative;
+        width: 120px;
+        height: 30px;
+    }
+
+    .toggle-input {
+        display: none;
+    }
+
+    .toggle-label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #ddd;
+        border-radius: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+    }
+
+    .toggle-input:checked + .toggle-label {
+        background-color: #494dab; /* Green color */
+    }
+
+        .toggle-input:checked + .toggle-label .toggle-text {
+            color: white;
+        }
+
+    .toggle-text {
+        transition: 0.3s;
+        font-size: 13px;
+    }
+
+    .toggle-label:before {
+        content: "";
+        position: absolute;
+        width: 36px;
+        left: 0;
+        height: 26px;
+        border-radius: 25px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+    }
+
+    .toggle-input:checked + .toggle-label:before {
+        transform: translateX(40px);
+    }
+
+    .tooltip123 {
+        display: block;
+        position: absolute;
+        background-color: #000;
+        color: #fff;
+        padding: 8px;
+        border-radius: 4px;
+        z-index: 9999;
+    }
+
+    .chat-link-ctm {
+        border: 1px solid #4eb7e5 !important;
+        background: #ffffff !important;
+        color: #5d5d5d;
+        font-size: 13px;
+    }
+
+        .chat-link-ctm:hover {
+            border: 1px solid #4eb7e5 !important;
+            background: #dff1ff !important;
+            color: #3d3d3d;
+            font-size: 13px;
+        }
+
+    .full-text {
+        display: none;
+    }
+
+    .ellipsis-button {
+        text-align: left;
+        font-family: 'Mukta', sans-serif;
+        color: #000;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 350px;
+        height: 33px;
+    }
+
+    .show-full-text .full-text {
+        display: block;
+    }
+
+    .border-ctm {
+        border: 1px solid #c3c3c3 !important;
+    }
+
+    .icon-lg {
+        height: 17px;
+        width: 17px;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .myDIV {
+        position: relative;
+        padding-right: 50px;
+    }
+
+    .feedback_thumbs {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        display: none;
+    }
+
+    .myDIV:hover .feedback_thumbs {
+        display: block;
+        color: red;
+    }
+
+    .ms1 {
+        margin-right: 10px;
+    }
+
+    .thub {
+        z-index: 99;
+        margin: 0 auto;
+        padding: 0;
+    }
+
+    #chatBotDIV {
+        overflow-x: hidden;
+        overflow-y: visible;
+        height: 415px;
+    }
+
+    .le-sug {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .le-sug a {
+            background-color: #2296f057;
+            color: #414141;
+            border-radius: 25px;
+            padding: 0 10px;
+            font-weight: 400;
+            margin-left: 10px;
+            display: inline-block;
+        }
+
+            .le-sug a:hover {
+                background-color: #2296f057;
+                color: #414141;
+                border-radius: 25px;
+                padding: 0 10px;
+                font-weight: 400;
+                margin-left: 10px;
+                text-decoration: underline !important;
+            }
+
+    .ChatBotmsg-text {
+        padding: 10px 20px 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .chat-conversation .conversation-list .ctext-wrap-content {
+        padding: initial;
+        border-radius: 8px !important;
+    }
+
+        .chat-conversation .conversation-list .ctext-wrap-content p {
+            padding: 10px 20px;
+        }
+
+    .Usermsg-text {
+        padding: 10px 20px;
+    }
+
+    .con-sug-list {
+        margin-bottom: 5px;
+        bottom: 0;
+    }
+</style>
+<div class="row">
+    <div class="col-md-2  ps-0 pe-0 bg-white">
+        <div class="card-body p-0 mb-0 ps-1">
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button fw-medium bg-light py-2" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            UCBot Config
+
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body p-0">
+                            <div class="card-body p-3 bg-white">
+                                @* <div class="toggle-switch d-flex" id="id_PersonalBanking">
+                                </div>
+ *@
+                                <div class="mb-2">
+
+                                    <label class="form-label text-muted">Model</label>
+
+                                    <form action="/Home/Index" method="post" name="dropframe" class="msger-inputareadrop">
+                                        <select class="form-select" name="Document" id="myselect" onchange="selectvalue()">
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="formCheck2" checked="" onclick="return false;" onkeydown="return false;">
+                                    <label class="form-check-label" for="formCheck2">
+                                        Answer In-Scope Questions
+                                    </label>
+                                </div>
+                                 <div class="form-checkout" style="display:none;">
+                                    <input class="form-check-input form-check-inputout" type="checkbox" id="formCheck3" value="True">
+                                    <label class="form-check-label" for="formCheck3">
+                                        Include Out-Scope Questions
+                                    </label>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end chat-leftsidebar -->
+    <div class="col-md-10 pe-0">
+        <div class="card msger mb-0">
+            <div class="p-0 px-lg-4 border-bottom rounded-top bg-light">
+                <div class="row">
+                    <div class="col-xl-4 col-7">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <h5 class="font-size-14 mb-1 text-truncate mt-2"><a href="#" class="text-dark"><i data-feather="message-square" class="icon-lg color-info text-dark"></i>&nbsp;Chat</a></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-5">
+                        <ul class="list-inline user-chat-nav text-end mb-0">
+                            @if (ViewBag.LoginType == "AdLogin")
+                            {
+                                <li class="list-inline-item">
+                                    <a onclick="SubmitReviewForAd('chatbotforad')" class="text-dark  p-1 rounded-pill" data-bs-toggle="tooltip" data-bs-placement="left" title="Feedback">
+                                        <i data-feather="smile" class="icon-lg text-dark"></i>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="list-inline-item">
+                                    <a href="@Url.Action("FeedBack","Home",new { Area = "" })" target="_blank" class="text-dark  p-1 rounded-pill" data-bs-toggle="tooltip" data-bs-placement="left" title="Feedback">
+                                        <i data-feather="smile" class="icon-lg text-dark"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="list-inline-item">
+                                <a href="#" onclick="fnClearChat()" class="text-dark  p-1 rounded-pill" data-bs-toggle="tooltip" data-bs-placement="left" title="Clear Chat"><i data-feather="refresh-ccw" class="icon-lg text-dark"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <div class="dropdown">
+                                    <button class="btn nav-btn dropdown-toggle text-dark" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bx bx-dots-horizontal-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a class="dropdown-item" href="#" onclick="fnchatExportBanking()">Export Chat</a>
+                                        <a class="dropdown-item" href="#">Terms &amp; Condition</a>
+                                        <a class="dropdown-item" href="#">Privacy Policy</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-area-box-bg chat-conversation p-3 px-2" style="padding-bottom: 40px !important;" id="messages" data-simplebar>
+                <input type="hidden" id="OrganizationName" value="@ViewBag.OrganizationName" />
+                <ul class="list-unstyled mb-0 msger-chat" id="chatBotDIV">
+                    <div class="msg-img"></div>
+                    <li class="chat-day-title mb-1">
+                        <span class="time">@DateTime.Now.ToString("HH:mm")</span>
+                    </li>
+                    <li id="_fnsuggestDiv">
+                        <div class="conversation-list con-sug-list d-flex msg left-msg chat-mx-width-45" id="fn_presuggestionsDiv">
+                            <div class="ctext-wrap">
+                                <div class="ctext-wrap-content msg-info order-2 shadow-sm">
+                                    <button style="text-align:left;font-family: 'Mukta', sans-serif; color: #000;" class="ellipsis-button chat-link-ctm rounded mb-0 msg-text" id="presuggestions1" onclick="fnsuggestion2('@Model.presuggestions1.ToString()')">@Model.presuggestions1</button>
+
+                                </div>
+
+                            </div>
+                            <div class="ctext-wrap">
+                                <div class="ctext-wrap-content msg-info order-2 shadow-sm">
+                                    <button style="text-align:left;font-family:'Mukta', sans-serif; color:#000;" class="ellipsis-button chat-link-ctm rounded mb-0 msg-text" id="presuggestions2" onclick="fnsuggestion2('@Model.presuggestions2.ToString()')">@Model.presuggestions2</button>
+                                </div>
+
+                            </div>
+                            <div class="ctext-wrap">
+                                <div class="ctext-wrap-content msg-info order-2 shadow-sm">
+                                    <button style="text-align:left;font-family:'Mukta', sans-serif; color:#000;" class="ellipsis-button chat-link-ctm rounded mb-0 msg-text" id="presuggestions3" onclick="fnsuggestion2('@Model.presuggestions3.ToString()' )">@Model.presuggestions3</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li style="display:none" class="left">
+                        <div class="conversation-list">
+                            <div class="ctext-wrap">
+                                <div class="order-1">
+                                    <img src="~/content/assets/images/users/avatar-1.svg">
+                                </div>
+                                <div class="order-2">
+                                    <img src="~/content/assets/images/typing.gif" style="width: 4rem;border-radius: 35px;margin-right:10px;margin-top: 10px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+                <div class="typing-gif" style="display: none;position: fixed;bottom: 95px;left: calc(16.66667% + 5px);">
+                    <img src="~/content/assets/images/typing.gif" style="width: 3rem;border-radius: 35px;margin-right:10px;margin-top: 10px;margin-left: 20px;margin-bottom: 20px;">
+                </div>
+
+                <div class="suggestion btm-sug">
+                    <div class="right float-end">
+                        <div class="conversation-list" id="clearmessageSuggestionDIV">
+                            <div class="ctext-wrap">
+                                <div class="d-flex chat-box-suggestion" id="messageSuggestionDIV">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="px-1 py-1 border-top light-ctm-color">
+
+                <form action="/Home/Index" method="post" class="msger-inputarea">
+                    <div class="row">
+                        <div class="col pe-0">
+                            <div class="position-relative d-flex">
+                                <input type="text" class="form-control border-ctm bg-light-subtle msger-input" name="PropmpInput" id="inputPrompt" placeholder="Enter Message...">
+                            </div>
+                        </div>
+                        <div class="col-auto ps-1">
+                            <button type="submit" id="btnS" class="btn send-btn chat-send waves-effect waves-light" onclick="checkSelection()"><i class="mdi mdi-send float-end ft-size-18"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- end user chat -->
+</div>
+
+@section JSForThisPage
+    {
+    <script>
+        var _BankingEnable = false;
+        var dynamicString; 
+        var dataSource;
+        var labelName;
+        var msgText = "";
+        // Icons made by Freepik from www.flaticon.com
+        const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
+        const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
+        const BOT_NAME = "@ViewBag.OrganizationName";
+        const PERSON_NAME = "Your Question";
+
+        const msgerForm = get(".msger-inputarea");
+        const msgerInput = get(".msger-input");
+        const msgerChat = get(".msger-chat");
+        const msgerdrop = get(".msger-inputareadrop");
+
+
+
+        function selectvalue() {
+
+            var selEl = document.querySelector('#myselect');
+            var op = selEl.value;
+            return op;
+        }
+
+        function getvalue() {
+
+            if (msgerInput.value) {
+                var mesgtext = msgerInput.value.trim();
+            }
+            return mesgtext
+        }
+
+        msgerForm.addEventListener("submit", event => {
+            $('#btnS').prop('disabled', true);
+            $('#inputPrompt').prop('disabled', true);
+            event.preventDefault();
+            msgText = getvalue();
+            if (!msgText) return;
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText, "", "");
+
+            $(".typing-gif").css("display", "inline-block");
+            //$(".typing-gif").show();
+            msgerInput.value = "";
+
+            botResponse(msgText);
+        });
+
+        function datavalidation(chatReply, UserPrompt) {
+            debugger;
+            var _botReply = chatReply.outerText;
+            var _UserPrompt = UserPrompt.outerText;
+            var buttonlike = document.getElementById("likeBtn");
+            var buttonValue = "True";
+
+            if (buttonValue.trim() !== "") {
+                debugger
+                $.ajax({
+                    url: '/Home/FeedbackData',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { IsValid: "True", Prompt: _UserPrompt, Completion: _botReply, CustomerId: @ViewBag.CustomerId, ModelName: selectvalue() },
+                    success: function (data) {
+
+                        alert("Feedback taken Successfully !!");
+                        console.log('Data saved successfully');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+
+            }
+            else {
+                console.log("Button value is empty");
+            }
+        }
+        function datavalidationfalse(chatReply, UserPrompt) {
+            debugger;
+            var _botReply = chatReply.outerText;
+            var _UserPrompt = UserPrompt.outerText;
+            var buttonlike = document.getElementById("likeBtn");
+            var buttonValue = "True";
+
+            if (buttonValue.trim() !== "") {
+                debugger
+                $.ajax({
+                    url: '/Home/FeedbackData',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { IsValid: "False", Prompt: _UserPrompt, Completion: _botReply, CustomerId: @ViewBag.CustomerId, ModelName: selectvalue() },
+                    success: function (data) {
+
+                        alert("Feedback taken Successfully !!");
+                        console.log('Data saved successfully');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+
+            }
+            else {
+                console.log("Button value is empty");
+            }
+        }
+
+        function suggestedprompt(id) {
+            debugger;
+            msgText = $("#" + id).text();
+
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText, "", "");
+
+            $(".typing-gif").css("display", "inline-block");
+            //$(".typing-gif").show();
+            msgerInput.value = "";
+
+            botResponse(msgText);
+
+        }
+
+        var flag = 1;
+        function appendMessage(name, img, side, text, dataSource, labelName, contentSafety) {
+            debugger
+            flag = flag + 1;
+            var texts = String(text);
+            var labelitem = "";         
+            var label = "https://learn.microsoft.com/en-us/sql/connect/jdbc/building-the-connection-url?view=sql-server-ver16";
+            var link = `<a href="#">${label}</a>`;
+            for (var i = 0; i < labelName.length; i++) {
+                labelitem += (" <a style='border:1px solid #c8f5fa' href='#'>" + labelName[i] + " </a> &nbsp;&nbsp;")
+            }
+            if (side == 'right') {
+                $(".suggestion").css("display", "none");
+                const msgHTML = `
+                                 <li class="msg ${side}">
+                                    <div class="msg-img" style="background-image: url(${img})"></div>
+                                    <div class="conversation-list msg-bubble right-chat-mx-width-45">
+                                       <div class="ctext-wrap">
+                                          <div class="ctext-wrap-content msg-info">
+                                             <div class="Usermsg-text" id="select_Usermsg${flag}">${text + "\n"}</div>
+                                          </div>
+                                          <div class="order-3">
+                                             <img src="/content/assets/images/users/rep_user.svg">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </li>
+                                `;
+                msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                msgerChat.scrollTop += 500;
+                $(".typing-gif").css("display", "block");
+            }
+            else {
+                if (labelName[0] != null) {
+                    if (dataSource[0] != null) {
+                        // const contentSafetyHTML = contentSafety ? `<span class="text-end text-success fw-bold fst-italic" style="background-color: #9bf2b5;">AI content safety: OK</span>` : `<span style="background-color: #e87278;">AI content safety: Not OK</span>`;
+                        const contentSafetyHTML = contentSafety ? `
+                                     <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                        AI content safety:
+                                        <span class="rounded bg-light px-2">
+                                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                           </svg>
+                                        </span>
+                                     </span>
+                                     ` : `
+                                     <span class="text-end text-danger fw-bold" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">
+                                        AI content safety:
+                                        <span class="bg-light px-2">
+                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down">
+                                              <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                           </svg>
+                                        </span>
+                                     </span>
+                                     `;
+                        const msgHTML = `
+                                        <li class="msg ${side}">
+                                           <div class="msg-img" style="background-image: url(${img})"></div>
+                                           <div class="conversation-list msg-bubble chat-mx-width-45">
+                                              <div class="ctext-wrap ">
+                                                 <div class="order-1">
+                                                 </div>
+                                                 <div class="ctext-wrap-content msg-info order-2" id="responseContainer">
+                                                    <div class="conversation-name msg-info-name float-end">
+                                                       <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                                          <a class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message">
+                                                          <img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/>
+                                                          <img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;</a>
+                                                          <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Positive Feedback">
+                                                          <img src="/content/assets/images/thumbs-up.svg" id="likeBtn"/></a>
+                                                          <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Negative Feedback">
+                                                          <img src="/content/assets/images/thumbs-down.svg" id="unlikeBtn"/></a>
+                                                       </div>
+                                                    </div>
+                                                    <div class="ChatBotmsg-text pt-2 pb-2" id="select_txt${flag}">
+                                                       <pre style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;">${text + "\n"}</pre>
+                                                    </div>
+                                                    <div class="pt-1 pb-1 ps-4">
+                                                       ${contentSafetyHTML}
+                                                    </div>
+                                                 </div>
+                                              </div>
+                                              <div class="align-self-start order-3 ms1 hide">
+                                                 <div class="float-end d-flex flex-column">
+                                                    <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2">
+                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up icon-lg layout-mode-dark">
+                                                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                                       </svg>
+                                                    </a>
+                                                    <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub">
+                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down icon-lg layout-mode-dark">
+                                                          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                                       </svg>
+                                                    </a>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                           </div>
+                                           </div>
+                                        </li>
+                                        `;
+                        msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                        msgerChat.scrollTop += 500;
+                        $(".typing-gif").css("display", "none");
+                        $(".suggestion").css("display", "block");
+                    }
+                    else {
+        
+                        // const contentSafetyHTML = contentSafety ? `<span  style="background-color: #9bf2b5;">AI content safety: OK</span>` : `<span style="background-color: #e87278;">AI content safety: Not OK</span>`;
+                        const contentSafetyHTML = contentSafety ? `
+                             <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                AI content safety:
+                                <span class="rounded bg-light px-2">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                   </svg>
+                                </span>
+                             </span>
+                             ` : `
+                             <span class="text-end text-danger fw-bold" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">
+                                AI content safety:
+                                <span class="bg-light px-2">
+                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down">
+                                      <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                   </svg>
+                                </span>
+                             </span>
+                             `;
+                        const msgHTML = `
+                            <li class="msg ${side}">
+                               <div class="msg-img" style="background-image: url(${img})"></div>
+                               <div class="conversation-list msg-bubble chat-mx-width-45">
+                                  <div class="ctext-wrap ">
+                                     <div class="order-1">
+                            @*  <img src="/content/assets/images/users/avatar-1.svg"/>*@
+                                     </div>
+                                     <div class="ctext-wrap-content msg-info order-2 pb-1">
+                                        <div class="conversation-name msg-info-name float-end">
+                                           <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                              <a class="thub me-1 pt-1 pb-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message"><img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/><img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;</a><a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Positive Feedback"><img src="/content/assets/images/thumbs-up.svg"/></a>
+                                              <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Negative Feedback"><img src="/content/assets/images/thumbs-down.svg"/></a>
+                                           </div>
+                                        </div>
+                                        <div class="ChatBotmsg-text pt-1 pb-1" id="select_txt${flag}">
+                                           <pre style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;">${text + "\n"}</pre>
+                                        </div>
+                                        <div class="msg-text mb-2 le-sug"><span>${labelName}</span></div>
+                                        <div class="msg-text mb-2 le-sug">
+                                           ${contentSafetyHTML}
+                                        </div>
+                                     </div>
+                                     <div class="align-self-start order-3 ms1 hide">
+                                        <div class="float-end d-flex flex-column">
+                                           <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up icon-lg layout-mode-dark">
+                                                 <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                              </svg>
+                                           </a>
+                                           <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down icon-lg layout-mode-dark">
+                                                 <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                              </svg>
+                                           </a>
+                                        </div>
+                                     </div>
+                                  </div>
+                               </div>
+                               </div>
+                            </li>
+                            `;
+                        msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                        msgerChat.scrollTop += 500;
+                        $(".typing-gif").css("display", "none");
+                        $(".suggestion").css("display", "block");
+                    }
+                }
+                else {
+                    const contentSafetyHTML = contentSafety ? `
+                         <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                            AI content safety:
+                            <span class="rounded bg-light px-2">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                               </svg>
+                            </span>
+                         </span>
+                         ` :
+                        `<span class="text-end fst-italic" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">AI content safety:<span  class="text-end text-danger fst-italic"> ${text} </span> </span>`;
+                    const msgHTML = `
+                        <li class="msg ${side}">
+                           <div class="msg-img" style="background-image: url(${img})"></div>
+                           <div class="conversation-list msg-bubble chat-mx-width-45">
+                              <div class="ctext-wrap">
+                                 <div class="order-1">
+                                    <!-- <img src="/content/assets/images/users/avatar-1.svg"/> -->
+                                 </div>
+                                 <div class="ctext-wrap-content msg-info order-2">
+                                            ${contentSafety ? `
+                                <div class="conversation-name msg-info-name float-end">
+                                    <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                        <a class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message">
+                                            <img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/>
+                                            <img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;
+                                        </a>
+                                        <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Positive Feedback">
+                                            <img src="/content/assets/images/thumbs-up.svg" id="likeBtn"/>
+                                        </a>
+                                        <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Negative Feedback">
+                                            <img src="/content/assets/images/thumbs-down.svg" id="unlikeBtn"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            ` : ''}
+                                    
+                                    ${contentSafety ? `
+                                    <div class="ChatBotmsg-text pt-2 pb-2" id="select_txt${flag}">
+                                       <pre style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;">${text + "\n"}</pre>
+                                    </div>
+                                    ` : ''}
+                                                    
+
+                                            <div class="pt-1 pb-1 ps-4">
+                                       ${contentSafetyHTML}
+                                    </div>
+                                 </div>
+                                 <!-- <div class="msg-text mb-2 border-bottom border-light">Label Name: ${labelName}</div> -->
+                              </div>
+                              <div class="align-self-start order-3 ms1 hide">
+                                 <div class="float-end d-flex flex-column">
+                                    <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up icon-lg layout-mode-dark">
+                                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                       </svg>
+                                    </a>
+                                    <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down icon-lg layout-mode-dark">
+                                          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                       </svg>
+                                    </a>
+                                 </div>
+                              </div>
+                           </div>
+                        </li>
+                        `;
+                    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                    msgerChat.scrollTop += 500;
+                    $(".typing-gif").css("display", "none");
+                    $(".suggestion").css("display", "block");
+                }
+                //$(".btntruefalse").css("display", "inline-block");
+                //$(".btntruefalse").css("display", "inline-block");
+            }
+            $('#btnS').prop('disabled', false);
+            $('#inputPrompt').prop('disabled', false);
+        }
+        var responseTime;
+        var currentTime;
+        var promptTokens;
+        var completionTokens;
+        var totalTokens;
+        var cost;
+        var contentSaftey;
+        var publicinfo;
+        var responseCounter = 1;
+        function showWarning(message) {
+            // Create the alert element
+            var alertElement = $('<div class="alert alert-secondary" role="alert"></div>');
+            // Set the content of the alert
+            alertElement.text(message);
+            // Append the alert to the body
+            $('body').append(alertElement);
+        }
+        function botResponse(msg) {
+            debugger;
+            $("#messageSuggestionDIV").empty();
+            var hyperValue = $("#hyperInputDiv").val();
+            $('#btnS').prop('disabled', true);
+            $('#inputPrompt').prop('disabled', true);
+            $.ajax({
+                url: '/Banking/BankBot/Inde',
+                type: 'GET',
+                dataType: 'json',
+                data: { PropmpInput: msg, Document: selectvalue(), personalbanking: toggleValue, OutScope: getcheckboxvalue(), HyperInput: hyperValue, DocumentType: "BankingModel", _BankingEnable: _BankingEnable },
+                success: function (data) {
+                    debugger
+                    setmessageSuggestion(data)
+                    dynamicString = data.completionResult; // assuming the dynamic string is returned in the 'modelString' property of the JSON response
+                    dataSource = data.sourceURL;
+                    labelName = data.labelName;
+                    promptTokens = data.promptTokens;
+                    completionTokens = data.completionTokens;
+                    totalTokens = data.totalTokens;
+                    cost = data.cost;
+                    contentSaftey = data.contentSaftey;
+                    document.getElementById("loader").style.visibility = "hidden";
+                    if (data.publicInfo != 1 || data.publicInfo === undefined) {
+                        publicinfo = 0;
+                    }
+                    else {
+                        publicinfo = data.publicInfo;
+                    }
+                    
+
+
+                    // var endTime = performance.now();
+                    // var responseTime = endTime - startTime;
+
+                    responseTime = parseFloat(data.responseTime).toFixed(2) ?? 0.0;
+
+
+                    console.log(dynamicString); // or do something else with the dynamic string here
+                    getdatapoints(dynamicString, dataSource, labelName, contentSaftey);
+
+                    addPerformanceMatrixChecker(msg, dynamicString, 'RequestTokenLimit', 'ResponseTokenLimit', responseTime, promptTokens, completionTokens, totalTokens, cost, publicinfo);
+                    var data = 2;
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+        }
+        function addPerformanceMatrixChecker(Prompt, Completion, RequestTokenLimit, ResponseTokenLimit, responseTime, promptTokens, completionTokens, totalTokens, cost, publicinfo) {
+            debugger
+            var PerformanceMatrixChecker = {};
+            PerformanceMatrixChecker.Prompt = Prompt;
+            PerformanceMatrixChecker.Completion = Completion;
+            PerformanceMatrixChecker.PromptTokens = promptTokens;
+            PerformanceMatrixChecker.CompletionTokens = completionTokens;
+            PerformanceMatrixChecker.ResponseTime = responseTime;
+            PerformanceMatrixChecker.TotalTokens = totalTokens;
+            PerformanceMatrixChecker.Cost = cost;
+            PerformanceMatrixChecker.PublicInfo = publicinfo;
+
+            $.ajax({
+                url: '/Admin/AddPerformanceMatrixChecker',
+                type: 'post',
+                data: { performance: PerformanceMatrixChecker },
+                success: function (response) {
+                    if (response == "red") {
+                        window.location.href = '@Url.Action("Index", "Login")';
+                    }
+                },
+                error: function (error) {
+                    $('#btnS').prop('disabled', false);
+                    $('#inputPrompt').prop('disabled', false);
+                }
+            });
+        }
+
+        function SubmitReviewForAd(type) {
+            debugger;
+            var url = "/Home/FeedBack?type=" + encodeURIComponent('AdFeedbackFromChatbot');
+            window.open(url, '_blank');
+        }
+
+        function getdatapoints(dynamicString, dataSource, labelName, contentSaftey) {
+            var msgText = dynamicString.toLocaleString();
+
+            var delay = msgText.split(" ").length * 100;
+            setTimeout(() => {
+                appendMessage(BOT_NAME, BOT_IMG, "left", msgText, dataSource, labelName, contentSaftey);
+            }, delay);
+
+        }
+
+        function get(selector, root = document) {
+            return root.querySelector(selector);
+        }
+
+        function formatDate(date) {
+            const h = "0" + date.getHours();
+            const m = "0" + date.getMinutes();
+
+            return `${h.slice(-2)}:${m.slice(-2)}`;
+        }
+
+        function setmessageSuggestion(data) {
+            //$("#messageSuggestionDIV").append("<div class='ms-2 me-3 mb-2' type=''><img src='/content/assets/images/help.svg'/></div>");
+            if (data.newSuggestions1 != null) {
+                $("#messageSuggestionDIV").append("<button class='chat-link-ctm border-0 p-2 py-1 rounded ms-1 me-3 mb-2 bg-white' id='messageSuggestion1' onclick = 'fnsuggestion2(\"" + data.newSuggestions1 + "\")' > " + data.newSuggestions1 + " </button>");
+                updateMaxWidth();
+            }
+            if (data.newSuggestions2 != null) {
+                $("#messageSuggestionDIV").append("<button class='chat-link-ctm border-0 p-2 py-1 rounded ms-1 me-3 mb-2 bg-white' id = 'messageSuggestion2' onclick = 'fnsuggestion2(\"" + data.newSuggestions2 + "\")'>" + data.newSuggestions2 + " </button>");
+                updateMaxWidth2();
+            }
+
+            if (data.newSuggestions3 != null) {
+                $("#messageSuggestionDIV").append("<button class='chat-link-ctm border-0 p-2 py-1 rounded ms-1 me-3 mb-2 bg-white' id = 'messageSuggestion3' onclick = 'fnsuggestion2(\"" + data.newSuggestions3 + "\")'>" + data.newSuggestions3 + " </button>");
+                updateMaxWidth3();
+            }
+            $("body").append("<div class='notification' id='notification'></div>");
+        }
+
+
+        var msgtxts;
+        var toggleValue = true;
+        function fnsuggestion2(msgtxts) {
+            debugger
+            $('#_fnsuggestDiv').remove();
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgtxts, "", "");
+            botResponse(msgtxts);
+        }
+      
+    </script>
+    <script>
+        const messages = document.getElementById('messages');
+        function getMessages() {
+            // Prior to getting your messages.
+            shouldScroll = messages.scrollTop + messages.clientHeight === messages.scrollHeight;
+            /*
+             * Get your messages, we'll just simulate it by appending a new one syncronously.
+             */
+
+            // After getting your messages.
+            if (!shouldScroll) {
+                scrollToBottom();
+            }
+        }
+        function updateMaxWidth() {
+            var button = document.getElementById("messageSuggestion1");
+            var textContent = button.textContent;
+            var textLength = textContent.length;
+            var fontSize = parseFloat(window.getComputedStyle(button).fontSize);
+            var maxWidth = textLength * fontSize * 0.3;
+            button.style.maxWidth = maxWidth + "px";
+            button.style.whiteSpace = "nowrap";
+            button.style.overflow = "hidden";
+            button.style.textOverflow = "ellipsis";
+        }
+        $("#messageSuggestionDIV").on("mouseover", "#messageSuggestion1", function () {
+            var button = document.getElementById("messageSuggestion1");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                top: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#messageSuggestionDIV").on("mouseout", "#messageSuggestion1", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        //
+        function updateMaxWidth2() {
+            var button2 = document.getElementById("messageSuggestion2");
+            var textContent = button2.textContent;
+            var textLength = textContent.length;
+            var fontSize = parseFloat(window.getComputedStyle(button2).fontSize);
+            var maxWidth = textLength * fontSize * 0.3;
+            button2.style.maxWidth = maxWidth + "px";
+            button2.style.whiteSpace = "nowrap";
+            button2.style.overflow = "hidden";
+            button2.style.textOverflow = "ellipsis";
+        }
+        $("#messageSuggestionDIV").on("mouseover", "#messageSuggestion2", function () {
+            var button = document.getElementById("messageSuggestion2");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                top: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#messageSuggestionDIV").on("mouseout", "#messageSuggestion2", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        //
+        function updateMaxWidth3() {
+            var button3 = document.getElementById("messageSuggestion3");
+            var textContent = button3.textContent;
+            var textLength = textContent.length;
+            var fontSize = parseFloat(window.getComputedStyle(button3).fontSize);
+            var maxWidth = textLength * fontSize * 0.3;
+            button3.style.maxWidth = maxWidth + "px";
+            button3.style.whiteSpace = "nowrap";
+            button3.style.overflow = "hidden";
+            button3.style.textOverflow = "ellipsis";
+        }
+        $("#messageSuggestionDIV").on("mouseover", "#messageSuggestion3", function () {
+            var button = document.getElementById("messageSuggestion3");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                top: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#messageSuggestionDIV").on("mouseout", "#messageSuggestion3", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        function scrollToBottom() {
+            messages.scrollTop = messages.scrollHeight;
+        }
+        scrollToBottom();
+
+        setInterval(getMessages, 1000);
+
+        function getcheckboxvalue() {
+            var checkbox = document.getElementById("formCheck3");
+            checkboxValue = checkbox.checked ? checkbox.value : "False";
+            return checkboxValue;
+        }
+
+        function LogoutandFeedback(type) {
+            if (type == "login") {
+                window.location.href = "/Home/FeedBack?type=" + encodeURIComponent('logaction');
+            }
+            else if (type == "adlogin") {
+                window.location.href = "/Home/FeedBack?type=" + encodeURIComponent('logoutactionforad');
+            }
+        }
+        $("#fn_presuggestionsDiv").on("mouseover", "#presuggestions1", function () {
+            var button = document.getElementById("presuggestions1");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                bottom: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#fn_presuggestionsDiv").on("mouseout", "#presuggestions1", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        $("#fn_presuggestionsDiv").on("mouseover", "#presuggestions2", function () {
+            var button = document.getElementById("presuggestions2");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                bottom: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#fn_presuggestionsDiv").on("mouseout", "#presuggestions2", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        $("#fn_presuggestionsDiv").on("mouseover", "#presuggestions3", function () {
+            var button = document.getElementById("presuggestions3");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                bottom: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#fn_presuggestionsDiv").on("mouseout", "#presuggestions3", function () {
+            $(this).find(".tooltip123").remove();
+        });
+
+        //Function for exporting the chat
+        function fnchatExportBanking() {
+            var UserChat = $('.Usermsg-text').text();
+            var BotReply = $('.ChatBotmsg-text').text();
+            var OrganizationName = $("#OrganizationName").val();
+            $.ajax({
+                url: "/Banking/BankBot/fnALLChatbot/",
+                type: "POST",
+                data: { UserChat: UserChat, BotReply: BotReply, OrganizationName: OrganizationName },
+                async: false,
+                success: function (responseData) {
+                    var link = document.createElement('a');
+                    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(responseData);
+                    link.download = 'ChatBot.txt';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                },
+                failure: function (responseData) {
+                },
+                error: function (responseData) {
+                }
+            })
+        }
+    </script>
+    
+}
+
+<script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+<script src="~/script/chatbotscript.js?v1"></script>

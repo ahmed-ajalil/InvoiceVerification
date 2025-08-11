@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+@section CssForThisPage
+{
+<style>
+    .ac-textBlock > p {
+        color: black !important;
+    }
+
+        #chat{
+            box-shadow: none !important;
+        }
+
+        .webchat--css-vehdl-1dmjbed.webchat__bubble:not(.webchat__bubble--from-user) .webchat__bubble__content {
+            background: white;
+            border-color: rgb(230, 230, 230);
+            border-radius: 2px;
+            border-style: none !important;
+            border-width: unset !important;
+            color: black;
+            min-height: 38px;
+        }
+
+        .webchat--css-gbjjo-1egyv3b {
+            background-color: #F3F3F3 !important;
+        }
+
+        .webchat--css-qdzqy-1r0ige7 {
+    background-color: #ddd;
+    margin: auto;
+    padding: 5px 8px;
+    border: 0;
+}
+</style>
+}
+<div class="p-0 px-lg-4 border-bottom rounded-top bg-light">
+    <div class="row">
+        <div class="col-xl-4 col-7">
+            <div class="d-flex align-items-center">
+                <div class="flex-grow-1">
+                    <h5 class="font-size-14 mb-1 text-truncate mt-2"><a href="#" class="text-dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square icon-lg color-info text-dark"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>&nbsp;&nbsp;HealthCare Bot </a></h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<iframe id="chat" style="width: 100%; height: 545px;border:1px solid rgba(0,0,0,.125)" src=''></iframe>
+@section JSForThisPage
+    {
+<script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script src="~/js/healtbotindex.js"></script>
+@* <script>
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "https://webchat.botframework.com/api/tokens", true);
+    xhr.setRequestHeader('Authorization', 'BotConnector ' + '9rj6iF1tTME.QWUHx_Bgd00q--gc5Ba5F4SRvxsTefBgrALPtdJ6Xpk');
+    xhr.send();
+    xhr.onreadystatechange = processRequest;
+
+    function processRequest(e) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var response = JSON.parse(xhr.responseText);
+            document.getElementById("chat").src = "https://webchat.botframework.com/embed/ucaipochealthbot-tfc6mpd?t=" + response
+        }
+    }
+
+</script> *@
+
+}

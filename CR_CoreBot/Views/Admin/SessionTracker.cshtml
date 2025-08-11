@@ -1,0 +1,132 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.SessionTrackerModel>
+
+@{
+    ViewData["Title"] = "SessionTracker";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+
+@section CssForThisPage{
+    <!-- DataTables -->
+
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+
+        table.dataTable > thead > tr > th:not(.sorting_disabled), table.dataTable > thead > tr > td:not(.sorting_disabled) {
+            padding-right: 15px !important;
+        }
+    </style>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Session Tracker</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="RptLytTpMenu">
+            <ul>
+                <li>
+                    @*<a class="btn btn-info btn-sm" href="/Admin/CustomerInfo?CustomerId=0"><i data-feather="user" class="icon-sm"></i> Add Admin</a>*@
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body p-2">
+                @if (Model != null)
+                {
+                    <table id="tblResponse" class="display table table-bordered table-striped p-3" style="width:100%;">
+                        <thead class="ctm-table">
+                            <tr>
+                                <th>Username</th>
+                                <th>User Type</th>
+                                <th>Role</th>
+                                <th>Login Time</th>
+                                <th>Session Duration</th>
+                                @*<th>RoleId</th>*@
+                                <th>Total Generated Prompts</th>
+                                <th>Total Tokens Used</th>
+                                <th>Created On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="p-1">@item.Username</td>
+                                    <td class="p-1">@item.LoginWith</td>
+                                    <td class="p-1">@item.RoleName</td>
+                                    <td class="p-1">@item.LoginTime</td>
+                                    <td class="p-1">@item.SessionDuration</td>
+                                    
+                                    @*<td class="p-1">@item.RoleId</td>*@
+                                    
+                                    <td class="p-1">@item.TotalPrompt</td>
+                                    <td class="p-1">@item.TotalToken</td>
+                                    <td class="p-1">@item.CreatedDateTime</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+@*<script src="~/script/sweetalert.min2.js"></script>*@
+
+@section JSForThisPage {
+
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script src="~/js/adminsessiontracker.js"></script>
+    
+
+
+}
+

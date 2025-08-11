@@ -1,0 +1,2093 @@
+﻿@using CR_CoreBot_DTO;
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Admin dashboard" name="description" />
+    <meta content="UnifyCloud" name="author" />
+    <link rel="shortcut icon" href="~/content/assets/images/UC.png">
+    <link href="~/content/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/css/bot.css" rel="stylesheet" />
+    <link href="~/content/assets/css/nbot.css" rel="stylesheet" />
+
+    <style>
+
+        .fdbckCntrls {
+            display: flex;
+            margin-right: 8px;
+        }
+
+            .fdbckCntrls a {
+                display: block;
+                border: 1px solid #c2c2c2;
+                border-radius: 3px;
+                width: 30px;
+                height: 30px;
+                position: relative;
+                margin-left: 3px;
+            }
+
+                .fdbckCntrls a:hover {
+                }
+
+            .fdbckCntrls img {
+                height: 21px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+            }
+
+        .btTitlebox {
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e4e4e4;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            margin-top: 5px;
+        }
+
+            .btTitlebox span {
+                position: relative;
+                padding-left: 34px;
+                padding-top: 2px;
+            }
+
+            .btTitlebox img {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+        .textOne {
+        }
+
+        .textZero {
+            color: #616161;
+        }
+
+
+
+        #suggestionsDropdown {
+            position: absolute;
+            top: -175px;
+            overflow: auto;
+            max-height: 180px;
+            background-color: #fff;
+            padding: 10px;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .suggestion:hover {
+            color: #4ba6ef !important;
+            cursor: pointer;
+        }
+
+        .box-btm-shadow {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 120px;
+            height: 30px;
+        }
+
+        .toggle-input {
+            display: none;
+        }
+
+        .toggle-label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .toggle-input:checked + .toggle-label {
+            background-color: #494dab;
+            /* Green color */
+        }
+
+            .toggle-input:checked + .toggle-label .toggle-text {
+                color: white;
+            }
+
+        .toggle-text {
+            transition: 0.3s;
+            font-size: 13px;
+        }
+
+        .toggle-label:before {
+            content: "";
+            position: absolute;
+            width: 36px;
+            left: 0;
+            height: 26px;
+            border-radius: 25px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+
+        .toggle-input:checked + .toggle-label:before {
+            transform: translateX(40px);
+        }
+
+        .tooltip123 {
+            position: absolute;
+            background-color: #000;
+            color: #fff;
+            padding: 8px;
+            border-radius: 4px;
+            z-index: 9999;
+            width: 270px;
+            white-space: break-spaces;
+            word-break: break-all;
+            margin-top: -25px;
+            display: none;
+        }
+
+        .chat-link-ctm {
+            border: 1px solid #29b6f6 !important;
+            background-color: #0dcaf080 !important;
+            color: #000 !important;
+            font-size: 13px;
+            max-width: 350px !important;
+            white-space: normal !important;
+            text-align: left;
+        }
+
+            .chat-link-ctm:hover {
+                border: 1px solid #29b6f6 !important;
+                background: #0dcaf080 !important;
+                color: #000;
+                font-size: 13px;
+                max-width: 350px !important;
+                text-align: left;
+            }
+
+        .full-text {
+            display: none;
+        }
+
+        .ellipsis-button {
+            text-align: left;
+            font-family: 'Mukta', sans-serif;
+            background-color: #0dcaf080 !important;
+            color: #000 !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 350px;
+            border-radius: 8px !important;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        }
+
+        .show-full-text .full-text {
+            display: block;
+        }
+
+        .border-ctm {
+            border: 1px solid #c3c3c3 !important;
+        }
+
+        .icon-lg {
+            height: 17px;
+            width: 17px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .myDIV {
+            position: relative;
+            padding-right: 50px;
+        }
+
+        .feedback_thumbs {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            display: none;
+        }
+
+        .myDIV:hover .feedback_thumbs {
+            display: block;
+            color: red;
+        }
+
+        .ms1 {
+            margin-right: 10px;
+        }
+
+        .thub {
+            z-index: 99;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        #chatBotDIV {
+            overflow-x: hidden;
+            overflow-y: visible;
+            /* height: 340px !important; */
+            height: calc(100vh - 259px) !important;
+        }
+
+        .le-sug {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .le-sug a {
+                background-color: #2296f057;
+                color: #414141;
+                border-radius: 25px;
+                padding: 0 10px;
+                font-weight: 400;
+                margin-left: 10px;
+                display: inline-block;
+            }
+
+                .le-sug a:hover {
+                    background-color: #2296f057;
+                    color: #414141;
+                    border-radius: 25px;
+                    padding: 0 10px;
+                    font-weight: 400;
+                    margin-left: 10px;
+                    text-decoration: underline !important;
+                }
+
+        .ChatBotmsg-text {
+            padding: 10px 20px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-conversation .conversation-list .ctext-wrap-content {
+            padding: initial;
+            border-radius: 8px !important;
+            background: #fff !important;
+            border: 0;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+        }
+
+            .chat-conversation .conversation-list .ctext-wrap-content p {
+                padding: 10px 20px;
+            }
+
+        .Usermsg-text {
+            padding: 10px 20px;
+        }
+
+        .con-sug-list {
+            margin-bottom: 5px;
+            bottom: 0;
+            flex-direction: column;
+            /* max-width: 250px !important; */
+        }
+
+        .topcstbtns {
+            /*padding: calc(30px / 2) 0;*/
+            position: relative;
+        }
+
+
+            .topcstbtns ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+
+                .topcstbtns ul li {
+                    display: inline-block;
+                    margin: 0;
+                    /*height: 60px;
+                                                                                border-right: 1px solid #e0e0e0;*/
+                    padding-left: 8px;
+                    padding-right: 10px;
+                }
+
+                    .topcstbtns ul li:after {
+                        border-right: 1px solid #ddd;
+                        top: 0;
+                        position: absolute;
+                        padding-left: 10px;
+                        content: "";
+                        width: 0;
+                        height: 60px;
+                    }
+
+                    .topcstbtns ul li a {
+                        display: inline-block;
+                        /* background-color: #e2e2e2; */
+                        /* padding-left: 8px; */
+                        /* color: #fff; */
+                        /* border-radius: 5px; */
+                        /* overflow: hidden; */
+                        /* background: #159957; */
+                        /*background: -webkit-linear-gradient(to right, #155799, #159957);*/
+                        /* background: linear-gradient(to right, #155799, #159957); */
+                        color: #555b6d;
+                        padding: 18px 0 0 0;
+                        font-size: 15px;
+                    }
+
+                    .topcstbtns ul li > span {
+                        display: inline-block;
+                        color: #555b6d;
+                        padding: 18px 0 0 0;
+                        font-size: 15px;
+                    }
+
+                    .topcstbtns ul li a:hover,
+                    .topcstbtns ul li a:focus {
+                        color: #236b84e3;
+                    }
+
+
+                    .topcstbtns ul li a i {
+                    }
+
+
+                    .topcstbtns ul li a span {
+                        /*border-left: 1px solid #a2a2a2;
+                                                                                    display: inline-block;
+                                                                                    margin-left: 5px;
+                                                                                    padding: 5px 10px 5px 5px;*/
+                        margin-left: 5px;
+                    }
+
+        .main-content {
+            margin-left: 0 !important;
+            overflow: hidden;
+        }
+
+        .page-title-box {
+            padding-bottom: 0;
+            padding-top: 0px;
+        }
+
+        .page-content {
+            padding: 0;
+            background-color: #f9f9f900 !important;
+            height: calc(100vh - 0);
+        }
+
+        .navbar-brand-box {
+            padding: 0 1.01rem !important;
+            width: 250px !important;
+            background: #ebebeb00 !important;
+            border-right: none !important;
+            position: relative !important;
+            margin: auto !important;
+        }
+
+        .navbar-header {
+            height: 60px !important;
+        }
+
+        .header-item {
+            height: 60px !important;
+        }
+
+        .navbar-brand-box::before {
+            background: linear-gradient(to right, transparent, #aaa);
+            content: "";
+            height: 100%;
+            opacity: .2;
+            pointer-events: none;
+            position: absolute;
+            right: 0;
+            width:;
+            0.8rem z-index: 2;
+        }
+
+        .divWaiting {
+            background: #000;
+            position: fixed;
+            z-index: 2147483647 !important;
+            opacity: 0.9;
+            overflow: hidden;
+            text-align: center;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            padding-top: 20%;
+        }
+
+
+        .load-inner {
+            padding: 10px;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+            border-radius: 8px;
+        @*background: #fff; *@
+        }
+
+        .custom_btn_padding {
+            padding: 5px 15px !important;
+        }
+
+        .page-title-box h4 {
+            padding: 10px 10px 10px;
+            border-left: 3px solid #5156be;
+        }
+
+        a.side-menu-active {
+            border-left: 5px solid #1f6fb3 !important;
+            color: #1f6fb3 !important;
+            position: relative;
+            background: #edf3f8;
+        }
+
+        .icon-sm-inner {
+            height: 20px;
+            width: 20px;
+        }
+
+        /*Admin CSS Start */
+        .logo_preview {
+            border: 1px dashed #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
+            .logo_preview p {
+                padding-right: 15px;
+                border-right: 1px solid #cfcfcf;
+                margin-right: 15px;
+                margin-bottom: 0px;
+                height: 50px;
+                line-height: 50px;
+            }
+
+        .image-preview {
+            max-height: 55px;
+            width: auto !important;
+        }
+
+        .details_edit_col h5 {
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+            margin: 0 0 15px 0;
+            font-size: 17px;
+            background: #d7dde057;
+            color: #0a0a0a;
+        }
+
+        #content {
+            /* display: none; */
+        }
+
+        .closeButton {
+            cursor: pointer;
+        }
+
+        .chat-btn {
+            background: rgb(15, 85, 163);
+            background: linear-gradient(90deg, rgba(15, 85, 163, 1) 35%, rgba(36, 136, 195, 1) 100%);
+            color: #fff;
+            border: 0;
+            border-radius: 50px;
+            display: inline-flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            font-size: 17px;
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            z-index: 999;
+            padding: 10px 40px;
+        }
+
+            .chat-btn:hover {
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+                color: #fff;
+            }
+
+        .typing-gif {
+            z-index: 9999;
+            display: none;
+            position: fixed;
+            bottom: 50px;
+            left: 10px;
+        }
+
+        .chat-conversation {
+            height: calc(100vh - 93px) !important;
+        }
+
+        .msger-input {
+            padding: 8px 50px 8px 10px;
+        }
+
+        .chat-area-box-bg {
+            background-image: url('/content/assets/images/caht-main-bg.png');
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /*         .send-btn {
+                    position: absolute;
+                    right: 0;
+                    background-color: transparent;
+                    top: 4px;
+                } */
+
+
+        .chat-link-ctm:hover {
+            width: 320px !important
+        }
+
+        .chat-link-ctm {
+            width: 320px !important
+        }
+
+        .top-right-icons {
+            width: 35px;
+            border: 1px solid #d2d2d2;
+            border-radius: 2px;
+            background-color: #fff;
+            padding: 2px;
+            height: 22px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        }
+
+        .msger-input {
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+        }
+
+        .chat-box-suggestion {
+            flex-direction: column !important;
+        }
+
+        .btm-sug {
+            right: 0;
+            left: 10px;
+        }
+
+        .sugstRspnsList {
+            text-align: right;
+            margin: 10px 0;
+        }
+
+            .sugstRspnsList a {
+                background-color: #fff;
+                display: inline-block;
+                border-radius: 4px;
+                margin-right: 7px;
+                margin-bottom: 7px;
+                padding: 3px 8px;
+                border: 1px solid;
+                box-shadow: 1px 2px 3px #00000040;
+            }
+
+            .sugstRspnsList .moreLess {
+                background-color: transparent;
+                color: #000;
+                border: none;
+                box-shadow: none;
+                text-decoration: underline !important;
+            }
+    </style>
+
+</head>
+
+<body style="background-color:transparent !important;">
+    <div id="loader" class="divWaiting" style="visibility: hidden;background: transparent;">
+        <div class="load-inner">
+            <div class="text-center">
+                <div class="d-flex justify-content-center p-2">
+                    <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <span class="text-white fw-normal">Please wait...</span>
+            </div>
+        </div>
+    </div>
+    <!-- <body data-layout="horizontal"> -->
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+        <input type="hidden" id="inputguid" />
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid px-0">
+                    <button class="btn chat-btn d-none" id="toggleButton"><img src="~/content/assets/images/chat-bot.svg" style="width:2.2rem;" />&nbsp;&nbsp;Live Chat</button>
+                    <div class="row" id="content">
+                        <div class="col-md-12">
+
+                            <div class="card msger mb-0">
+                                <div class="p-0 px-lg-2 border-bottom rounded-top bg-white shadow-sm py-1">
+                                    <div class="row">
+                                        <div class="col-xl-4 col-7">
+                                            <div class="d-flex align-items-center ps-1">
+                                                <div class="flex-grow-1">
+                                                    <h5 class="font-size-14 mb-1 text-truncate mt-2"><a href="#" class="text-dark"><img class="img-fluid" style="width:1.3rem;" src="~/content/assets/images/icons/top-chat.png" />&nbsp;Chat</a></h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-8 col-5">
+                                            <ul class="list-inline user-chat-nav text-end mb-0 pe-1 mt-1">
+                                                @* <li class="list-inline-item">
+                                                <a href="#" class="text-dark  p-1 rounded-pill" data-bs-toggle="tooltip" data-bs-placement="left" title="Refresh"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="top-right-icons feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg></a>
+                                                </li> *@
+                                                <li class="list-inline-item">
+                                                    <a href="#" class="text-dark" onclick="fnClearChat()" data-bs-toggle="tooltip" data-bs-placement="left" title="Clear Chat">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="top-right-icons feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="top-right-icons closeButton feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chat-area-box-bg chat-conversation p-3 px-2" style="padding-bottom: 40px !important;" id="messages" data-simplebar>
+                                    <input type="hidden" id="OrganizationName" value="@ViewBag.OrganizationName" />
+                                    <ul class="list-unstyled mb-0 msger-chat" id="chatBotDIV">
+                                        <li>
+                                            <div class="msg-img"></div>
+                                        </li>
+                                        <li class="chat-day-title mb-1">
+                                            <span class="time">@DateTime.Now.ToString("HH:mm")</span>
+                                        </li>
+                                        <li id="_fnsuggestDiv" class="sugstRspnsList">
+                                            <div>
+                                                <a href="javascript:void()" id="presuggestions1" onclick="fnsuggestion2('@Model.presuggestions1.ToString()')">@Model.presuggestions1</a>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void()" id="presuggestions2" onclick="fnsuggestion2('@Model.presuggestions2.ToString()')">@Model.presuggestions2</a>
+                                            </div>
+                                            <div>
+                                                <a href="javascript:void()" id="presuggestions3" onclick="fnsuggestion2('@Model.presuggestions3.ToString()' )">@Model.presuggestions3</a>
+                                            </div>
+                                        </li>
+                                        <li style="display:none" class="left">
+                                            <div class="conversation-list">
+                                                <div class="ctext-wrap">
+                                                    <div class="order-1">
+                                                        <img src="~/content/assets/images/users/avatar-1.svg">
+                                                    </div>
+                                                    <div class="order-2">
+                                                        <img src="~/content/assets/images/typing.gif" style="width: 4rem;border-radius: 35px;margin-right:10px;margin-top: 10px;" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    @* <div class="typing-gif">
+                                    <img src="/content/assets/images/typing.gif" style="width: 3rem;border-radius: 35px;margin-right:10px;margin-top: 10px;margin-left: 20px;margin-bottom: 20px;">
+                                    </div> *@
+                                    <div class="typing-gif" style="display: none;position: fixed;bottom:60px;background-color: #fff;border-radius: 5px;padding: 4px 8px;">
+                                        <span>Analyzing</span>
+                                        <img src="~/content/assets/images/typing.gif" style="width: 3rem;">
+                                    </div>
+                                    <div class="suggestion btm-sug">
+                                        <div>
+                                            <div class="conversation-list" id="clearmessageSuggestionDIV">
+                                                <div class="ctext-wrap">
+                                                    <div class="d-flex chat-box-suggestion" id="messageSuggestionDIV">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @* <div class="px-1 py-1" style="background-color:#F3F3F3 !important;"> *@
+                                <div class="px-1 py-1 border-top light-ctm-color">
+
+
+                                    @* <form action="/Home/Index" method="post" class="msger-inputarea">
+                                    <div class="row">
+                                    <div class="col">
+                                    <div class="position-relative d-flex">
+                                    <input type="text" class="form-control border-0 bg-white shadow-lg msger-input" autocomplete="off" name="PropmpInput" id="inputPrompt" placeholder="Enter Message...">
+                                    <div id="suggestionsDropdown" style="display: none;"></div>
+                                    <button type="button" id="btnS" onclick="promptSubmit()" class="btn send-btn chat-send waves-effect waves-light"><i class="mdi mdi-send float-end ft-size-18"></i></button>
+                                    <button type="button" id="btnStop" style="display:none;" class="btn send-btn chat-send waves-effect waves-light"><img src="~/content/assets/images/icons/StopBot.png" height="28" /></button>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </form> *@
+
+                                    <form action="/Home/Index" method="post" class="msger-inputarea">
+                                        <div class="row">
+                                            <div class="col pe-0">
+                                                <div class="position-relative d-flex">
+                                                    <input type="text" class="form-control border-ctm bg-light-subtle msger-input" autocomplete="off" name="PropmpInput" id="inputPrompt" placeholder="Enter Message...">
+                                                    <div id="suggestionsDropdown" style="display: none;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto ps-1">
+                                                @* <button type="submit" id="btnS" class="btn send-btn chat-send waves-effect waves-light"><i class="mdi mdi-send float-end ft-size-18"></i></button> *@
+                                                <button type="button" id="btnS" onclick="promptSubmit()" class="btn send-btn chat-send waves-effect waves-light"><i class="mdi mdi-send float-end ft-size-18"></i></button>
+                                                <button type="button" id="btnStop" style="display:none;" class="btn send-btn chat-send waves-effect waves-light"><img src="~/content/assets/images/icons/StopBot.png" height="28" /></button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end user chat -->
+                    </div>
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+
+
+            <div id="myModal" class="modal" style="background-color:black;opacity:0.8">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content" style="background:transparent;">
+                        <img src="~/images/loading-ai-1.gif" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- JAVASCRIPT -->
+    <script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/content/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/craiscripts/healthcare.js?v1"></script>
+    <script src="~/script/chatbotscript.js?v1"></script>
+    <!-- pace js -->
+    <script src="~/content/assets/libs/pace-js/pace.min.js"></script>
+    <script src="~/content/assets/libs/xlsx/xlsx.full.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#toggleButton").click(function () {
+                $("#content").toggle(); // Toggle the visibility of the content
+                $("#toggleButton").toggle(); // Toggle the visibility of the toggle button
+            });
+
+            $(".closeButton").click(function () {
+                $("#content").hide(); // Hide the content when close button is clicked
+                $("#toggleButton").show(); // Show the toggle button when content is hidden
+            });
+        });
+    </script>
+
+    <script>
+        var _BankingEnable = false;
+        var dynamicString;
+        var dataSource = [];
+        var labelName = [];
+        var msgText = "";
+        var CacheVal = 0;
+        var streamVal = "";
+        var streamVal2 = "";
+        var streamVal3 = "";
+        var PerID = "";
+        var PerformanceId = 0;
+        var stopTyping = false;
+        var showBtn = "";
+        var excelDownload = "";
+
+        var responseTime;
+        var currentTime;
+        var promptTokens;
+        var completionTokens;
+        var totalTokens;
+        var cost;
+        var contentSaftey;
+        var publicinfo;
+        var responseCounter = 1;
+        var responseData = [];
+        var isResponseEnd = 0;
+        var message = '';
+        var newSugg1 = '';
+        var newSugg2 = '';
+        var newSugg3 = '';
+        var flag = 1;
+        var statusVal = 0;
+        var isUserScrolling = false;
+
+        // Icons made by Freepik from www.flaticon.com
+        const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
+        const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
+        const BOT_NAME = "@ViewBag.OrganizationName";
+        const PERSON_NAME = "Your Question";
+
+        const msgerForm = get(".msger-inputarea");
+        const msgerInput = get(".msger-input");
+        const msgerChat = get(".msger-chat");
+        const msgerdrop = get(".msger-inputareadrop");
+
+
+        function selectvalue() {
+            var op = "GPT-4 Model";
+            return op;
+        }
+
+        function getvalue() {
+
+            if (msgerInput.value) {
+                var mesgtext = msgerInput.value.trim();
+            }
+            return mesgtext
+        }
+
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                promptSubmit();
+            }
+        });
+
+        function promptSubmit() {
+            event.preventDefault();
+            msgText = getvalue();
+            if (!msgText) return;
+
+            $('#btnS').prop('disabled', true);
+            $('#inputPrompt').prop('disabled', true);
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText, "", "");
+
+            $(".typing-gif").css("display", "inline-block");
+            msgerInput.value = "";
+            botResponse(msgText);
+        }
+
+        function datavalidation(chatReply, UserPrompt, PerformanceID) {
+            var _botReply = chatReply.outerText;
+            var _UserPrompt = UserPrompt.outerText;
+            var buttonlike = document.getElementById("likeBtn");
+            var buttonValue = "True";
+
+            if (buttonValue.trim() !== "") {
+                $.ajax({
+                    url: '/PBIChatbot/PBIBot/FeedbackData',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { IsValid: "True", Prompt: _UserPrompt, Completion: _botReply, CustomerId: @ViewBag.CustomerId, ModelName: selectvalue(), PerformanceID: PerformanceID },
+                    success: function (data) {
+
+                        alert("Feedback taken Successfully !!");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+
+            }
+            else {
+                console.log("Button value is empty");
+            }
+        }
+        function datavalidationfalse(chatReply, UserPrompt, PerformanceID) {
+            var _botReply = chatReply.outerText;
+            var _UserPrompt = UserPrompt.outerText;
+            var buttonlike = document.getElementById("likeBtn");
+            var buttonValue = "True";
+
+            if (buttonValue.trim() !== "") {
+                $.ajax({
+                    url: '/PBIChatbot/PBIBot/FeedbackData',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { IsValid: "False", Prompt: _UserPrompt, Completion: _botReply, CustomerId: @ViewBag.CustomerId, ModelName: selectvalue(), PerformanceID: PerformanceID },
+                    success: function (data) {
+
+                        alert("Feedback taken Successfully !!");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(textStatus, errorThrown);
+                    }
+                });
+
+            }
+            else {
+                console.log("Button value is empty");
+            }
+        }
+
+        function suggestedprompt(id) {
+            msgText = $("#" + id).text();
+
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgText, "", "");
+
+            $(".typing-gif").css("display", "inline-block");
+            msgerInput.value = "";
+
+            botResponse(msgText);
+
+        }
+
+        function appendMessage(name, img, side, text, dataSource, labelName, contentSafety) {
+
+            flag = flag + 1;
+            var texts = String(text);
+            var labelitem = "";
+            var label = "https://learn.microsoft.com/en-us/sql/connect/jdbc/building-the-connection-url?view=sql-server-ver16";
+            var link = `<a href="#">${label}</a>`;
+            for (var i = 0; i < labelName.length; i++) {
+                labelitem += (" <a style='border:1px solid #c8f5fa' href='#'>" + labelName[i] + " </a> &nbsp;&nbsp;")
+            }
+            if (side == 'right') {
+                $(".suggestion").css("display", "none");
+                const msgHTML = `
+                                                                                                                                                                                                         <li class="msg ${side}">
+                                                                                                                                                                                                            <div class="msg-img" style="background-image: url(${img})"></div>
+                                                                                                                                                                                                            <div class="conversation-list msg-bubble right-chat-mx-width-45">
+                                                                                                                                                                                                               <div class="ctext-wrap">
+                                                                                                                                                                                                                  <div class="ctext-wrap-content msg-info">
+                                                                                                                                                                                                                     <div class="Usermsg-text" id="select_Usermsg${flag}">${text + "\n"}</div>
+                                                                                                                                                                                                                  </div>
+                                                                                                                                                                                                                  <div class="order-3">
+                                                                                                                                                                                                                     <img src="/content/assets/images/users/rep_user.svg">
+                                                                                                                                                                                                                  </div>
+                                                                                                                                                                                                               </div>
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                         </li>
+                                                                                                                                                                                                        `;
+                msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                msgerChat.scrollTop += 500;
+                $(".typing-gif").css("display", "block");
+            }
+            else {
+                if (labelName[0] != null) {
+                    if (dataSource[0] != null) {
+                        const contentSafetyHTML = contentSafety ? `
+                                                                                                                                                                                                             <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                                                                                                                                                                                                AI content safety:
+                                                                                                                                                                                                                <span class="rounded bg-light px-2">
+                                                                                                                                                                                                                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                                                                                                                                                                                                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                                                                                                                                                                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                                                                                                                                                                   </svg>
+                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                             </span>
+                                                                                                                                                                                                             ` : `
+                                                                                                                                                                                                             <span class="text-end text-danger fw-bold" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">
+                                                                                                                                                                                                                AI content safety:
+                                                                                                                                                                                                                <span class="bg-light px-2">
+                                                                                                                                                                                                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down">
+                                                                                                                                                                                                                      <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                                                                                                                                                                                                   </svg>
+                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                             </span>
+                                                                                                                                                                                                             `;
+                        const msgHTML = `
+                                                                                                                                                                                                                <li class="msg ${side}">
+                                                                                                                                                                                                                   <div class="msg-img" style="background-image: url(${img})"></div>
+                                                                                                                                                                                                                   <div class="conversation-list msg-bubble chat-mx-width-45">
+                                                                                                                                                                                                                      <div class="ctext-wrap ">
+                                                                                                                                                                                                                         <div class="order-1">
+                                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                                         <div class="ctext-wrap-content msg-info order-2" id="responseContainer">
+                                                                                                                                                                                                                            <div class="conversation-name msg-info-name float-end">
+                                                                                                                                                                                                                               <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                                                                                                                                                                                                                  <a class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message">
+                                                                                                                                                                                                                                  <img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/>
+                                                                                                                                                                                                                                  <img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;</a>
+                                                                                                                                                                                                                                  <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Positive Feedback">
+                                                                                                                                                                                                                                  <img src="/content/assets/images/thumbs-up.svg" id="likeBtn"/></a>
+                                                                                                                                                                                                                                  <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Negative Feedback">
+                                                                                                                                                                                                                                  <img src="/content/assets/images/thumbs-down.svg" id="unlikeBtn"/></a>
+                                                                                                                                                                                                                               </div>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="ChatBotmsg-text pt-2 pb-2" id="select_txt${flag}">
+                                                                                                                                                                                                                               <pre style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;">${text + "\n"}</pre>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div class="pt-1 pb-1 ps-4">
+                                                                                                                                                                                                                               ${contentSafetyHTML}
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                                      <div class="align-self-start order-3 ms1 hide">
+                                                                                                                                                                                                                         <div class="float-end d-flex flex-column">
+                                                                                                                                                                                                                            <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2">
+                                                                                                                                                                                                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up icon-lg layout-mode-dark">
+                                                                                                                                                                                                                                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                                                                                                                                                                                                               </svg>
+                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                            <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub">
+                                                                                                                                                                                                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down icon-lg layout-mode-dark">
+                                                                                                                                                                                                                                  <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                                                                                                                                                                                                               </svg>
+                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                                   </div>
+                                                                                                                                                                                                                   </div>
+                                                                                                                                                                                                                   </div>
+                                                                                                                                                                                                                </li>
+                                                                                                                                                                                                                `;
+                        msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                        msgerChat.scrollTop += 500;
+                        $(".typing-gif").css("display", "none");
+                        $(".suggestion").css("display", "block");
+                    }
+                    else {
+                        const contentSafetyHTML = contentSafety ? `
+                                                                                                                                                                                                     <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                                                                                                                                                                                        AI content safety:
+                                                                                                                                                                                                        <span class="rounded bg-light px-2">
+                                                                                                                                                                                                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                                                                                                                                                                                              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                                                                                                                                                              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                                                                                                                                                           </svg>
+                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                     </span>
+                                                                                                                                                                                                     ` : `
+                                                                                                                                                                                                     <span class="text-end text-danger fw-bold" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">
+                                                                                                                                                                                                        AI content safety:
+                                                                                                                                                                                                        <span class="bg-light px-2">
+                                                                                                                                                                                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down">
+                                                                                                                                                                                                              <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                                                                                                                                                                                           </svg>
+                                                                                                                                                                                                        </span>
+                                                                                                                                                                                                     </span>
+                                                                                                                                                                                                     `;
+                        const msgHTML = `
+                                                                                                                                                                                                    <li class="msg ${side}">
+                                                                                                                                                                                                       <div class="msg-img" style="background-image: url(${img})"></div>
+                                                                                                                                                                                                       <div class="conversation-list msg-bubble chat-mx-width-45">
+                                                                                                                                                                                                          <div class="ctext-wrap ">
+                                                                                                                                                                                                             <div class="order-1">
+                                                                                                                                                                                                             </div>
+                                                                                                                                                                                                             <div class="ctext-wrap-content msg-info order-2 pb-1">
+                                                                                                                                                                                                                <div class="conversation-name msg-info-name float-end">
+                                                                                                                                                                                                                   <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                                                                                                                                                                                                      <a class="thub me-1 pt-1 pb-1" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message"><img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/><img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;</a><a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Positive Feedback"><img src="/content/assets/images/thumbs-up.svg"/></a>
+                                                                                                                                                                                                                      <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Negative Feedback"><img src="/content/assets/images/thumbs-down.svg"/></a>
+                                                                                                                                                                                                                   </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                <div class="ChatBotmsg-text pt-1 pb-1" id="select_txt${flag}">
+                                                                                                                                                                                                                   <pre style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;">${text + "\n"}</pre>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                <div class="msg-text mb-2 le-sug"><span>${labelName}</span></div>
+                                                                                                                                                                                                                <div class="msg-text mb-2 le-sug">
+                                                                                                                                                                                                                   ${contentSafetyHTML}
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                             </div>
+                                                                                                                                                                                                             <div class="align-self-start order-3 ms1 hide">
+                                                                                                                                                                                                                <div class="float-end d-flex flex-column">
+                                                                                                                                                                                                                   <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1})" class="thub me-1 mb-2">
+                                                                                                                                                                                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up icon-lg layout-mode-dark">
+                                                                                                                                                                                                                         <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                                                                                                                                                                                                      </svg>
+                                                                                                                                                                                                                   </a>
+                                                                                                                                                                                                                   <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1})" class="thub">
+                                                                                                                                                                                                                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down icon-lg layout-mode-dark">
+                                                                                                                                                                                                                         <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                                                                                                                                                                                                      </svg>
+                                                                                                                                                                                                                   </a>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                             </div>
+                                                                                                                                                                                                          </div>
+                                                                                                                                                                                                       </div>
+                                                                                                                                                                                                       </div>
+                                                                                                                                                                                                    </li>
+                                                                                                                                                                                                    `;
+                        msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                        msgerChat.scrollTop += 500;
+                        $(".typing-gif").css("display", "none");
+                        $(".suggestion").css("display", "block");
+                    }
+                }
+                else if (CacheVal == 0) {
+                    streamVal = "#stream_txt" + flag;
+                    streamVal2 = flag;
+                    PerID = "#PerId" + flag;
+                    showBtn = "#showBtn" + flag;
+                    excelDownload = "#excelDownload" + flag;
+
+                    const contentSafetyHTML = contentSafety ? `
+                                                                                                                                                                                                         <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                                                                                                                                                                                            AI content safety:
+                                                                                                                                                                                                            <span class="rounded bg-light px-2">
+                                                                                                                                                                                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                                                                                                                                                                                                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                                                                                                                                                                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                                                                                                                                                               </svg>
+                                                                                                                                                                                                            </span>
+                                                                                                                                                                                                         </span>
+                                                                                                                                                                                                         ` :
+                        `<span class="text-end fst-italic" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">AI content safety:<span  class="text-end text-danger fst-italic"> ${text} </span> </span>`;
+                    const msgHTML = `
+                                                                                                                                                                                                                        <li class="msg ${side}" id = "PerId${flag}">
+                                                                                                                                                                                                           <div class="msg-img" style="background-image: url(${img})"></div>
+                                                                                                                                                                                                                   <div class="conversation-list msg-bubble" style="min-width:80%;max-width:80%">
+                                                                                                                                                                                                              <div class="ctext-wrap">
+                                                                                                                                                                                                                 <div class="order-1">
+                                                                                                                                                                                                                    <!-- <img src="/content/assets/images/users/avatar-1.svg"/> -->
+                                                                                                                                                                                                                 </div>
+                                                                                                                                                                                                                         <div class="ctext-wrap-content msg-info order-2" style="min-width:80%;max-width:80%">
+                                                                                                                                                                                                                            ${contentSafety ? `
+                                                                                                                                                                                                                <div class="conversation-name msg-info-name float-end attachPerformanceId">
+                                                                                                                                                                                                                            <div class="text-end mt-2 fdbckCntrls" id = "showBtn${flag}">
+                                                                                                                                                                                                                        <a class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message">
+                                                                                                                                                                                                                                            <img src="/content/assets/images/copy.png"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/>
+                                                                                                                                                                                                                            <img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;
+                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                        <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1},PerformID)" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Positive Feedback">
+                                                                                                                                                                                                                                    <img src="/content/assets/images/like.png" id="likeBtn"/>
+                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                        <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1},PerformID)" class="thub" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Negative Feedback">
+                                                                                                                                                                                                                                    <img src="/content/assets/images/dislike.png" id="unlikeBtn"/>
+                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                        <a onclick="downloadExcel(event)" style="display:none" class="thub" href="#" data-bs-toggle="tooltip" id="excelDownload${flag}" data-bs-placement="top" title="Download Excel">
+                                                                                                                                                                                                                            <img src="/content/assets/images/download-excel.png" />
+                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                            ` : ''}
+
+                                                                                                                                                                                                                    ${contentSafety ? `
+                                                                                                                                                                                                                    <div class="ChatBotmsg-text pt-2 pb-2" id="select_txt${flag}">
+                                                                                                                                                                                                                                       <pre id="stream_txt${flag}" style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;"><div class='btTitlebox'><span><img src='../../content/assets/images/icons/mindset.png' height='30'/>Thought Process</span></div></pre>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                    ` : ''}
+
+
+                                                                                                                                                                                                                            <div class="pt-1 pb-1 ps-4">
+                                                                                                                                                                                                                       ${contentSafetyHTML}
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                 </div>
+                                                                                                                                                                                                                 <!-- <div class="msg-text mb-2 border-bottom border-light">Label Name: ${labelName}</div> -->
+                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                                      <div class="align-self-start order-3 ms1 hide attachPerformanceId">
+                                                                                                                                                                                                                 <div class="float-end d-flex flex-column">
+                                                                                                                                                                                                                                                    <a onclick="datavalidation(select_txt${flag},select_Usermsg${flag - 1},PerformID)" class="thub me-1 mb-2">
+                                                                                                                                                                                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up icon-lg layout-mode-dark">
+                                                                                                                                                                                                                          <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                                                                                                                                                                                                                       </svg>
+                                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                                                            <a onclick="datavalidationfalse(select_txt${flag},select_Usermsg${flag - 1},PerformID)" class="thub">
+                                                                                                                                                                                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down icon-lg layout-mode-dark">
+                                                                                                                                                                                                                          <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                                                                                                                                                                                                                       </svg>
+                                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                                 </div>
+                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                           </div>
+                                                                                                                                                                                                        </li>
+                                                                                                                                                                                                        `;
+                    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                    msgerChat.scrollTop += 500;
+                    // $(".typing-gif").css("display", "none");
+                    $(".suggestion").css("display", "block");
+                }
+                else if (CacheVal == 2) {
+                    const contentSafetyHTML = contentSafety ? `
+                                                                                                                                                                                                         <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                                                                                                                                                                                            AI content safety:
+                                                                                                                                                                                                            <span class="rounded bg-light px-2">
+                                                                                                                                                                                                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                                                                                                                                                                                                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                                                                                                                                                                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                                                                                                                                                               </svg>
+                                                                                                                                                                                                            </span>
+                                                                                                                                                                                                         </span>
+                                                                                                                                                                                                         ` :
+                        `<span class="text-end fst-italic" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">AI content safety:<span  class="text-end text-danger fst-italic"> ${text} </span> </span>`;
+
+                    const msgHTML = `
+                                                                                                                                                                                                        <li class="msg ${side}">
+                                                                                                                                                                                                           <div class="msg-img" style="background-image: url(${img})"></div>
+                                                                                                                                                                                                           <div class="conversation-list msg-bubble chat-mx-width-45">
+                                                                                                                                                                                                              <div class="ctext-wrap">
+                                                                                                                                                                                                                 <div class="order-1">
+                                                                                                                                                                                                                    <!-- <img src="/content/assets/images/users/avatar-1.svg"/> -->
+                                                                                                                                                                                                                 </div>
+                                                                                                                                                                                                                 <div class="ctext-wrap-content msg-info order-2">
+                                                                                                                                                                                                                            ${contentSafety ? `
+                                                                                                                                                                                                                <div class="conversation-name msg-info-name float-end">
+                                                                                                                                                                                                                    <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                                                                                                                                                                                                        <a class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message">
+                                                                                                                                                                                                                            <img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/>
+                                                                                                                                                                                                                            <img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;
+                                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                            ` : ''}
+
+                                                                                                                                                                                                                    ${contentSafety ? `
+                                                                                                                                                                                                                    <div class="ChatBotmsg-text pt-2 pb-2" id="select_txt${flag}">
+                                                                                                                                                                                                                               <pre style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;">${text + "\n"}</pre>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                    ` : ''}
+
+
+                                                                                                                                                                                                                            <div class="pt-1 pb-1 ps-4">
+                                                                                                                                                                                                                       ${contentSafetyHTML}
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                                 <!-- <div class="msg-text mb-2 border-bottom border-light">Label Name: ${labelName}</div> -->
+                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                              <div class="align-self-start order-3 ms1 hide">
+                                                                                                                                                                                                                 <div class="float-end d-flex flex-column">
+                                                                                                                                                                                                                 </div>
+                                                                                                                                                                                                              </div>
+                                                                                                                                                                                                           </div>
+                                                                                                                                                                                                        </li>
+                                                                                                                                                                                                        `;
+                    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                    msgerChat.scrollTop += 500;
+                    // $(".typing-gif").css("display", "none");
+                    $(".suggestion").css("display", "block");
+                }
+                else {
+                    streamVal3 = "#stream3_txt" + flag;
+                    const contentSafetyHTML = contentSafety ? `
+                                                                                                                                                                                                 <span class="text-end text-success fw-bold fst-italic"  data-bs-toggle="tooltip" data-bs-placement="left" title="Ok">
+                                                                                                                                                                                                    AI content safety:
+                                                                                                                                                                                                    <span class="rounded bg-light px-2">
+                                                                                                                                                                                                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle icon-lg layout-mode-dark">
+                                                                                                                                                                                                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                                                                                                                                                                          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                                                                                                                                                                       </svg>
+                                                                                                                                                                                                    </span>
+                                                                                                                                                                                                 </span>
+                                                                                                                                                                                                 ` :
+                        `<span class="text-end fst-italic" style="float:right;margin: 0 10px 10px; " data-bs-toggle="tooltip" data-bs-placement="left" title="Not Ok">AI content safety:<span  class="text-end text-danger fst-italic"> ${text} </span> </span>`;
+
+                    const msgHTML = `
+                                                                                                                                                                                                <li class="msg ${side}">
+                                                                                                                                                                                                   <div class="msg-img" style="background-image: url(${img})"></div>
+                                                                                                                                                                                                           <div class="conversation-list msg-bubble" style="min-width:80%;max-width:80%">
+                                                                                                                                                                                                      <div class="ctext-wrap">
+                                                                                                                                                                                                         <div class="order-1">
+                                                                                                                                                                                                            <!-- <img src="/content/assets/images/users/avatar-1.svg"/> -->
+                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                                 <div class="ctext-wrap-content msg-info order-2"  style="min-width:80%;max-width:80%">
+                                                                                                                                                                                                                    ${contentSafety ? `
+                                                                                                                                                                                                        <div class="conversation-name msg-info-name float-end">
+                                                                                                                                                                                                            <div class="text-end mt-2" style='display:flex;width:100px;'>
+                                                                                                                                                                                                                <a class="thub me-1 mb-2" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Copy Message">
+                                                                                                                                                                                                                    <img src="/content/assets/images/clipboard.svg"  id="clipboard${flag}" onclick="copy_data(select_txt${flag},${flag})"/>
+                                                                                                                                                                                                                    <img id="check${flag}" src="/content/assets/images/check.svg" style="display:none;"/>&nbsp;&nbsp;&nbsp;
+                                                                                                                                                                                                                </a>
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                    ` : ''}
+
+                                                                                                                                                                                                            ${contentSafety ? `
+                                                                                                                                                                                                            <div class="ChatBotmsg-text pt-2 pb-2" id="select_txt${flag}">
+                                                                                                                                                                                                                                       <pre id="stream3_txt${flag}" style="overflow:hidden;white-space:break-spaces;font-family:'Mukta', sans-serif;font-size:inherit;"></pre>
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                            ` : ''}
+
+
+                                                                                                                                                                                                                    <div class="pt-1 pb-1 ps-4">
+                                                                                                                                                                                                               ${contentSafetyHTML}
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                    <div class="bg-warning bg-opacity-50 p-2 mt-2 mb-0">
+                                                                                                                                                                                                                                        <span><strong>Disclaimer</strong> : This response is from cache memory.</span>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                         <!-- <div class="msg-text mb-2 border-bottom border-light">Label Name: ${labelName}</div> -->
+                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                      <div class="align-self-start order-3 ms1 hide">
+                                                                                                                                                                                                         <div class="float-end d-flex flex-column">
+                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                   </div>
+                                                                                                                                                                                                </li>
+                                                                                                                                                                                                `;
+                    msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+                    msgerChat.scrollTop += 500;
+                    // $(".typing-gif").css("display", "none");
+                    $(".suggestion").css("display", "block");
+                }
+            }
+        }
+
+        function showWarning(message) {
+            // Create the alert element
+            var alertElement = $('<div class="alert alert-secondary" role="alert"></div>');
+            // Set the content of the alert
+            alertElement.text(message);
+            // Append the alert to the body
+            $('body').append(alertElement);
+        }
+
+        async function botResponse(msg) {
+            streamVal = "";
+            streamVal3 = "";
+            var uniqueID = '';
+            stopTyping = false;
+            try {
+                await GenerateGUID();
+                uniqueID = $('#inputguid').val();
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+
+            hideSuggestionsDropdown();
+            $("#messageSuggestionDIV").empty();
+            var hyperValue = $("#hyperInputDiv").val();
+            $('#btnS').prop('disabled', true);
+            $('#inputPrompt').prop('disabled', true);
+
+            if (uniqueID != '') {
+                $.ajax({
+                    url: '/PBIChatbot/PBIBot/Inde',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { PropmpInput: msg, Document: selectvalue(), personalbanking: toggleValue, OutScope: getcheckboxvalue(), HyperInput: hyperValue, DocumentType: "BankingModel", _BankingEnable: _BankingEnable, guid: uniqueID },
+                    success: function (data) {
+                        message = msg;
+                        newSugg1 = data.newSuggestions1;
+                        newSugg2 = data.newSuggestions2;
+                        newSugg3 = data.newSuggestions3;
+                        dynamicString = data.completionResult;
+                        dataSource = data.sourceURL;
+                        labelName = data.labelName;
+                        promptTokens = data.promptTokens;
+                        completionTokens = data.completionTokens;
+                        totalTokens = data.totalTokens;
+                        cost = data.cost;
+                        contentSaftey = data.contentSaftey;
+                        if (data.publicInfo != 1 || data.publicInfo === undefined) {
+                            publicinfo = 0;
+                        }
+                        else {
+                            publicinfo = data.publicInfo;
+                        }
+
+                        responseTime = parseFloat(data.responseTime).toFixed(2) ?? 0.0;
+                        CacheVal = data["cacheStatus"];
+                        if (data["cacheStatus"] == 1) {
+                            appendMessage(BOT_NAME, BOT_IMG, "left", dynamicString, dataSource, labelName, contentSaftey);
+
+                            typeEffect3($(streamVal3), dynamicString, 10);
+                            $(".typing-gif").css("display", "none");
+                        }
+                        if (data["cacheStatus"] == 2) {
+                            appendMessage(BOT_NAME, BOT_IMG, "left", dynamicString, dataSource, labelName, contentSaftey);
+                            $(".typing-gif").css("display", "none");
+                            setmessageSuggestion(newSugg1, newSugg2, newSugg3);
+                            newSugg1 = '';
+                            newSugg2 = '';
+                            newSugg3 = '';
+                            $('#btnS').prop('disabled', false);
+                            $('#inputPrompt').prop('disabled', false);
+                        }
+                        var data = 2;
+                        if (stopTyping == true) {
+                            newSugg1 = '';
+                            newSugg2 = '';
+                            newSugg3 = '';
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $(".typing-gif").css("display", "none");
+                        $('#btnS').prop('disabled', false);
+                        $('#inputPrompt').prop('disabled', false);
+                    },
+                    complete: function () {
+                        CacheVal = 0;
+                    }
+                });
+            }
+        }
+
+        function GenerateGUID() {
+            return new Promise((resolve, reject) => {
+
+                $.ajax({
+                    url: '/PBIChatbot/PBIBot/GenerateGUID',
+                    type: 'GET',
+                    dataType: 'text',
+                    success: function (data) {
+                        guid = data;
+                        $('#inputguid').val(guid);
+                        GetIntermediateSteps(guid);
+                        resolve(data);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log('Error', textStatus, errorThrown);
+                        reject(errorThrown);
+                    }
+                });
+            });
+        }
+
+        function GetIntermediateSteps(guid) {
+            $.ajax({
+                url: '/PBIChatbot/PBIBot/GetIntermediateSteps',
+                type: 'GET',
+                data: { guid: guid },
+                dataType: 'json',
+                success: function (data) {
+                    data.forEach(item => {
+                        dataSource[0] = null;
+                        contentSaftey = true;
+                        labelName[0] = null;
+                        responseData.push(item.logs);
+                        if (streamVal == "") {
+                            appendMessage(BOT_NAME, BOT_IMG, "left", item.logs, dataSource, labelName, contentSaftey);
+                            $(showBtn).hide();
+
+                            typeEffect($(streamVal), item.logs, 10, item.status, item.id, streamVal2);
+                        }
+                        else {
+                            if (item.status == 3) {
+                                $(excelDownload).attr('data-custom', item.logs);
+                                $(excelDownload).css("display", "block")
+                                excelDownload = "";
+                                GetIntermediateSteps(guid);
+                            }
+                            else {
+                                typeEffect($(streamVal), item.logs, 10, item.status, item.id, streamVal2);
+                            }
+
+                        }
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    $(".typing-gif").css("display", "none");
+                    console.log('error:', textStatus, errorThrown);
+                }
+            });
+        }
+
+        function htmlscrollToBottom() {
+            var chatBotDIV = document.getElementById('chatBotDIV');
+            // Check if user is near the bottom
+            if (!isUserScrolling && chatBotDIV.scrollHeight - chatBotDIV.scrollTop <= chatBotDIV.clientHeight + 100) {
+                chatBotDIV.scrollTop = chatBotDIV.scrollHeight;
+            }
+        }
+
+        document.getElementById('chatBotDIV').addEventListener('scroll', function () {
+            var chatBotDIV = document.getElementById('chatBotDIV');
+            // User is scrolling up
+            if (chatBotDIV.scrollTop + chatBotDIV.clientHeight < chatBotDIV.scrollHeight - 100) {
+                isUserScrolling = true;
+            } else {
+                isUserScrolling = false;
+            }
+        });
+
+        function typeEffect(element, text, speed, status, repnsID, RespDiv) {
+            var i = 0;
+            var RespnsDiv = "ResDiv_" + RespDiv + "_" + repnsID;
+
+            if (status == 1) {
+                $(".typing-gif").hide();
+                $(element).append("<div id=" + RespnsDiv + " class='fw-bold textOne'><div class='btTitlebox'><span><img src='../../content/assets/images/icons/results.png' height='27'/>Conclusion</span></div></div>");
+
+            } else {
+                $(element).append("<div id=" + RespnsDiv + " class='mb-3 textZero'></div>");
+            }
+            if (stopTyping == false) {
+                $("#btnStop").show();
+            }
+            else {
+                $("#btnStop").hide();
+            }
+
+            var interval = setInterval(function () {
+                if (i < text.length) {
+                    // $("#btnStop").attr("disabled", false);
+                    if (stopTyping == false) {
+                        $("#" + RespnsDiv).append(text.charAt(i));
+                    }
+                    i++;
+                    htmlscrollToBottom();
+
+                    if (i >= text.length && status == 0) {
+                        if (stopTyping == false) {
+                            GetIntermediateSteps(guid);
+                        }
+                    }
+                    if (stopTyping == true) {
+                        i = text.length;
+                    }
+                    if (i >= text.length && status == 1) {
+                        $("#btnStop").hide();
+                        if (stopTyping == false) {
+                            if (CacheVal == 0) {
+                                addPerformanceMatrixChecker(message, $(streamVal).text(), 'RequestTokenLimit', 'ResponseTokenLimit', responseTime, promptTokens, completionTokens, totalTokens, cost, publicinfo);
+                            }
+                            setmessageSuggestion(newSugg1, newSugg2, newSugg3);
+                            newSugg1 = '';
+                            newSugg2 = '';
+                            newSugg3 = '';
+                            $('#btnS').prop('disabled', false);
+                            $('#inputPrompt').prop('disabled', false);
+                            htmlscrollToBottom();
+                            $(showBtn).show();
+                        }
+                    }
+                } else {
+                    clearInterval(interval);
+                }
+            }, speed);
+        }
+
+        function splitTextIntoArray(text) {
+            // Define the keywords
+            const thoughtProcess = 'Thought Process';
+            const conclusion = 'Conclusion';
+
+            // Find the positions of the keywords
+            const startThoughtProcess = text.indexOf(thoughtProcess);
+            const endThoughtProcess = startThoughtProcess + thoughtProcess.length;
+            const startConclusion = text.indexOf(conclusion);
+            const endConclusion = startConclusion + conclusion.length;
+
+            // Split the text into parts
+            const part1 = text.substring(startThoughtProcess, endThoughtProcess).trim();
+            const part2 = text.substring(endThoughtProcess, startConclusion).trim();
+            const part3 = text.substring(startConclusion, endConclusion).trim();
+            const part4 = text.substring(endConclusion).trim();
+
+            return [part1, part2, part3, part4];
+        }
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        async function typeEffect3(element, text, speed) {
+            var formattedText = '';
+            var arrLen = 0;
+            const resultArray = splitTextIntoArray(text);
+            arrLen = resultArray.length;
+            for (var j = 0; j < resultArray.length; j++) {
+                var RespnsDiv = "ResDiv_" + getRandomInt(1, 10000) + "_" + getRandomInt(1, 10000);
+
+                if (resultArray[j] == 'Thought Process') {
+                    $(element).append("<div id=" + RespnsDiv + " class='mb-3 textZero'></div>");
+                } else if (resultArray[j] == 'Conclusion') {
+                    $(element).append("<div id=" + RespnsDiv + " class='fw-bold textOne'></div>");
+                } else {
+                    if (j == arrLen - 1) {
+                        $(element).append("<div id=" + RespnsDiv + " class='fw-bold textOne'></div>");
+                    }
+                    else {
+                        $(element).append("<div id=" + RespnsDiv + " class='mb-3 textZero'></div>");
+                    }
+                }
+                if (resultArray[j] == 'Thought Process') {
+                    $("#" + RespnsDiv).append('<div class="btTitlebox"><span><img src="../../content/assets/images/icons/mindset.png" height="27"/>Thought Process</span></div>');
+
+                }
+                else if (resultArray[j] == 'Conclusion') {
+                    $("#" + RespnsDiv).append('<div class="btTitlebox"><span><img src="../../content/assets/images/icons/results.png" height="27"/>Conclusion</span></div>');
+
+                }
+                else {
+                    if (j == arrLen - 1) {
+                        await appendText(RespnsDiv, resultArray[j], speed, true);
+                    }
+                    else {
+                        await appendText(RespnsDiv, resultArray[j], speed, false);
+                    }
+                }
+            }
+        }
+
+        function appendText(element, text, speed, flag) {
+
+            if (stopTyping == false) {
+                $("#btnStop").show();
+            }
+            else {
+                $("#btnStop").hide();
+            }
+
+            return new Promise((resolve) => {
+                var i = 0;
+                var interval = setInterval(function () {
+                    if (i < text.length) {
+                        var currentChar = text.charAt(i);
+                        if (currentChar === '<') {
+                            var closingIndex = text.indexOf('>', i) + 1;
+                            var htmlTag = text.substring(i, closingIndex);
+                            if (stopTyping == false) {
+                                $("#" + element).append(htmlTag);
+                            }
+                            i = closingIndex;
+                        } else {
+                            if (stopTyping == false) {
+                                $("#" + element).append(currentChar);
+                            }
+                            i++;
+                        }
+                        if (stopTyping == true) {
+                            i = text.length;
+                        }
+                        htmlscrollToBottom();
+                    }
+                    else {
+                        $("#btnStop").hide();
+                        if (flag == true && stopTyping == false) {
+                            setmessageSuggestion(newSugg1, newSugg2, newSugg3);
+                            newSugg1 = '';
+                            newSugg2 = '';
+                            newSugg3 = '';
+                            $('#btnS').prop('disabled', false);
+                            $('#inputPrompt').prop('disabled', false);
+                        }
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, speed);
+            });
+        }
+
+
+        $("#btnStop").click(function () {
+            stopTyping = true;
+            $('#btnS').prop('disabled', false);
+            $('#inputPrompt').prop('disabled', false);
+            $(".typing-gif").css("display", "none");
+            newSugg1 = 'Provide total billing amounts and outstanding invoices for each company for the current fiscal year?';
+            newSugg2 = 'What are the average billing amounts per level of staff involved in processes across different teams for the past quarter?';
+            newSugg3 = 'List all projects with final billing amounts that significantly deviated from initial estimates and identify the underlying causes?';
+            setmessageSuggestion(newSugg1, newSugg2, newSugg3);
+            newSugg1 = '';
+            newSugg2 = '';
+            newSugg3 = '';
+            $("#btnStop").hide();
+        });
+
+        function addPerformanceMatrixChecker(Prompt, Completion, RequestTokenLimit, ResponseTokenLimit, responseTime, promptTokens, completionTokens, totalTokens, cost, publicinfo) {
+            var PerformanceMatrixChecker = {};
+            PerformanceMatrixChecker.Prompt = Prompt;
+            PerformanceMatrixChecker.Completion = Completion;
+            PerformanceMatrixChecker.PromptTokens = promptTokens;
+            PerformanceMatrixChecker.CompletionTokens = completionTokens;
+            PerformanceMatrixChecker.ResponseTime = responseTime;
+            PerformanceMatrixChecker.TotalTokens = totalTokens;
+            PerformanceMatrixChecker.Cost = cost;
+            PerformanceMatrixChecker.PublicInfo = publicinfo;
+
+            $.ajax({
+                url: '/PBIChatBot/PBIBot/AddPerformanceMatrixChecker',
+                type: 'post',
+                data: { performance: PerformanceMatrixChecker },
+                success: function (response) {
+                    if (response == "0") {
+                        window.location.href = '@Url.Action("Index", "Login")';
+                    }
+                    else {
+                        PerformanceId = response;
+
+                        var targetDiv = $(PerID);
+                        var currentHtml = targetDiv.html();
+                        var updatedHtml = currentHtml.replace(/PerformID/gi, PerformanceId);
+                        targetDiv.html(updatedHtml);
+                    }
+                },
+                error: function (error) {
+                    $('#btnS').prop('disabled', false);
+                    $('#inputPrompt').prop('disabled', false);
+                }
+            });
+        }
+
+        function SubmitReviewForAd(type) {
+            var url = "/Home/FeedBack?type=" + encodeURIComponent('AdFeedbackFromChatbot');
+            window.open(url, '_blank');
+        }
+
+        function getdatapoints(dynamicString, dataSource, labelName, contentSaftey) {
+            var msgText = dynamicString.toLocaleString();
+            appendMessage(BOT_NAME, BOT_IMG, "left", msgText, dataSource, labelName, contentSaftey);
+        }
+
+        function get(selector, root = document) {
+            return root.querySelector(selector);
+        }
+
+        function formatDate(date) {
+            const h = "0" + date.getHours();
+            const m = "0" + date.getMinutes();
+
+            return `${h.slice(-2)}:${m.slice(-2)}`;
+        }
+
+        function setmessageSuggestion(Sugg1, Sugg2, Sugg3) {
+            if (Sugg1 != null) {
+                $("#messageSuggestionDIV").append("<a href='javascript:void()' title= '" + Sugg1 + "' class='d-inline-block py-1 px-2 shadow me-2 mb-2 bg-white rounded-2' id='messageSuggestion1' onclick = 'fnsuggestion2(\"" + Sugg1 + "\")' > " + Sugg1 + " </a>");
+                updateMaxWidth();
+            }
+            if (Sugg2 != null) {
+                $("#messageSuggestionDIV").append("<a href='javascript:void()' title= '" + Sugg2 + "' class='d-inline-block py-1 px-2 shadow me-2 mb-2 bg-white rounded-2' id = 'messageSuggestion2' onclick = 'fnsuggestion2(\"" + Sugg2 + "\")'>" + Sugg2 + " </a>");
+                updateMaxWidth2();
+            }
+            if (Sugg3 != null) {
+                $("#messageSuggestionDIV").append("<a href='javascript:void()' title= '" + Sugg3 + "' class='d-inline-block py-1 px-2 shadow me-2 mb-2 bg-white rounded-2' id = 'messageSuggestion3' onclick = 'fnsuggestion2(\"" + Sugg3 + "\")'>" + Sugg3 + "</a>");
+                updateMaxWidth3();
+            }
+            $("body").append("<div class='notification' id='notification'></div>");
+        }
+
+        var msgtxts;
+        var toggleValue = true;
+        function fnsuggestion2(msgtxts) {
+            $('#_fnsuggestDiv').remove();
+            appendMessage(PERSON_NAME, PERSON_IMG, "right", msgtxts, "", "");
+            botResponse(msgtxts);
+        }
+
+        function downloadExcel(event) {
+            event.preventDefault();
+            var dynamicId = event.currentTarget.id;
+            var query = $("#" + dynamicId).attr('data-custom');
+
+            $.ajax({
+                url: '/Banking/BankBot/downloadExcel',
+                type: 'GET',
+                data: { query: query },
+                dataType: 'json',
+                success: function (response) {
+                    var data = response;
+                    var rows = [];
+                    var headers = Object.keys(data[0]);
+                    rows.push(headers);
+
+                    data.forEach(function (row) {
+                        var rowData = [];
+                        headers.forEach(function (header) {
+                            rowData.push(row[header]);
+                        });
+                        rows.push(rowData);
+                    });
+                    var ws = XLSX.utils.aoa_to_sheet(rows);
+                    var wb = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+                    XLSX.writeFile(wb, "data.xlsx");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log('Error', textStatus, errorThrown);
+                    reject(errorThrown);
+                }
+            });
+        }
+
+    </script>
+
+    <script>
+        const messages = document.getElementById('messages');
+        function getMessages() {
+            // Prior to getting your messages.
+            shouldScroll = messages.scrollTop + messages.clientHeight === messages.scrollHeight;
+            /*
+             * Get your messages, we'll just simulate it by appending a new one syncronously.
+             */
+
+            // After getting your messages.
+            if (!shouldScroll) {
+                scrollToBottom();
+            }
+        }
+        function updateMaxWidth() {
+            var button = document.getElementById("messageSuggestion1");
+            var textContent = button.textContent;
+            var textLength = textContent.length;
+            var fontSize = parseFloat(window.getComputedStyle(button).fontSize);
+            var maxWidth = textLength * fontSize * 0.3;
+            button.style.maxWidth = maxWidth + "px";
+            button.style.whiteSpace = "nowrap";
+            button.style.overflow = "hidden";
+            button.style.textOverflow = "ellipsis";
+        }
+        $("#messageSuggestionDIV").on("mouseover", "#messageSuggestion1", function () {
+            var button = document.getElementById("messageSuggestion1");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                top: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#messageSuggestionDIV").on("mouseout", "#messageSuggestion1", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        //
+        function updateMaxWidth2() {
+            var button2 = document.getElementById("messageSuggestion2");
+            var textContent = button2.textContent;
+            var textLength = textContent.length;
+            var fontSize = parseFloat(window.getComputedStyle(button2).fontSize);
+            var maxWidth = textLength * fontSize * 0.3;
+            button2.style.maxWidth = maxWidth + "px";
+            button2.style.whiteSpace = "nowrap";
+            button2.style.overflow = "hidden";
+            button2.style.textOverflow = "ellipsis";
+        }
+        $("#messageSuggestionDIV").on("mouseover", "#messageSuggestion2", function () {
+            var button = document.getElementById("messageSuggestion2");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                top: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#messageSuggestionDIV").on("mouseout", "#messageSuggestion2", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        //
+        function updateMaxWidth3() {
+            var button3 = document.getElementById("messageSuggestion3");
+            var textContent = button3.textContent;
+            var textLength = textContent.length;
+            var fontSize = parseFloat(window.getComputedStyle(button3).fontSize);
+            var maxWidth = textLength * fontSize * 0.3;
+            button3.style.maxWidth = maxWidth + "px";
+            button3.style.whiteSpace = "nowrap";
+            button3.style.overflow = "hidden";
+            button3.style.textOverflow = "ellipsis";
+        }
+        $("#messageSuggestionDIV").on("mouseover", "#messageSuggestion3", function () {
+            var button = document.getElementById("messageSuggestion3");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                top: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#messageSuggestionDIV").on("mouseout", "#messageSuggestion3", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        function scrollToBottom() {
+            messages.scrollTop = messages.scrollHeight;
+        }
+        scrollToBottom();
+
+        setInterval(getMessages, 1000);
+
+        function getcheckboxvalue() {
+            // var checkbox = document.getElementById("formCheck3");
+            // checkboxValue = checkbox.checked ? checkbox.value : "False";
+            checkboxValue = "False";
+            return checkboxValue;
+        }
+
+        function LogoutandFeedback(type) {
+            if (type == "login") {
+                window.location.href = "/Home/FeedBack?type=" + encodeURIComponent('logaction');
+            }
+            else if (type == "adlogin") {
+                window.location.href = "/Home/FeedBack?type=" + encodeURIComponent('logoutactionforad');
+            }
+        }
+        $("#fn_presuggestionsDiv").on("mouseover", "#presuggestions1", function () {
+            var button = document.getElementById("presuggestions1");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                bottom: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#fn_presuggestionsDiv").on("mouseout", "#presuggestions1", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        $("#fn_presuggestionsDiv").on("mouseover", "#presuggestions2", function () {
+            var button = document.getElementById("presuggestions2");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                bottom: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#fn_presuggestionsDiv").on("mouseout", "#presuggestions2", function () {
+            $(this).find(".tooltip123").remove();
+        });
+        $("#fn_presuggestionsDiv").on("mouseover", "#presuggestions3", function () {
+            var button = document.getElementById("presuggestions3");
+            var textContent = button.textContent;
+            var tooltip = $("<div class='tooltip123'>" + textContent + "</div>");
+            $(this).append(tooltip);
+            tooltip.css({
+                bottom: $(this).outerHeight() - 65,
+                left: 0
+            });
+        });
+        $("#fn_presuggestionsDiv").on("mouseout", "#presuggestions3", function () {
+            $(this).find(".tooltip123").remove();
+        });
+
+        //Function for exporting the chat
+        function fnchatExportBanking() {
+            var UserChat = $('.Usermsg-text').text();
+            var BotReply = $('.ChatBotmsg-text').text();
+            var OrganizationName = $("#OrganizationName").val();
+            $.ajax({
+                url: "/Banking/BankBot/fnALLChatbot/",
+                type: "POST",
+                data: { UserChat: UserChat, BotReply: BotReply, OrganizationName: OrganizationName },
+                async: false,
+                success: function (responseData) {
+                    var link = document.createElement('a');
+                    link.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(responseData);
+                    link.download = 'ChatBot.txt';
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                },
+                failure: function (responseData) {
+                },
+                error: function (responseData) {
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //      getUserAdmin();
+        });
+
+        function LogoutandFeedback(type) {
+            if (type == "logoutaction") {
+                //window.location.href= "/Home/Feedback?type=logaction&Act="+encodeURIComponent('@ViewBag.CustomerId');
+                window.location.href = "/Home/Feedback?type=" + encodeURIComponent('logaction');
+            }
+            else if (type == "logoutactionAd") {
+                //window.location.href= "/Home/Feedback?type=logaction&Act="+encodeURIComponent('@ViewBag.CustomerId');
+                window.location.href = "/Home/Feedback?type=" + encodeURIComponent('logoutactionforad');
+            }
+        }
+
+        function getUserAdmin() {
+            $.ajax({
+                url: '/Admin/getUserAdmin',
+                type: 'Get',
+                data: {},
+                async: false,
+                success: function (response) {
+                    $('#adminuserid').text(response);
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        }
+        function PageLoader() {
+            show_loader();
+            var data;
+            for (var i = 0; i < 100000000; i++) {
+                data = i / 2 + 3 + 4 + 5;
+                if (data > 1000) {
+                    data = 1223;
+                }
+                if (data < 0) {
+                    data = -1;
+                }
+            }
+        }
+
+
+
+        function show_loader() {
+            document.getElementById('loader').style.visibility = "visible";
+        }
+        function hide_loader() {
+            document.getElementById('loader').style.visibility = "hidden";
+        }
+
+    </script>
+    <script>
+        document.getElementById('inputPrompt').addEventListener('input', function (event) {
+            var inputText = event.target.value.trim();
+            fetch('/autocompleteITL2?input=' + inputText)
+                .then(response => response.json())
+                .then(data => {
+                    var filteredSuggestions = data.suggestions.filter(suggestion =>
+                        suggestion.toLowerCase().includes(inputText)
+                    );
+
+                    // Show or hide the suggestions dropdown based on whether filtered suggestions are available
+                    if (filteredSuggestions.length > 0) {
+                        showSuggestionsDropdown(filteredSuggestions);
+                    } else {
+                        hideSuggestionsDropdown();
+                    }
+                    if (inputText == "") {
+                        hideSuggestionsDropdown();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching autocomplete suggestions:', error);
+                    hideSuggestionsDropdown();
+                });
+        })
+        function showSuggestionsDropdown(suggestions) {
+            var suggestionsDropdown = document.getElementById('suggestionsDropdown');
+            suggestionsDropdown.innerHTML = '';
+
+            // Populate dropdown with suggestions
+            suggestions.forEach(function (suggestion) {
+                var suggestionElement = document.createElement('div');
+
+                suggestionElement.textContent = suggestion;
+                suggestionElement.classList.add('suggestion');
+                suggestionElement.classList.add('text-info');
+                suggestionElement.classList.add('mt-2');
+                suggestionElement.addEventListener('click', function () {
+                    // Update textbox value with the clicked suggestion
+                    document.getElementById('inputPrompt').value = suggestion;
+                    hideSuggestionsDropdown();
+                });
+                suggestionsDropdown.appendChild(suggestionElement);
+            });
+
+            // Display suggestions dropdown
+            suggestionsDropdown.style.display = 'block';
+        }
+
+        // Function to hide suggestions dropdown
+        function hideSuggestionsDropdown() {
+            document.getElementById('suggestionsDropdown').style.display = 'none';
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+# CICD Dev
+
+# https://aka.ms/yaml
+
+trigger:
+- GPT_feature
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    packageType: 'runtime'
+    version: '6.x'
+    includePreviewVersions: true
+    performMultiLevelLookup: true
+- task: DotNetCoreCLI@2
+
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--configuration $(buildConfiguration)'
+  displayName: 'dotnet build $(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish'
+  inputs:
+    command: 'publish'
+    publishWebProjects: true
+    
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Terraform_Service_Connection'
+    appType: 'webApp'
+    WebAppName: 'uchrmschatbot'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'rg-hrms-chatbot-app'
+    SlotName: 'Dev'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+

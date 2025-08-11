@@ -1,0 +1,145 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.UserInfoDTO>
+
+@{
+    ViewData["Title"] = "UserInfoList";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage{
+    <!-- DataTables -->
+    
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+    </style>
+}
+
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18"><i data-feather="trello" style="max-height:18px;"></i>&nbsp;User List</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="RptLytTpMenu">
+            <ul>
+                @if (ViewBag.LoginType == "Login")
+                {
+                <li>
+                    @*<button class="btn btn-info btn-sm"><i data-feather="user" onclick="addnewuser()" class="icon-sm"></i> Add User</button>*@   
+                    @* <a href="/Admin/UserInfo?Id=0" class="btn btn-info btn-sm"><i data-feather="user" class="icon-sm"></i> Add User</a> *@
+                        <a href='@Url.Action("UserInfo","Admin", new{ Id = 0 })' class="btn btn-info btn-sm"><i data-feather="user" class="icon-sm"></i> Add User</a>
+                </li>
+                    }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body p-2">
+                @if(Model != null){
+                <table id="tblResponse" class="table table-bordered table-striped display" style="width:100%;">
+                    <thead>
+                        <tr class="ctm-table">
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>User Name</th>
+                            @*<th>Password</th>*@
+                            <th>Role</th>
+                            <th>Created By</th>
+                            @if (ViewBag.Role == 2 || ViewBag.Role == 1)
+                            {
+                            <th>Action</th>
+                            }
+                            <!-- Add more column headers if needed -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.FirstName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.UserName</td>
+                                @*<td>@item.Password</td>*@
+                                @*<td> @(item.RoleId == 1 ? "Admin" : item.RoleId == 2 ? "SuperAdmin" : "User")</td>*@
+                                <td> User</td>
+                                <td>@item.CustomerName</td>
+                                @if (ViewBag.Role == 2 || ViewBag.Role == 1)
+                                {
+                                <td>
+                              <button class="btn btn-sm custom_btn_padding btn-info" onclick="edituserdata(@item.UserId)">
+                                  <i data-feather="edit" style="max-height:14px;"></i>&nbsp;Edit</button>
+                                            <button class="btn btn-sm custom_btn_padding btn-danger" onclick="DeleteUserInfo(@item.UserId)">
+                                                <i data-feather="trash-2" style="max-height:14px;"></i>&nbsp;Delete
+                                            </button>
+                                            
+
+                                </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                    </table>
+                }
+                else
+                {
+                    <h2>No records found</h2>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section JSForThisPage {
+@*    <script src="~/script/sweetalert.min2.js"></script>*@
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    
+
+    
+
+    <script src="~/js/adminuserinfolist.js"></script>
+     
+    }
+    

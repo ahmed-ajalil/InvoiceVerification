@@ -1,0 +1,44 @@
+﻿.btm-sug {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+}
+
+@media screen and (max-width: 1024px) {
+    #chatBotDIV {
+        overflow-x: hidden;
+        overflow-y: visible;
+        /*height: 350px !important;*/
+    }
+
+    .btm-sug {
+        display: block;
+        position: absolute;
+        bottom: -14px !important;
+        right: 0px;
+    }
+
+    .chat-box-suggestion {
+        flex-direction: row !important;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    #chatBotDIV {
+        overflow-x: hidden;
+        overflow-y: visible;
+        /*height: 350px !important;*/
+    }
+
+    .chat-box-suggestion {
+        flex-direction: row !important;
+    }
+
+    .btm-sug {
+        display: block;
+        position: absolute;
+        bottom: -14px !important;
+        right: 0px;
+    }
+}

@@ -1,0 +1,87 @@
+﻿@model CR_HRPortalAI_DataAcess.CR_HRPortal.SuggestionsDTO
+
+@{
+    ViewData["Title"] = "SuggestedQuestionInfo";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage {
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Suggested Question Information</h4>
+           
+            <button type="button" class="btn btn-secondary btn-sm" onclick="window.location.href='@Url.Action("SuggestedQuestionInfoList","ModelDetails")';">
+                Back
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" style="width: 100%; height: 100vh;">
+    <!-- Use viewport height for full height -->
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div style="max-height: 500px; width: 100%; overflow: auto;" id="SuggestedQuestiondiv">
+                    <!-- Set height and width for scrolling -->
+                    <form id="modelForm" method="post" action="@Url.Action("SaveSuggestedQuestionInfo", "ModelDetails")">
+                        <section class="pt-5">
+                            <div class="container-fluid">
+                                <div class="row gx-3 gy-4 justify-content-center">
+                                    <div class="col-md-8">
+                                        <div class="pb-2">
+                                            <h4>Set suggested questions</h4>
+                                            <h6 class="text-dark text-opacity-50"><i>Inspire Your Conversations with Predefined Questions</i></h6>
+                                        </div>
+                                        <div id="Boxes">
+                                            <div id="box_1" class="row g-2 align-items-end mb-4">
+                                                <div class="col-md-10">
+                                                    <div class="shadow bg-white p-3 rounded-3 border">
+                                                        <div class="form-floating">
+                                                            <input type="text" class="form-control" name="Questions[0].Question" id="Question_0" placeholder="Enter Question" />
+                                                            <label for="Question_0">Question *</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="pm-controls">
+                                                        <a href="javascript:void(0);" onclick="addBox()" style="background-color: #127d91;">
+                                                            <img src="~/Content/assets/images/icons/plus.png" />
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="button" id="Insertbtn" class="btn btn-primary px-5" onclick="SaveSuggestedQuestionInfo('add')">Save</button>
+                                            <button type="button" id="Updatebtn" class="btn btn-info px-5" style="display:none;" onclick="SaveSuggestedQuestionInfo('update')">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div> <!-- End of scrolling container -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JSForThisPage {
+
+ 
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <script>
+        const baseUrl = '@Url.Content("~/Content/assets/images/icons/")';
+    </script>
+
+    <script src="~/js/modeldetailssuggestedquestioninfo.js"></script>
+
+    
+}

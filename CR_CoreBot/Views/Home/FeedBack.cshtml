@@ -1,0 +1,572 @@
+﻿@using CR_CoreBot_DTO;
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Chat Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Chat Bot" name="description" />
+    <meta content="UnifyCloud" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/Content/assets/images/UC.png">
+
+    <!-- preloader css -->
+@*    <link rel="stylesheet" href="~/Content/assets/css/preloader.min.css" type="text/css" />*@
+
+    <!-- Bootstrap Css -->
+    <link href="~/Content/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/Content/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/Content/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/css/style.css" id="app-style" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        .border-ctm {
+            border: 1px solid #c3c3c3 !important;
+        }
+
+        .icon-lg {
+            height: 17px;
+            width: 17px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .myDIV {
+            position: relative;
+            padding-right: 50px;
+        }
+
+        .feedback_thumbs {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            display: none;
+        }
+
+        .myDIV:hover .feedback_thumbs {
+            display: block;
+            color: red;
+        }
+
+        .ms1 {
+            margin-right: 10px;
+        }
+
+        .thub {
+            z-index: 99;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        #feedback-form-wrapper #floating-icon > button {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: rotate(-90deg) translate(50%, -50%);
+            transform-origin: right;
+        }
+
+        .rating-input-wrapper input[type="radio"] {
+            display: none;
+        }
+
+            .rating-input-wrapper input[type="radio"] ~ span {
+                cursor: pointer;
+                background-color: #fff;
+            }
+
+            .rating-input-wrapper input[type="radio"]:checked ~ span {
+                background-color: #4261dc;
+                color: #fff;
+            }
+
+        .rating-labels > label {
+            font-size: 14px;
+            color: #777;
+        }
+
+        .star-rating {
+            margin: 0;
+            font-size: 0;
+            white-space: nowrap;
+            display: inline-block;
+            width: 125px;
+            height: 25px;
+            overflow: hidden;
+            position: relative;
+            background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjREREREREIiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+            background-size: contain;
+        }
+
+            .star-rating i {
+                opacity: 0;
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 20%;
+                z-index: 1;
+                background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjRkZERjg4IiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+                background-size: contain;
+            }
+
+            .star-rating input {
+                -moz-appearance: none;
+                -webkit-appearance: none;
+                opacity: 0;
+                display: inline-block;
+                width: 20%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+                z-index: 2;
+                position: relative;
+            }
+
+                .star-rating input:hover + i,
+                .star-rating input:checked + i {
+                    opacity: 1;
+                }
+
+            .star-rating i ~ i {
+                width: 40%;
+            }
+
+                .star-rating i ~ i ~ i {
+                    width: 60%;
+                }
+
+                    .star-rating i ~ i ~ i ~ i {
+                        width: 80%;
+                    }
+
+                        .star-rating i ~ i ~ i ~ i ~ i {
+                            width: 100%;
+                        }
+
+        .choice {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 20px;
+            display: block;
+        }
+
+        span.scale-rating {
+            margin: 5px 0 15px;
+            display: inline-block;
+            width: 100%;
+        }
+
+            span.scale-rating > label {
+                position: relative;
+                -webkit-appearance: none;
+                outline: 0 !important;
+                border: 1px solid grey;
+                height: 33px;
+                margin: 0 5px 0 0;
+                width: calc(10% - 7px);
+                float: left;
+                cursor: pointer;
+            }
+
+            span.scale-rating label {
+                position: relative;
+                -webkit-appearance: none;
+                outline: 0 !important;
+                height: 33px;
+                margin: 0 5px 0 0;
+                width: calc(10% - 7px);
+                float: left;
+                cursor: pointer;
+            }
+
+            span.scale-rating input[type=radio] {
+                position: absolute;
+                -webkit-appearance: none;
+                opacity: 0;
+                outline: 0 !important;
+                /*border-right: 1px solid grey;*/
+                height: 33px;
+                margin: 0 5px 0 0;
+                width: 100%;
+                float: left;
+                cursor: pointer;
+                z-index: 3;
+            }
+
+            span.scale-rating label:hover {
+                background: #fddf8d;
+            }
+
+            span.scale-rating input[type=radio]:last-child {
+                border-right: 0;
+            }
+
+            span.scale-rating label input[type=radio]:checked ~ label {
+                -webkit-appearance: none;
+                margin: 0;
+                background: #fddf8d;
+            }
+
+            span.scale-rating label:before {
+                content: attr(value);
+                top: 7px;
+                width: 100%;
+                position: absolute;
+                left: 0;
+                right: 0;
+                text-align: center;
+                vertical-align: middle;
+                z-index: 2;
+            }
+
+        .d-ctm-flex {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rating-input-wrapper input[type="radio"] ~ span:hover {
+            background-color: #ffdf88;
+        }
+
+        .bg-feedback {
+            background-image: url("/content/assets/images/2.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+
+<body class="bg-feedback">
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    @{
+        var httpContext = HttpContextAccessor.HttpContext;
+        var normalUserLogin = httpContext.Session.GetString("LoginInfo");
+        var loginData = JsonConvert.DeserializeObject<LoginInfoDTO>(normalUserLogin);
+    }
+    <!-- <body data-layout="horizontal"> -->
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+
+
+
+
+
+
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content" style="margin-top:6rem;">
+
+            <div class="page-content px-2">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+
+                        <!-- end chat-leftsidebar -->
+
+                        <div class="col-md-10">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-info bg-gredient">
+                                    <h5 class="my-2 h5 text-white">Please rate your service experience for the following parameters</h5>
+                                </div>
+                                <div class="card-body" style=" background-color: #f1f1f152; ">
+                                    @*<form>*@
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div>
+                                                <div class="mb-3 d-ctm-flex">
+                                                    <label for="example-text-input" class="form-label">Your overall experience with us ?</label>
+                                                    <span class="star-rating">
+                                                        <input type="radio" name="rating" value="1"><i></i>
+                                                        <input type="radio" name="rating" value="2"><i></i>
+                                                        <input type="radio" name="rating" value="3"><i></i>
+                                                        <input type="radio" name="rating" value="4"><i></i>
+                                                        <input type="radio" name="rating" value="5"><i></i>
+                                                    </span>
+                                                </div>
+                                                <div class="mb-3 d-ctm-flex">
+                                                    <label for="example-search-input" class="form-label">How satisfied are you with current Bot</label>
+                                                    <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="formRadios" id="satisfactionwithbot" checked="" value="Very satisfied">
+                                                        <label class="form-check-label" for="formRadios1">
+                                                            Very satisfied
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="formRadios" id="satisfactionwithbot" value="Not satisfied">
+                                                        <label class="form-check-label" for="formRadios1">
+                                                            Not satisfied
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="formRadios" id="satisfactionwithbot" value="Need Improvement">
+                                                        <label class="form-check-label" for="formRadios1">
+                                                            Need Improvement
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            @*    <div class="mb-3">
+                                                    <label for="example-email-input" class="form-label">Friendliness and courtesy shown to you while delivery of your vehicle</label>
+                                                    <div class="rating-input-wrapper d-flex justify-content-between mt-2">
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">1</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">2</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">3</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">4</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">5</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">6</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">7</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">8</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">9</span></label>
+                                                        <label><input type="radio" name="rating3" /><span class="border rounded px-3 py-2">10</span></label>
+                                                    </div>
+                                                    <div class="rating-labels d-flex justify-content-between mt-1">
+                                                        <label>Poor</label>
+                                                        <label>Best</label>
+                                                    </div>
+                                                </div>*@
+
+                                                <div class="mb-3">
+                                                    <label for="exampleFormControlTextarea1" class="form-label">Any Other suggestions:</label>
+                                                        <textarea class="form-control" id="suggestionFeedback" rows="3"></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="emailmefeedback" checked="checked" value="emailmefeedback">
+                                                        <label class="form-check-label" for="formCheck2">
+                                                            Yes, it's OK to email me about my feedback
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">                                             
+                 @*    <a href="/Login/Logout" class="btn btn-info">Submit your review</a>
+                     <a href="/Login/Logout" class="ms-3 btn btn-secondary">Cancel</a>*@
+
+                                                      @*@if(ViewBag.LoginType == "AdLogin")
+                                                    {
+                                                        <button class="btn btn-info" onclick="SubmitReview('chatbotforad')" id="btnReviewChatbotAd" style="display:none">Submit your review</button>
+                                                        <a class="ms-3 btn btn-secondary" onclick="CancelReview('chatbot')" id="btncancelReviewChatbotAd" style="display:none">Cancel</a>
+                                                    }*@
+                                                    @*else{*@
+
+                                                        @if(loginData.LoginWith == "AdLogin")
+                                                      {
+                                                        <button class="btn btn-info" onclick="SubmitReview('chatbotAd')" id="btnReviewChatbotAd" style="display:none">Submit your review</button>
+                                                        <a class="ms-3 btn btn-secondary" onclick="CancelReview('chatbotAd')" id="btncancelReviewChatbotAd" style="display:none">Cancel</a>
+                                                    }
+                                                    else {
+                                                    <button class="btn btn-info" onclick="SubmitReview('chatbot')" id="btnReviewChatbot" style="display:none">Submit your review</button>
+                                                    <a class="ms-3 btn btn-secondary" onclick="CancelReview('chatbot')" id="btncancelReviewChatbot" style="display:none">Cancel</a>
+                                                    }
+                                                    @*}*@
+
+                                                    @if (loginData.LoginWith == "AdLogin")
+                                                    {
+                                                        <button class="btn btn-info" onclick="SubmitReviewOnLogout('logoutforad')" id="btnReviewLogoutAd" style="display:none">Submit your review</button>
+
+                                                        <button class="ms-3 btn btn-secondary" onclick="CancelReview('logoutforad')" id="btncancelReviewLogoutAd" style="display:none">Cancel</button>
+                                                    }
+                                                    else{
+                                                    <button class="btn btn-info" onclick="SubmitReviewOnLogout('logout')" id="btnReviewLogout" style="display:none">Submit your review</button>
+
+                                                    <button class="ms-3 btn btn-secondary" onclick="CancelReview('logout')" id="btncancelReviewLogout" style="display:none">Cancel</button>
+                                                    }
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*</form>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <img src="~/content/assets/images/fd-icon.png" class="img-fluid" style="position: absolute;top: -380px;right: 90px;">
+                        </div>
+                        <!-- end user chat -->
+                    </div>
+                    <!-- End d-lg-flex  -->
+
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+        </div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+    <!-- Right Sidebar -->
+    <div class="right-bar">
+        <div data-simplebar class="h-100">
+            <div class="rightbar-title d-flex align-items-center p-3">
+
+                <h5 class="m-0 me-2">Theme Customizer</h5>
+
+                <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                    <i class="mdi mdi-close noti-icon"></i>
+                </a>
+            </div>
+
+            <!-- Settings -->
+            <hr class="m-0" />
+
+            <div class="p-4">
+                <h6 class="mb-3">Layout</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout"
+                           id="layout-vertical" value="vertical">
+                    <label class="form-check-label" for="layout-vertical">Vertical</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout"
+                           id="layout-horizontal" value="horizontal">
+                    <label class="form-check-label" for="layout-horizontal">Horizontal</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode"
+                           id="layout-mode-light" value="light">
+                    <label class="form-check-label" for="layout-mode-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode"
+                           id="layout-mode-dark" value="dark">
+                    <label class="form-check-label" for="layout-mode-dark">Dark</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width"
+                           id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+                    <label class="form-check-label" for="layout-width-fuild">Fluid</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width"
+                           id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+                    <label class="form-check-label" for="layout-width-boxed">Boxed</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position"
+                           id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+                    <label class="form-check-label" for="layout-position-fixed">Fixed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position"
+                           id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+                    <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color"
+                           id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+                    <label class="form-check-label" for="topbar-color-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color"
+                           id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+                    <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
+
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+                    <label class="form-check-label" for="sidebar-size-default">Default</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+                    <label class="form-check-label" for="sidebar-size-compact">Compact</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+                    <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
+
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+                    <label class="form-check-label" for="sidebar-color-light">Light</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+                    <label class="form-check-label" for="sidebar-color-dark">Dark</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+                    <label class="form-check-label" for="sidebar-color-brand">Brand</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Direction</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction"
+                           id="layout-direction-ltr" value="ltr">
+                    <label class="form-check-label" for="layout-direction-ltr">LTR</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction"
+                           id="layout-direction-rtl" value="rtl">
+                    <label class="form-check-label" for="layout-direction-rtl">RTL</label>
+                </div>
+
+            </div>
+
+        </div> <!-- end slimscroll-menu-->
+    </div>
+    <!-- /Right-bar -->
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/Content/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/Content/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/Content/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/Content/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/Content/assets/libs/feather-icons/feather.min.js"></script>
+    <!-- pace js -->
+    <script src="~/Content/assets/libs/pace-js/pace.min.js"></script>
+
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script>
+        var actionurl = {
+            _SaveFeedback: '@Url.Action("SaveFeedback", "Login")',
+            _Logout: '@Url.Action("Logout", "Login")',
+            _AdLogout:'@Url.Action("AdLogout", "Login")'
+        };
+    </script>
+
+    <script src="~/js/homefeedback.js"></script>
+    
+   
+
+    <script src="~/Content/assets/js/app.js"></script>
+    
+</body>
+</html>

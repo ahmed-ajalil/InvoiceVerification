@@ -1,0 +1,907 @@
+@using CR_CoreBot_DTO;
+@using Microsoft.AspNetCore.Http;
+@using Newtonsoft.Json;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Admin dashboard" name="description" />
+    <meta content="UnifyCloud" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/content/assets/images/UC.png">
+
+    <!-- preloader css -->
+    @*<link rel="stylesheet" href="~/content/assets/css/preloader.min.css" type="text/css" />*@
+
+    <!-- Bootstrap Css -->
+    <link href="~/content/assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/content/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/content/assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    
+    @RenderSection("CssForThisPage",required:false)
+     
+
+
+
+
+    <style>
+        .main-content {
+            margin-left: 250px;
+            overflow: scroll !important;
+        }
+
+        .page-title-box {
+            padding-bottom: 0;
+            padding-top: 0px;
+        }
+
+        .page-content {
+            padding: 75px 10px 15px 10px !important;
+            background-color: #f9f9f9;
+            height: calc(100vh - 50px);
+        }
+
+        .navbar-brand-box {
+            padding: 0 1.01rem !important;
+            width: 250px !important;
+            background: #ebebeb !important;
+            /* border-right: 1px solid #dedede; */
+            position: relative !important;
+            margin: auto !important;
+        }
+
+        .navbar-header {
+            height: 60px !important;
+        }
+
+        .header-item {
+            height: 60px !important;
+        }
+
+        .navbar-brand-box::before {
+            background: linear-gradient(to right,transparent,#aaa);
+            content: "";
+            height: 100%;
+            opacity: .2;
+            pointer-events: none;
+            position: absolute;
+            right: 0;
+            width:;
+            0.8rem z-index: 2;
+        }
+
+        .divWaiting {
+            background: #000;
+            position: fixed;
+            z-index: 2147483647 !important;
+            opacity: 0.9;
+            overflow: hidden;
+            text-align: center;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            padding-top: 20%;
+        }
+
+
+
+        .load-inner {
+            padding: 10px;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 6px rgba(0,0,0,1);
+            border-radius: 8px;
+        @*background: #fff;*@
+        }
+
+        .custom_btn_padding {
+            padding: 5px 15px !important;
+        }
+
+        .page-title-box h4 {
+            padding: 10px 10px 10px;
+            border-left: 3px solid #5156be;
+        }
+
+        a.side-menu-active {
+            border-left: 5px solid #1f6fb3 !important;
+            color: #1f6fb3 !important;
+            position: relative;
+            background: #edf3f8;
+        }
+
+        .icon-sm-inner {
+            height: 20px;
+            width: 20px;
+        }
+        /*Admin CSS Start */
+        .logo_preview {
+            border: 1px dashed #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            height: 78px;
+            display: flex;
+            align-items: center;
+            background: #f9f9f9;
+        }
+
+            .logo_preview p {
+                padding-right: 15px;
+                border-right: 1px solid #cfcfcf;
+                margin-right: 15px;
+                margin-bottom: 0px;
+                height: 50px;
+                line-height: 50px;
+            }
+
+        .image-preview {
+            max-height: 55px;
+            width: auto !important;
+        }
+
+        .details_edit_col h5 {
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+            margin: 0 0 15px 0;
+            font-size: 17px;
+            background: #d7dde057;
+            color: #0a0a0a;
+        }
+        .offcanvas-end{
+           width:300px !important;
+        }
+
+            .pm-controls {
+    }
+ 
+        .pm-controls a {
+            display: block;
+            /*background-color: green;*/
+            border-radius: 50%;
+            position: relative;
+            padding: 8px;
+            margin: 6px;
+            width: 30px;
+            height: 30px;
+        }
+ 
+            .pm-controls a img {
+                height: 16px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: auto;
+            }
+ 
+            .pm-controls a:first-child {
+                background-color: #127d91;
+            }
+ 
+            .pm-controls a:last-child {
+                background-color: #afafaf;
+            }
+    </style>
+
+</head>
+
+<body>
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    @{
+        var httpContext = HttpContextAccessor.HttpContext;
+        var normalUserLogin = httpContext.Session.GetString("LoginInfo");
+        var loginData = JsonConvert.DeserializeObject<LoginInfoDTO>(normalUserLogin);
+        var Category = loginData.Category;
+        var link = "";
+        if(Category != null)
+        {
+            var splittedcategory = Category.Substring(0, Category.IndexOf("Model"));
+            link = "/"+splittedcategory +"/"+splittedcategory+"Bot/bot";
+        }
+    }
+    <div id="loader" class="divWaiting" style="visibility: hidden;">
+        <div class="load-inner">
+            <div class="text-center">
+                <div class="d-flex justify-content-center p-2">
+                    <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <span class="text-white fw-normal">Please wait...</span>
+            </div>
+        </div>
+    </div>
+    <!-- <body data-layout="horizontal"> -->
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box">
+                        @* <a href="/admin/CustomerInfoList" class="logo logo-dark"> *@
+                            <a href='@Url.Action("CustomerInfoList","admin")' class="logo logo-dark">
+                            <span class="logo-sm">
+                                <img src="~/content/assets/images/UC.png" alt="" height="24">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/content/assets/images/uc-logo-new.svg" alt="" height="24">
+                            </span>
+                        </a>
+
+                        @* <a href="/admin/CustomerInfoList" class="logo logo-light"> *@
+                            <a href='@Url.Action("CustomerInfoList","admin")' class="logo logo-light">
+                            <span class="logo-sm">
+                                <img src="~/content/assets/images/UC.png" alt="" height="24">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/content/assets/images/uc-logo-new.svg" alt="" height="24">
+                            </span>
+                        </a>
+                    </div>
+                    <button type="button" class="btn btn-sm px-3 font-size-16 header-item" id="vertical-menu-btn">
+                        <i class="fa fa-fw fa-bars"></i>
+                    </button>
+                </div>
+                <div class="d-flex">
+                    @if (loginData.RoleId == 1 && loginData.LoginWith == "Login")
+                    {
+                        @* <div class="dropdown d-inline-block">
+                            <div class="header-item topbar-light bg-light-subtle px-2" style="padding-top:20px !important;">
+                                <a class="btn btn-info" title="back to home" target="_blank" class="" href='@Configuration["SecurityURL"]/Home/Login?f=usecasepoc&u=@CR_CoreBot.Models.EncryptDecrypt.TextEncrypt(loginData.EmailId)'>
+                                    <i class="icon-sm"></i>&nbsp;&nbsp; Cyber Security
+                                </a>
+                            </div>
+                        </div> *@
+                        @* <div class="dropdown d-inline-block">
+                            <div class="header-item topbar-light bg-light-subtle border-start px-2" style="padding-top:20px !important;">
+                                <a class="btn btn-success" title="back to home" target="_blank" class="" href='@Configuration["CostingURL"]/Account/Index?Digest=@CR_CoreBot.Models.EncryptDecrypt.TextEncrypt(loginData.EmailId+":POC")'>
+                                    <i data-feather="home" class="icon-sm"></i>&nbsp;&nbsp;Cost Monitoring
+                                </a>
+                            </div>
+                        </div> *@
+                    }
+                    
+                    <div class="dropdown d-inline-block">
+                        <div class="header-item topbar-light bg-light-subtle border-start px-2" style="padding-top:20px !important;">
+                            @if (loginData.RoleId == 1)
+                            {
+                                <span><strong>Role:</strong>&nbsp; Admin</span>
+                            }
+                            else if (loginData.RoleId == 2)
+                            {
+                                <span><strong>Role:</strong> &nbsp;  SuperAdmin</span>
+                            }
+                            else
+                            {
+                                <span><strong>Role:</strong> &nbsp; User </span>
+                            }
+                        </div>
+                    </div>
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item topbar-light bg-light-subtle border-start border-end" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle header-profile-user" src="~/Content/assets/images/customer.png" alt="Header Avatar">
+                            <span class="d-none d-xl-inline-block ms-1 fw-medium" id="adminuserid"></span>&nbsp;
+                            @if (loginData.RoleId == 1 || loginData.RoleId == 2 && loginData.LoginWith == "Login")
+                            {
+                                <strong>@loginData.EmailId </strong>
+                            }
+                            else if (loginData.RoleId == 1 || loginData.RoleId == 2 && loginData.LoginWith == "AdLogin")
+                            {
+                                <strong>@loginData.EmailId </strong>
+                            }
+                            else
+                            {
+                                <span><strong>@loginData.EmailId</strong></span>
+                            }
+
+                            <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <!-- item-->
+                            @* <a class="dropdown-item" href="#"><i class="mdi mdi-face-man font-size-16 align-middle me-1"></i> Profile</a> *@
+                            @if (loginData.LoginWith != "AdLogin")
+                            {
+                                @* <a class="dropdown-item" href="/Login/ChangePassword"><i class="mdi mdi-face-man font-size-16 align-middle me-1"></i> Change Password</a> *@
+                                <a class="dropdown-item" href='@Url.Action("ChangePassword", "Login")'><i class="mdi mdi-face-man font-size-16 align-middle me-1"></i> Change Password</a>
+                            }
+                            <div class="dropdown-divider"></div>
+                            @*<a class="dropdown-item" href="/Login/Logout"><i class="mdi mdi-logout font-size-16 align-middle me-1"></i> Logout</a>*@
+                            @if (loginData.LoginWith == "AdLogin")
+                            {
+                                <button class="dropdown-item" onclick="LogoutandFeedback('logoutactionAd')"><i class="icofont-logout"></i> Log Out</button>
+                            }
+                            else
+                            {
+                                <button class="dropdown-item" onclick="LogoutandFeedback('logoutaction')"><i class="icofont-logout"></i> Log Out</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+
+        <div class="vertical-menu">
+            <div data-simplebar class="h-100">
+
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <!-- Left Menu Start -->
+                    <ul class="metismenu list-unstyled" id="side-menu">
+                        @*Role 1 - Admin, Role 2 SuperAdmin  Role 3 User*@
+
+                        @if (loginData.RoleId == 2 && loginData.LoginWith == "Login")
+                        {
+                            <li>
+                                    <a href='@Url.Action("Index", "Home")'>
+                                    <i data-feather="home" class="icon-sm"></i>
+                                    <span data-key="t-dashboard">Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("CustomerInfoList", "admin")'>
+                                    <i data-feather="info"></i>
+                                    <span data-key="t-dashboard">Customer Info</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='@Url.Action("Index", "ModelDetails")'>
+                            <i data-feather="gift"></i>
+                            <span data-key="t-dashboard">Model Info</span>
+                            </a>
+                            </li>
+                            <li>
+                                <a href='@Url.Action("SystemInstructionInfoList", "ModelDetails")'>
+                            <i data-feather="message-square"></i>
+                            <span data-key="t-dashboard">System Instruction</span>
+                            </a>
+                            </li>
+                            <li>
+                               <a href='@Url.Action("SuggestedQuestionInfoList", "ModelDetails")'>
+                            <i data-feather="briefcase"></i>
+                            <span data-key="t-dashboard">Suggested Question</span>
+                            </a>
+                            </li>
+                            <li>
+                                <a href='@Url.Action("TrainModelInfoList", "ModelDetails")'>
+                            <i data-feather="file-text"></i>
+                            <span data-key="t-dashboard">Train Model</span>
+                            </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("CustomerConfigurationList", "Admin")'>
+                                    <i data-feather="package"></i>
+                                    <span data-key="t-dashboard">Customer Configuration</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("ModelFineTuneModel", "HRadmin")'>
+                                    <i data-feather="edit-3"></i>
+                                    <span data-key="t-dashboard">Prompt Feed</span>
+                                </a>
+                            </li>
+                        
+                            <li>
+                                    <a href='@Url.Action("PerformanceMatrixChecker", "Admin")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Performance Matrix Checking</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("SessionTracker", "Admin")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Session Tracker</span>
+                                </a>
+                            </li>
+
+                              <li>
+                                <a href='@Url.Action("ConfigureContentSafetyFilters", "Security")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Content Safety Setting</span>
+                                </a>
+                            </li>
+                        }
+                        else if (loginData.RoleId == 2 && loginData.LoginWith == "AdLogin")
+                        {
+                            <li>
+                                    <a href='@Url.Action("Index", "Home")'>
+                                    <i data-feather="message-square"></i>
+                                    <span data-key="t-dashboard">Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("CustomerInfoList", "Admin")'>
+                                    <i data-feather="info"></i>
+                                    <span data-key="t-dashboard">Customer Info</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("CustomerConfigurationList", "Admin")'>
+                                    <i data-feather="package"></i>
+                                    <span data-key="t-dashboard">Customer Configuration</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("UserInfoList", "Admin")'>
+                                    <i data-feather="user"></i>
+                                    <span data-key="t-dashboard">User Info</span>
+                                </a>
+                            </li>
+                            <li>
+                                     <a href='@Url.Action("ModelFineTuneModel", "HRadmin")'>
+                                    <i data-feather="edit-3"></i>
+                                    <span data-key="t-dashboard">Prompt Feed</span>
+                                </a>
+                            </li>
+                         
+                            <li>
+                                    <a href='@Url.Action("PerformanceMatrixChecker", "Admin")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Performance Matrix Checking</span>
+                                </a>
+                            </li>
+                            <li>
+                                    <a href='@Url.Action("SessionTracker", "Admin")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Session Tracker</span>
+                                </a>
+                            </li>
+                            <li>
+                                <div class="dropdown d-inline-block w-100">
+                                    <button type="button" class="text-start btn header-item topbar-light bg-light-subtle w-100" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span><i data-feather="airplay" style="padding-left:8px; margin-left:8px;  margin-right:4px"></i> Integration</span>
+                                        <i class="mdi mdi-chevron-down d-none d-xl-inline-block text-end"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end w-100" style="">
+                                        <a class="dropdown-item" href='@Url.Action("Channel", "ChannelIntegration")'><i class="icofont-logout"></i> Channels</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i data-feather="alert-octagon"></i>
+                                    <span data-key="t-dashboard">Notification &amp; Alerts</span>
+                                </a>
+                            </li>
+                        }
+                        else if (loginData.RoleId == 1 && loginData.LoginWith == "Login")
+                        {
+                            <li>
+                                <a href='@Url.Action("Dashboard", "Admin")'>
+                                    <i data-feather="message-square"></i>
+                                    <span data-key="t-dashboard">Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='@Url.Action("UserInfoList", "Admin")'>
+                                    <i data-feather="user"></i>
+                                    <span data-key="t-dashboard">User Info</span>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href='@Url.Action("PerformanceMatrixChecker", "Admin")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Performance Matrix Checking</span>
+                                </a>
+                            </li>
+                        }
+                        else if (loginData.RoleId == 1 && loginData.LoginWith == "AdLogin")
+                        {
+                            <li>
+                                <a href='@Url.Action("Dashboard", "Admin")'>
+                                    <i data-feather="message-square"></i>
+                                    <span data-key="t-dashboard">Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href='@Url.Action("UserInfoList", "Admin")'>
+                                    <i data-feather="user"></i>
+                                    <span data-key="t-dashboard">User Info</span>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href='@Url.Action("PerformanceMatrixChecker", "Admin")'>
+                                    <i data-feather="database"></i>
+                                    <span data-key="t-dashboard">Performance Matrix Checking</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                 <a href='@Url.Action("UserDashboard", "Admin")'>
+                                    <i data-feather="message-square"></i>
+                                    <span data-key="t-dashboard">Home</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+                <!-- Sidebar -->
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+       <div class="main-content">
+   <div class="page-content">
+      <div class="container-fluid">
+         @RenderBody()
+      </div>
+      <!-- container-fluid -->
+   </div>
+   <!-- End Page-content -->
+            @if (loginData.RoleId == 1 || loginData.RoleId == 2)
+            {
+                <button class="btn btn-primary border-0"  type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" style=" position: fixed;bottom: 60px;z-index: 999;right: 0; display:none;">
+                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                      <svg width="25px" height="25px" viewBox="0 0 24 24" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                         <path d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2ZM7.67 5.5C7.67 5.09 8.01 4.75 8.42 4.75C8.83 4.75 9.17 5.09 9.17 5.5V9.4C9.17 9.81 8.83 10.15 8.42 10.15C8.01 10.15 7.67 9.81 7.67 9.4V5.5ZM9.52282 16.4313C9.31938 16.5216 9.17 16.7132 9.17 16.9358V18.5C9.17 18.91 8.83 19.25 8.42 19.25C8.01 19.25 7.67 18.91 7.67 18.5V16.9358C7.67 16.7132 7.5206 16.5216 7.31723 16.4311C6.36275 16.0064 5.7 15.058 5.7 13.95C5.7 12.45 6.92 11.22 8.42 11.22C9.92 11.22 11.15 12.44 11.15 13.95C11.15 15.0582 10.4791 16.0066 9.52282 16.4313ZM16.33 18.5C16.33 18.91 15.99 19.25 15.58 19.25C15.17 19.25 14.83 18.91 14.83 18.5V14.6C14.83 14.19 15.17 13.85 15.58 13.85C15.99 13.85 16.33 14.19 16.33 14.6V18.5ZM15.58 12.77C14.08 12.77 12.85 11.55 12.85 10.04C12.85 8.93185 13.5209 7.98342 14.4772 7.55873C14.6806 7.46839 14.83 7.27681 14.83 7.05421V5.5C14.83 5.09 15.17 4.75 15.58 4.75C15.99 4.75 16.33 5.09 16.33 5.5V7.06421C16.33 7.28681 16.4794 7.47835 16.6828 7.56885C17.6372 7.9936 18.3 8.94195 18.3 10.05C18.3 11.55 17.08 12.77 15.58 12.77Z" style="fill: #fff;"/>
+                      </svg>
+                </button>
+            }
+    <div class="offcanvas offcanvas-end bg-light" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+       <div class="offcanvas-header bg-info bg-gradient">
+          <h5 id="offcanvasRightLabel" class="mb-0 text-white">Bot Configuration</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+       </div>
+       <div class="offcanvas-body">
+          <div class="p-2 border-1">
+             <div class="form-check form-check-inline p-0">
+                <div class="row my-1">
+                   <div class="col-md-8 ps-0 text-start">
+                      <label for="temperature" class="bg-secondary bg-gradient text-white px-2 rounded">OpenaiApiVersion:</label>
+                   </div>
+                   <div class="col-md-4 text-end">
+                      <span class="text-primary h5">1.0.1</span>
+                   </div>
+                </div>
+             </div>
+             <div class="form-check p-0">
+                <div class="row my-3">
+                   <div class="col-md-8 ps-0">
+                      <label for="temperature">Temperature:</label>
+                   </div>
+                   <div class="col-md-4 text-end">
+                      <span class="badge bg-secondary px-2" id="temperatureValue"></span>
+                   </div>
+                   <input type="range" id="temperatureRange" min="0" max="1" step="0.1" value="">
+                </div>
+                <div class="form-check p-0">
+                   <div class="row my-3">
+                      <div class="col-md-8 ps-0">
+                         <label for="maxTokens">MaxTokens:</label>
+                      </div>
+                      <div class="col-md-4 text-end">
+                         <span class="badge bg-secondary px-2" id="maxTokensValue"></span>
+                      </div>
+                      <input type="range" id="maxTokensRange" min="0" step="100" max="3000" value="">
+                   </div>
+                </div>
+                <div class="form-check form-check-inline p-0">
+                   <div class="row my-3">
+                      <div class="col-md-8 ps-0">
+                         <label for="AzureEndpoint">AzureEndpoint:</label>
+                      </div>
+                      <input type="text" id="azureEndpoint" class="form-control">
+                   </div>
+                </div>
+                <div class="form-check form-check-inline p-0">
+                   <div class="row my-3">
+                      <div class="col-md-8 ps-0">
+                         <label for="OpenaiApiKey">OpenaiApiKey:</label>
+                      </div>
+                      <input type="password" id="openaiApiKey" class="form-control">
+                   </div>
+                </div>
+                <div class="form-check form-check-inline p-0">
+                   <div class="row my-3">
+                      <div class="col-md-8 ps-0">
+                         <label for="OpenaiApiType">OpenaiApiType:</label>
+                      </div>
+                      <input type="text" id="openaiApiType" class="form-control">
+                   </div>
+                </div>
+                <div class="form-check form-check-inline p-0">
+                   <div class="row my-3">
+                      <div class="col-md-8 ps-0">
+                         <label for="DeploymentName">DeploymentName:</label>
+                      </div>
+                      <input type="text" id="deploymentName" class="form-control">
+                   </div>
+                </div>
+             </div>
+             <button class="btn btn-primary w-100 border-0" onclick="saveBotConfiguration()">Save Bot Configuration</button>
+          </div>
+       </div>
+    </div>
+
+
+   <footer class="footer">
+      <div class="container-fluid">
+         <div class="row">
+            <div class="col-sm-6">
+               <script>document.write(new Date().getFullYear())</script> ©.
+            </div>
+            <div class="col-sm-6">
+               <div class="text-sm-end d-none d-sm-block">
+                  All Rights Reserved by <a href="#!" class="text-decoration-underline">UnifyCloud</a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </footer>
+</div>
+        <!-- end main content-->
+
+    </div>
+    <!-- END layout-wrapper -->
+
+    <!-- Right Sidebar -->
+    <div class="right-bar">
+        <div data-simplebar class="h-100">
+            <div class="rightbar-title d-flex align-items-center p-3">
+
+                <h5 class="m-0 me-2">Theme Customizer</h5>
+
+                <a href="javascript:void(0);" class="right-bar-toggle ms-auto">
+                    <i class="mdi mdi-close noti-icon"></i>
+                </a>
+            </div>
+
+            <!-- Settings -->
+            <hr class="m-0" />
+
+            <div class="p-4">
+                <h6 class="mb-3">Layout</h6>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout"
+                           id="layout-vertical" value="vertical">
+                    <label class="form-check-label" for="layout-vertical">Vertical</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout"
+                           id="layout-horizontal" value="horizontal">
+                    <label class="form-check-label" for="layout-horizontal">Horizontal</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode"
+                           id="layout-mode-light" value="light">
+                    <label class="form-check-label" for="layout-mode-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-mode"
+                           id="layout-mode-dark" value="dark">
+                    <label class="form-check-label" for="layout-mode-dark">Dark</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Width</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width"
+                           id="layout-width-fuild" value="fuild" onchange="document.body.setAttribute('data-layout-size', 'fluid')">
+                    <label class="form-check-label" for="layout-width-fuild">Fluid</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-width"
+                           id="layout-width-boxed" value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
+                    <label class="form-check-label" for="layout-width-boxed">Boxed</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Layout Position</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position"
+                           id="layout-position-fixed" value="fixed" onchange="document.body.setAttribute('data-layout-scrollable', 'false')">
+                    <label class="form-check-label" for="layout-position-fixed">Fixed</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-position"
+                           id="layout-position-scrollable" value="scrollable" onchange="document.body.setAttribute('data-layout-scrollable', 'true')">
+                    <label class="form-check-label" for="layout-position-scrollable">Scrollable</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color"
+                           id="topbar-color-light" value="light" onchange="document.body.setAttribute('data-topbar', 'light')">
+                    <label class="form-check-label" for="topbar-color-light">Light</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="topbar-color"
+                           id="topbar-color-dark" value="dark" onchange="document.body.setAttribute('data-topbar', 'dark')">
+                    <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Size</h6>
+
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-default" value="default" onchange="document.body.setAttribute('data-sidebar-size', 'lg')">
+                    <label class="form-check-label" for="sidebar-size-default">Default</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-compact" value="compact" onchange="document.body.setAttribute('data-sidebar-size', 'md')">
+                    <label class="form-check-label" for="sidebar-size-compact">Compact</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-size"
+                           id="sidebar-size-small" value="small" onchange="document.body.setAttribute('data-sidebar-size', 'sm')">
+                    <label class="form-check-label" for="sidebar-size-small">Small (Icon View)</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2 sidebar-setting">Sidebar Color</h6>
+
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-light" value="light" onchange="document.body.setAttribute('data-sidebar', 'light')">
+                    <label class="form-check-label" for="sidebar-color-light">Light</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-dark" value="dark" onchange="document.body.setAttribute('data-sidebar', 'dark')">
+                    <label class="form-check-label" for="sidebar-color-dark">Dark</label>
+                </div>
+                <div class="form-check sidebar-setting">
+                    <input class="form-check-input" type="radio" name="sidebar-color"
+                           id="sidebar-color-brand" value="brand" onchange="document.body.setAttribute('data-sidebar', 'brand')">
+                    <label class="form-check-label" for="sidebar-color-brand">Brand</label>
+                </div>
+
+                <h6 class="mt-4 mb-3 pt-2">Direction</h6>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction"
+                           id="layout-direction-ltr" value="ltr">
+                    <label class="form-check-label" for="layout-direction-ltr">LTR</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="layout-direction"
+                           id="layout-direction-rtl" value="rtl">
+                    <label class="form-check-label" for="layout-direction-rtl">RTL</label>
+                </div>
+
+            </div>
+
+        </div> <!-- end slimscroll-menu-->
+    </div>
+    <!-- /Right-bar -->
+    <!-- Right bar overlay-->
+    <div class="rightbar-overlay"></div>
+
+    <!-- JAVASCRIPT -->
+    <script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/content/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/content/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/content/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/content/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/content/assets/libs/feather-icons/feather.min.js"></script>
+    <!-- pace js -->
+    <script src="~/content/assets/libs/pace-js/pace.min.js"></script>
+     <!-- Include SweetAlert CDN link -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    var actionurl = {
+        _Feedback: '@Url.Action("Feedback", "Home")',
+        _getUserAdmin: '@Url.Action("getUserAdmin", "Admin")',
+        _GetBotConfiguration: '@Url.Action("GetBotConfiguration", "Admin")',
+        _SaveBotConfiguration: '@Url.Action("SaveBotConfiguration", "Admin")',
+        _GetEditedModelInformationData: '@Url.Action("GetEditedModelInformationData", "ModelDetails")',
+        _GetSizesByModelName: '@Url.Action("GetSizesByModelName", "ModelDetails")',
+        _SaveModelInfo: '@Url.Action("SaveModelInfo", "ModelDetails")',
+        _UpdateModelInfo: '@Url.Action("UpdateModelInfo", "ModelDetails")',
+        _Index: '@Url.Action("Index", "ModelDetails")',
+        _Create: '@Url.Action("Create", "ModelDetails")',
+        _Delete: '@Url.Action("Delete", "ModelDetails")',
+        _SetActivatedModels: '@Url.Action("SetActivatedModels", "ModelDetails")',
+        _GetEditedSuggestedQuestionInformationData: '@Url.Action("GetEditedSuggestedQuestionInformationData", "ModelDetails")',
+        _SaveSuggestedQuestionInfo: '@Url.Action("SaveSuggestedQuestionInfo", "ModelDetails")',
+        _UpdateSuggestedQuestionInfo: '@Url.Action("UpdateSuggestedQuestionInfo", "ModelDetails")',
+        _SuggestedQuestionInfoList: '@Url.Action("SuggestedQuestionInfoList", "ModelDetails")',
+        _GetEditedSuggestedQuestionInformationData: '@Url.Action("GetEditedSuggestedQuestionInformationData", "ModelDetails")',
+        _DeleteSuggestedQuestion: '@Url.Action("DeleteSuggestedQuestion", "ModelDetails")',
+        _AddSuggestedQuestion: '@Url.Action("AddSuggestedQuestion", "ModelDetails")',
+        _GetEditedSystemInstructionInformationData: '@Url.Action("GetEditedSystemInstructionInformationData", "ModelDetails")',
+        _SaveSystemInstructionInfo: '@Url.Action("SaveSystemInstructionInfo", "ModelDetails")',
+        _UpdateSystemInstructionInfo: '@Url.Action("UpdateSystemInstructionInfo", "ModelDetails")',
+        _SystemInstructionInfoList: '@Url.Action("SystemInstructionInfoList", "ModelDetails")',
+        _SystemInstructionInfo: '@Url.Action("SystemInstructionInfo", "ModelDetails")',
+        _DeleteSystemInstruction: '@Url.Action("DeleteSystemInstruction", "ModelDetails")',
+        _SetActivatedInstruction: '@Url.Action("SetActivatedInstruction", "ModelDetails")',
+        _GetEditedTrainModelInformationData: '@Url.Action("GetEditedTrainModelInformationData", "ModelDetails")',
+        _SaveTrainModelInfo: '@Url.Action("SaveTrainModelInfo", "ModelDetails")',
+        _UpdateTrainModelInfo: '@Url.Action("UpdateTrainModelInfo", "ModelDetails")',
+        _TrainModelInfoList: '@Url.Action("TrainModelInfoList", "ModelDetails")',
+        
+        _DeleteTrainModel: '@Url.Action("DeleteTrainModel", "ModelDetails")',
+        
+        _ChangePassword: '@Url.Action("ChangePassword", "Login")',
+        _Logout: '@Url.Action("Logout", "Login")',
+        _GetAiDashboardData:'@Url.Action("GetAiDashboardData", "Security")',
+        _GetAiDashboardDropdown:'@Url.Action("GetAiDashboardDropdown", "Security")',
+        _GetEditedCustomerConfigurationData: '@Url.Action("GetEditedCustomerConfigurationData", "Admin")',
+        _UpdateCustomerConfigurationData: '@Url.Action("UpdateCustomerConfigurationData", "Admin")',
+        _SaveCustomerConfiguration: '@Url.Action("SaveCustomerConfiguration", "Admin")',
+        _DeleteCustomerConfiguration: '@Url.Action("DeleteCustomerConfiguration", "Admin")',
+        _CustomerConfiguration: '@Url.Action("CustomerConfiguration", "Admin")',
+        
+        _CustomerConfigurationList: '@Url.Action("CustomerConfigurationList", "Admin")',
+        _EditCustomerInfo: '@Url.Action("GetEditedCustomerInformationData", "Admin")',
+        _SaveCustomerInfo: '@Url.Action("SaveCustomerInfo", "Admin")',
+        _UpdateCustomerInfo: '@Url.Action("UpdateCustomerInfo", "Admin")',
+        _CheckContainerNameExist: '@Url.Action("CheckContainerNameExist", "Admin")',
+        _redirect: '@Url.Action("CustomerInfoList", "Admin")',
+        _DeleteCustomerInfo: '@Url.Action("DeleteCustomerInfo", "Admin")',
+        _CustomerInfo: '@Url.Action("CustomerInfo", "Admin")',
+        _UploadExcel: '@Url.Action("UploadExcel", "Admin")',
+        _GetComplaintData: '@Url.Action("GetComplaintData", "Admin")',
+        _ProcessComplaints: '@Url.Action("ProcessComplaints", "Admin")',
+        _SaveUserInfo : '@Url.Action("SaveUserInfo", "Admin")',
+        _UserInfoList : '@Url.Action("UserInfoList", "Admin")',
+        _UpdateUserData : '@Url.Action("UpdateUserData", "Admin")',
+        _GetEditUserInformationData : '@Url.Action("GetEditUserInformationData", "Admin")',
+        _GetUserInformationData : '@Url.Action("GetUserInformationData", "Admin")',
+        _UserInfo : '@Url.Action("UserInfo", "Admin")',
+        _DeleteUserInfo : '@Url.Action("DeleteUserInfo", "Admin")',
+        
+        _ProcessedDocumentTotalLimit: '@Url.Action("ProcessedDocumentTotalLimit", "HRadmin")',
+        _GetBlobfilesconfig: '@Url.Action("GetBlobfilesconfig", "HRadmin")',
+        _BlobConnectedFileList: '@Url.Action("BlobConnectedFileList", "HRadmin")',
+        _UploadFilesToBlob: '@Url.Action("UploadFilesToBlob", "HRadmin")',
+        _GetEditModelFineTuneData: '@Url.Action("GetEditModelFineTuneData", "HRadmin")',
+        _bindModelName: '@Url.Action("bindModelName", "HRadmin")',
+        _UpdateModelFineTuneData: '@Url.Action("UpdateModelFineTuneData", "HRadmin")',
+        _SaveModelFineTuneData: '@Url.Action("SaveModelFineTuneData", "HRadmin")',
+        _ModelFineTuneModel: '@Url.Action("ModelFineTuneModel", "HRadmin")',
+        _GetModelfinetunedatat: '@Url.Action("GetModelfinetunedata", "HRadmin")',
+        _GetModelfinetunedata: '@Url.Action("GetModelfinetunedata", "HRadmin")',
+        
+        _AddNewCompletionResult: '@Url.Action("AddNewCompletionResult", "HRadmin")',
+        
+        _DeleteBlobDocument: '@Url.Action("DeleteBlobDocument", "HRadmin")',
+
+       _ProcessedDocument: '@Url.Action("ProcessedDocument","HRadmin")',
+
+       _UploadFilesToBlob: '@Url.Action("UploadFilesToBlob","Admin")',
+       _GetBlobData: '@Url.Action("GetBlobData","Admin")',
+
+       _GetDownloadBlobFile: '@Url.Action("DownloadBlobFile","Admin")',
+
+       _CheckFileExists: '@Url.Action("CheckFileExists","BankBot",new{Area="Banking"})',
+       _FlightValidationDetails: '@Url.Action("GetFlightValidationDetails", "Admin")'
+    };
+</script>
+
+<script src="~/js/sharedservicelayout.js"></script>
+    @RenderSection("JSForThisPage", required: false)
+     
+    <script src="~/content/assets/js/app.js"></script>
+
+</body>
+</html>

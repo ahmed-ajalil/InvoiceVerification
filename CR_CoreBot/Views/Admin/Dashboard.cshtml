@@ -1,0 +1,135 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.CaseDetailsDTO>
+    
+
+@{
+    ViewData["Title"] = "Dashboard";
+    // Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+
+@section CssForThisPage {
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+
+        .dataTables_wrapper {
+            height: initial !important;
+            overflow-y: initial;
+            overflow-x: initial;
+        }
+
+        .dataTables_scrollBody {
+            max-height: calc(100vh - 390px);
+            overflow: auto;
+        }
+    </style>
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18">Dashboard</h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mb-5 g-3">
+    <div class="col-md-12">
+        <form id="excelUploadForm" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-9">
+                    <label for="fileInput" class="form-label">Upload File</label>
+                    <input class="form-control" type="file" id="fileInput" name="file" multiple>
+                </div>
+                <div class="col-md-3">
+                    <button type="button" id="uploadBtn" class="btn btn-primary" style="margin-top: 28px;">Upload Files</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12">
+        <button type="button" id="actionBtn" class="btn btn-success btn-sm" disabled>Take Action</button>
+        <div class="bg-white shadow rounded-2 p-2">
+            <table id="tblResponse2" class="table table-bordered table-striped">
+                <thead class="ctm-table">
+                    <tr>
+                        <th style="min-width:100px;"><input type="checkbox" id="selectAll"> Select All</th>
+                        <th style="display:none;">Id</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="FlightDetails" tabindex="-1" role="dialog" aria-labelledby="dataTableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dataTableModalLabel">Meal Invoice Cost Validation Data</h5>
+            </div>
+            <div class="modal-body">
+                <table id="modalDataTable" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th style="min-width:140px;">Flight Date</th>
+                            <th style="min-width:110px;">Flight Number</th>
+                            <th style="min-width:110px;">Departure</th>
+                            <th style="min-width:110px;">Arrival</th>
+                            <th style="min-width:180px;">Bussiness Class Meals Cost</th>
+                            <th style="min-width:240px;">Bussiness Class Meals Cost (Internal)</th>
+                            <th style="min-width:120px;">Validation Status</th>
+                            <th style="min-width:160px;">Caterer Invoice</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section JSForThisPage {
+
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+
+    <script src="~/js/admindashboard.js"></script>
+
+}

@@ -1,0 +1,5 @@
+﻿@media (min-width:992px) {
+    .chat-conversation {
+        height: calc(100vh - 110px) !important;
+    }
+}

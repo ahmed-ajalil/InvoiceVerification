@@ -1,0 +1,211 @@
+﻿@model IEnumerable<CR_CoreBot_DTO.ModelFineTuneDataDTO>
+
+@{
+    ViewData["Title"] = "ModelFineTuneModel";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+
+@section CssForThisPage {
+    <!-- DataTables -->
+
+    <link href="~/content/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/content/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Responsive datatable examples -->
+    <link href="~/content/assets/css/style.css" rel="stylesheet" />
+    <link href="~/content/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        .morecontent span {
+            display: none;
+        }
+
+        .morelink {
+            display: block;
+            cursor: pointer;
+            color: blue;
+        }
+
+        table.dataTable {
+            margin-top: 0 !important;
+        }
+
+        .dataTables_length label {
+            display: inline-flex;
+        }
+
+            .dataTables_length label select {
+                margin-left: 5px !important;
+            }
+
+        .ctm-table th {
+            background-color: #f2f2f2 !important;
+            color: #000 !important;
+            font-size: 14px !important;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 5px;
+            margin: 0px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            height: 16vh;
+        }
+
+        #tblResponse th:nth-child(1) {
+            width: 15% !important;
+        }
+
+        #tblResponse th:nth-child(2) {
+            width: 20% !important;
+        }
+
+        #tblResponse th:nth-child(3) {
+            width: 35% !important;
+        }
+
+        #tblResponse th:nth-child(4) {
+            width: 26% !important;
+        }
+
+        #tblResponse th:nth-child(5) {
+            width: 4% !important;
+        }
+
+        .thumbsUp {
+            color: green;
+            margin: 0px 2px;
+            width: 20px;
+        }
+
+        .thumbsDown {
+            color: red;
+            margin: 0px 2px;
+            width: 20px;
+        }
+
+        .editt {
+            color: red;
+            margin: 0px 2px;
+            width: 20px;
+        }
+
+        .savet {
+            color: blue;
+            margin: 0px 2px;
+            width: 20px;
+        }
+    </style>
+}
+
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18"><i data-feather="trello" style="max-height:18px;"></i>&nbsp;Model FineTune Data Configuration</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <div class="RptLytTpMenu">
+            <ul>
+                @* <li>
+                <a class="btn btn-info btn-sm" href="/HRadmin/EditModelFineTuneData?Id=0"><i data-feather="airplay" class="icon-sm"></i> Add Model</a>
+                </li>*@
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-body p-2">
+                @if (Model != null)
+                {
+                    <table id="tblResponse" class="table table-bordered table-striped display" style="width:100%;">
+                        <thead class="ctm-table">
+                            <tr>
+                                <th>Username</th>
+                                <th>Prompt</th>
+                                <th>Completion</th>
+                                <th>Tag</th>
+                                @* <th>Model Name</th> *@
+                                @* <th>Created On</th> *@
+                                @*<th>Action</th>*@
+                                @*<th style="min-width:85px;">Label</th>*@
+                                @*<th>Model Name</th>*@
+                                @*<th style="max-width:200px;">Url</th>*@
+
+                                <th>Action</th>
+                                <!-- Add more column headers if needed -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var saveButtonUniqueID = "";
+                                var editButtonUniqueId = "";
+                            }
+                            @foreach (var item in Model)
+                            {
+                                saveButtonUniqueID = "saveButton" + item.Id;
+                                editButtonUniqueId = "editButton" + item.Id;
+                                <tr>
+                                    <td>@item.Username</td>
+                                    <td>@item.Prompt</td>
+                                    <td class="long-text">@item.Completion</td>
+                                    <td id="@item.Id">@item.Tag</td>
+                                    @* <td>@item.ModelName</td> *@
+                                    @* <td>@item.Datetime</td> *@
+                                    @*<td>@item.LabelName</td>*@
+                                    @*<td>@item.ModelName</td>*@
+                                    @*<td style="word-break:break-word;">@item.Url </td>*@
+                                    <td>
+                                        @if (item.IsValid == "False")
+                                        {
+                                            <i class="thumbsDown" data-feather="thumbs-down"></i>
+                                        }
+                                        else if (item.IsValid == "True")
+                                        {
+                                            <i class="thumbsUp" data-feather="thumbs-up"></i>
+                                        }
+                                        @* <button class="btn btn-sm custom_btn_padding btn-info" onclick="editmodelfinetunedatanxt(@item.Id)"><i data-feather="edit" style="max-height:14px;"></i>&nbsp;Edit</button> *@
+                                        <i class="editt" id="@editButtonUniqueId" onclick="editTag(@item.Id)" data-feather="edit-2"></i>
+                                        <i class="savet" id="@saveButtonUniqueID" onclick="SaveNewCompletion(@item.Id)" style="display: none;" data-feather="save"></i>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/content/assets/libs/jquery/jquery.min.js"></script>
+@*<script src="~/script/sweetalert.min2.js"></script>*@
+
+@section JSForThisPage {
+
+    <!-- Required datatable js -->
+    <script src="~/content/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="~/content/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/content/assets/libs/jszip/jszip.min.js"></script>
+    <script src="~/content/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+    <!-- Responsive examples -->
+    <script src="~/content/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/content/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <!-- Include SweetAlert CDN link -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+
+    <script src="~/js/hradminmodelfinetunemodel.js"></script>
+
+    
+}

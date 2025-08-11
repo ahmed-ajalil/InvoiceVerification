@@ -1,0 +1,2 @@
+[config]
+SCM_SCRIPT_GENERATOR_ARGS=--aspNetCore "D:\OpeAIProduct\UCDEMO_Application\HR - NewUI(9-08-2023)\HR - NewUI\HRMS_GPT4 -embedded_LeggChain\CR_CoreBot\CR_CoreBot.csproj"

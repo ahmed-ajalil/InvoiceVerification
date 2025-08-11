@@ -1,0 +1,578 @@
+﻿@model CR_CoreBot_DTO.BlobConnectionModel
+
+@{
+    
+    ViewData["Title"] = "BlobConnection";
+    Layout = "~/Views/Shared/_ServiceLayout.cshtml";
+}
+@section CssForThisPage{
+    <link href="~/content/assets/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+    <style>
+        .page-content {
+            overflow-y: auto !important;
+        }
+        .drop-zone {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #ccc;
+            text-align: center;
+            padding: 30px;
+            font-size: 18px;
+        }
+
+            .drop-zone.active {
+                background-color: #e0f3ff;
+            }
+
+        .choose_storage {
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+            .choose_storage h5{font-size:17px;margin: 0 0 10px 0;
+    padding: 0 0 10px 0;
+    border-bottom: 1px dashed #ddd;}
+    .radio_row .form-check{margin-right:25px;}
+    .storage_item img{max-height:15px;}
+	.rd-grp{
+			  display: none;
+			}
+			.rd-grp.on{
+			  display: block;
+			}
+            ul li{
+                list-style:none;
+            }
+    </style>
+}
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0 font-size-18"><i data-feather="hard-drive" style="max-height:18px;"></i>&nbsp;Storage Information</h4>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <ul>
+            <li>
+                <a class="btn btn-info btn-sm" href="/HRadmin/ProcessedDocument"><i data-feather="chevrons-left" class="icon-sm"></i>&nbsp;Processed Document</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="BlobConnection">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row choose_storage">
+                        <h5>Storage type to sync</h5>
+                        <div class="d-flex radio_row">
+                            <div class="form-check mb-1">
+                                <label class="form-check-label storage_item" for="azureblob">
+                                    <img src="~/Content/assets/images/azureblob.png" alt="Azure Blob" />&nbsp;Azure Blob
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header bg-none bg-white">
+                                    <h5 class="mb-0 h6">Azure Blob</h5>
+                                </div>
+                                <div class="card-body bg-light">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label asp-for="AccountName" class="control-label"></label>
+                                                        <input asp-for="AccountName" class="form-control" id="AccountName" />
+                                                        <span asp-validation-for="AccountName" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group mb-3">
+                                                        <label asp-for="BlobContainerName" class="control-label"></label>
+                                                        <input asp-for="BlobContainerName" class="form-control" id="BlobContainerName" />
+                                                        <span asp-validation-for="BlobContainerName" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group mb-3">
+                                                        <label asp-for="AccountKey" class="control-label"></label>
+                                                        <input asp-for="AccountKey" value="@Model.AccountKey" class="form-control" type="password" id="AccountKey" />
+                                                        <span asp-validation-for="AccountKey" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="card border-0 bg-transparent mb-0">
+                                                    <div class="card-body text-end position-bottom p-0 mb-0">
+                                                        <div class="mb-0">
+                                                            <button type="button" value="Blob Connection Info" class="btn btn-info btn-md py-2 px-3" onclick="SaveAzureBlobInfo()" style="float:right;"><i data-feather="log-in" class="icon-sm"></i>&nbsp;Connect</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card border-0">
+                                    <div class="card-body text-center p-0">
+                                        <img src="~/content/assets/images/or.png" />
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body bg-light">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group mb-3">
+                                                    <label asp-for="ConnectionString" class="control-label"></label>
+                                                    <input asp-for="ConnectionString" class="form-control" id="ConnectionString" />
+                                                    <span asp-validation-for="ConnectionString" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="card border-0 bg-transparent mb-0">
+                                                    <div class="card-body text-end position-bottom p-0 mb-0">
+                                                        <div class="mb-0">
+                                                            <button type="button" value="Blob Connection Info" class="btn btn-info btn-md py-2 px-3" onclick="SaveAzureBlobInfo()" style="float:right;"><i data-feather="log-in" class="icon-sm"></i>&nbsp;Connect</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="FileUpload" style="display:none;">
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                <h4 class="mb-sm-0 font-size-18">File Upload</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0 h6">Select Files(.txt,.Pdf,.docx)</h5>
+                </div>
+               
+                <div class="card-body">
+                    <div class="row">
+                        <div id="dropZone" class="drop-zone"> <p>Select Or Drag & drop files here</p> 
+                        <input class="form-control" type="file" name="pdfs" id="imageFiles" multiple accept=".doc,.docx,.txt,application/pdf" />
+                        <input class="btn btn-info mt-3" type="submit" value="Upload" id="uploadButton" onclick="fnUploadMultiplefiles()" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div> <!-- end col -->
+    </div> 
+</div>
+<script src="~/Content/assets/libs/jquery/jquery.min.js"></script>
+@section JSForThisPage {
+
+    <script src="~/content/assets/libs/sweetalert2/sweetalert2.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+        function SaveAzureBlobInfo(){
+            debugger;
+            var accountName = $("#AccountName").val();
+            var blobContainerName = $("#BlobContainerName").val();
+            var accountKey = $("#AccountKey").val();
+            var connectionString = $("#ConnectionString").val();
+            var storageType = /*$('input[name="storageType"]:checked').val()*/"azure";
+            if (accountName == "" || accountName == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "accountName can't be empty",
+                    icon: "error"
+                });
+            }
+            else if (blobContainerName == "" || blobContainerName == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "blobContainerName can't be empty",
+                    icon: "error"
+                });
+            }
+            else if (accountKey == "" || accountKey == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "accountKey can't be empty",
+                    icon: "error"
+                });
+            }
+            else{
+                show_loader();
+                var data = {};
+                data.AccountName = accountName;
+                data.AccountKey =  accountKey;
+                data.BlobContainerName = blobContainerName;
+                data.ConnectionString = connectionString;
+                data.storageType = storageType;
+                $.ajax({
+                    url: "/HRadmin/BlobConnection/",
+                    type: "POST",
+                    data: data,
+                    async: true,
+                    success: function (responseData) {
+                        console.log(responseData);
+                        hide_loader();
+                        if (responseData.blobmsg == 'successfully') {
+                            //$("#FileUpload").css("display", "block");
+                            new swal({
+                                title: "Success",
+                                text: "Connection Established",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = '/HRadmin/BlobConnectedFileList?credentialsModels=' + responseData.encryptedCredentials;
+                                }
+                            });
+                        }
+                        else if (responseData == "Account Doesn't exist") {
+                            new swal({
+                                title: "Error",
+                                text: "Account Doesn't exist",
+                                icon: "error"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = '/Admin/CustomerInfo?CustomerId=0/';
+                                }
+                            });
+                        }
+                        else{
+                            new swal({
+                                title: "Error",
+                                text: responseData,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    failure: function (responseData) {
+                        hide_loader();
+                    },
+                    error: function (responseData) {
+                        hide_loader();
+                    }
+                })
+
+            }
+        }
+        function SaveGitHubeInfo() {
+            var AccessToken = $("#AccessToken").val();
+            var RepositoryURL = $("#RepositoryURL").val();
+            var storageType = $('input[name="storageType"]:checked').val();
+            if (AccessToken == "" || AccessToken == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "AccessToken can't be empty",
+                    icon: "error"
+                });
+            }
+            else if (RepositoryURL == "" || RepositoryURL == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "RepositoryURL can't be empty",
+                    icon: "error"
+                });
+            }            
+            else {
+                show_loader();
+                var data = {};
+                data.AccountKey = AccessToken;
+                data.ConnectionString = RepositoryURL;
+                data.storageType = storageType;
+                $.ajax({
+                    url: "/HRadmin/BlobConnection/",
+                    type: "POST",
+                    data: data,
+                    async: true,
+                    success: function (responseData) {
+                        console.log(responseData);
+                        hide_loader();
+                        if (responseData == 'succesfully') {
+                            $("#FileUpload").css("display", "block");
+                            new swal({
+                                title: "Success",
+                                text: "Sync Done successfully",
+                                icon: "success"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = '/HRadmin/BlobConnectedFileList?Filestatus=GitHube';
+                                }
+                            });
+                        }
+                        else if (responseData == "Account Doesn't exist") {
+                            new swal({
+                                title: "Error",
+                                text: "Account Doesn't exist",
+                                icon: "error"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = '/Admin/CustomerInfo?CustomerId=0/';
+                                }
+                            });
+                        }
+                        else {
+                            new swal({
+                                title: "Error",
+                                text: responseData,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    failure: function (responseData) {
+                        hide_loader();
+                    },
+                    error: function (responseData) {
+                        hide_loader();
+                    }
+                })
+
+            }
+        }
+        function SaveGoogleDriveInfo() {
+            var ClientID = $("#ClientID").val();
+            var ClientSecret = $("#ClientSecret").val();
+            var RedirectURI = $("#RedirectURI").val();
+            var storageType = $('input[name="storageType"]:checked').val();
+            if (ClientID == "" || ClientID == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "ClientID can't be empty",
+                    icon: "error"
+                });
+            }
+            else if (ClientSecret == "" || ClientSecret == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "ClientSecret can't be empty",
+                    icon: "error"
+                });
+            }
+            else if (RedirectURI == "" || RedirectURI == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "RedirectURI can't be empty",
+                    icon: "error"
+                });
+            }
+            else {
+                show_loader();
+                var data = {};
+                data.AccountName = ClientID;
+                data.AccountKey = ClientSecret;
+                data.ConnectionString = RedirectURI;
+                data.storageType = storageType;
+                $.ajax({
+                    url: "/HRadmin/BlobConnection/",
+                    type: "POST",
+                    data: data,
+                    async: true,
+                    success: function (responseData) {
+                        console.log(responseData);
+                        hide_loader();
+                        if (responseData == 'succesfully') {
+                            $("#FileUpload").css("display", "block");
+                            new swal({
+                                title: "Success",
+                                text: "Sync Done successfully",
+                                icon: "success"
+                            })
+                        }
+                        else if (responseData == "Account Doesn't exist") {
+                            new swal({
+                                title: "Error",
+                                text: "Account Doesn't exist",
+                                icon: "error"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = '/Admin/CustomerInfo?CustomerId=0/';
+                                }
+                            });
+                        }
+                        else {
+                            new swal({
+                                title: "Error",
+                                text: responseData,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    failure: function (responseData) {
+                        hide_loader();
+                    },
+                    error: function (responseData) {
+                        hide_loader();
+                    }
+                })
+
+            }
+        }
+        function SaveAWSBucketInfo() {
+            var keyName = $("#keyName").val();
+            var bucketName = $("#bucketName").val();
+            var storageType = $('input[name="storageType"]:checked').val();
+            if (keyName == "" || keyName == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "keyName can't be empty",
+                    icon: "error"
+                });
+            }
+            else if (bucketName == "" || bucketName == undefined) {
+                new swal({
+                    title: "Error",
+                    text: "bucketName can't be empty",
+                    icon: "error"
+                });
+            }
+            else {
+                show_loader();
+                var data = {};
+                data.AccountKey = keyName;
+                data.AccountName = bucketName;
+                data.storageType = storageType;
+                $.ajax({
+                    url: "/HRadmin/BlobConnection/",
+                    type: "POST",
+                    data: data,
+                    async: true,
+                    success: function (responseData) {
+                        console.log(responseData);
+                        hide_loader();
+                        if (responseData == 'succesfully') {
+                            $("#FileUpload").css("display", "block");
+                            new swal({
+                                title: "Success",
+                                text: "Sync Done successfully",
+                                icon: "success"
+                            })
+                        }
+                        else if (responseData == "Account Doesn't exist") {
+                            new swal({
+                                title: "Error",
+                                text: "Account Doesn't exist",
+                                icon: "error"
+                            }).then((result) => {
+                                if (result) {
+                                    window.location.href = '/Admin/CustomerInfo?CustomerId=0/';
+                                }
+                            });
+                        }
+                        else {
+                            new swal({
+                                title: "Error",
+                                text: responseData,
+                                icon: "error"
+                            });
+                        }
+                    },
+                    failure: function (responseData) {
+                        hide_loader();
+                    },
+                    error: function (responseData) {
+                        hide_loader();
+                    }
+                })
+
+            }
+        }
+        //
+        function fnUploadMultiplefiles() {
+            var accountName = $("#AccountName").val();
+            var files = $('#imageFiles')[0].files;
+            var Checkfile = $('#imageFiles').val();
+            var storageType = $('input[name="storageType"]:checked').val();
+            if (Checkfile == "") {
+                new swal({
+                    title: "Error",
+                    text: "Please select an file",
+                    icon: "error"
+                });
+            }
+            if (files.length > 0) {
+                show_loader();
+                var formData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('images', files[i]);
+                    formData.append('accountName', accountName);
+                    formData.append('storageType', storageType);
+                }
+                $.ajax({
+                    url: '/HRadmin/syncFileData',
+                    type: 'POST',
+                    data:  formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        hide_loader();
+                        if (response == "Success") {
+                            new swal({
+                                title: "Success",
+                                text: "All File Upload successfully",
+                                icon: "success"
+                            });
+                        }
+                        else {
+                            new swal({
+                                title: "Error",
+                                text: "Failed!!",
+                                icon: "error"
+                            });
+                        }
+
+                    },
+                    error: function (xhr, status, error) {
+                        hide_loader();
+                        new swal({
+                            title: "Error",
+                            text: "Failed!!",
+                            icon: "error"
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+	<script>
+		$('[name=storageType]').each(function(i,d){
+			  var p = $(this).prop('checked');
+			//   console.log(p);
+			  if(p){
+				$('.rd-grp').eq(i)
+				  .addClass('on');
+			  }    
+			});  
+
+			$('[name=storageType]').on('change', function(){
+			  var p = $(this).prop('checked');
+			  
+			  // $(type).index(this) == nth-of-type
+			  var i = $('[name=storageType]').index(this);
+			  
+			  $('.rd-grp').removeClass('on');
+			  $('.rd-grp').eq(i).addClass('on');
+			});
+		</script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
